@@ -11,12 +11,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: '한줄',
       theme: ThemeData(
-          primarySwatch: Colors.blue,
-          primaryColor: Colors.grey[300],
-          accentColor: pointColor),
-      home: RootPage(),
+        primarySwatch: Colors.blue,
+        primaryColor: Colors.grey[300],
+        accentColor: pointColor,
+        snackBarTheme: SnackBarThemeData(
+          backgroundColor: Colors.amber,
+          contentTextStyle: TextStyle(fontSize: 20),
+        ),
+      ),
+      home: Scaffold(
+        body: RootPage(),
+      ),
     );
   }
 }
