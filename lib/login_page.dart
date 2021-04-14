@@ -1,4 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+
+String loginMutation = """
+  mutation login(\$username: String!, \$password: String!) {
+    login(username: \$username, password: \$password) {
+      ok
+      error
+      token
+    }
+  }
+""";
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,16 +23,15 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    void validateAndSave() {
+    bool validateAndSave() {
       final form = formKey.currentState;
       if (form.validate()) {
         form.save();
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('$_username님으로 로그인하는 중... $_password')));
-      } else {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('없는 로그인 정보입니다.')));
+            .showSnackBar(SnackBar(content: Text('$_username님으로 로그인하는 중...')));
+        return true;
       }
+      return false;
     }
 
     return Scaffold(
@@ -46,14 +56,36 @@ class _LoginPageState extends State<LoginPage> {
                 onSaved: (value) => _password = value,
                 style: TextStyle(fontSize: 24),
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 16)),
-                child: Text(
-                  '로그인',
-                  style: TextStyle(fontSize: 24),
+              Mutation(
+                options: MutationOptions(
+                  document: gql(loginMutation),
+                  update: (GraphQLDataProxy cache, QueryResult result) {
+                    return cache;
+                  },
+                  onCompleted: (dynamic resultData) {
+                    print(resultData);
+                  },
                 ),
-                onPressed: validateAndSave,
+                builder: (
+                  RunMutation runMutation,
+                  QueryResult result,
+                ) {
+                  return ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(vertical: 16)),
+                    child: Text(
+                      '로그인',
+                      style: TextStyle(fontSize: 24),
+                    ),
+                    onPressed: () => {
+                      if (validateAndSave())
+                        {
+                          runMutation(
+                              {'username': _username, 'password': _password})
+                        }
+                    },
+                  );
+                },
               ),
             ],
           ),

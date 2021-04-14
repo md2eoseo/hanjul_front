@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hanjul_front/config.dart';
 import 'package:hanjul_front/root_page.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
-void main() {
+void main() async {
+  await initHiveForFlutter();
   runApp(MyApp());
 }
 
@@ -10,21 +13,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: '한줄',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        primaryColor: Colors.grey[300],
-        accentColor: pointColor,
-        snackBarTheme: SnackBarThemeData(
-          backgroundColor: Colors.amber,
-          contentTextStyle: TextStyle(fontSize: 20),
-        ),
-      ),
-      home: Scaffold(
-        body: RootPage(),
-      ),
-    );
+    return GraphQLProvider(
+        client: Config.initializeClient(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: '한줄',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            primaryColor: Colors.grey[300],
+            accentColor: pointColor,
+            snackBarTheme: SnackBarThemeData(
+              backgroundColor: Colors.amber,
+              contentTextStyle: TextStyle(fontSize: 20),
+            ),
+          ),
+          home: Scaffold(
+            body: RootPage(),
+          ),
+        ));
   }
 }
