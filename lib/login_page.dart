@@ -16,6 +16,9 @@ String loginMutation = """
 """;
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({this.onLoggedIn});
+  final VoidCallback onLoggedIn;
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -73,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                     } else {
                       await storage.write(
                           key: TOKEN, value: resultData['login'][TOKEN]);
-                      print(resultData['login'][TOKEN]);
+                      widget.onLoggedIn();
                     }
                   },
                 ),

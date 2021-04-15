@@ -4,7 +4,15 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 const String TOKEN = "token";
 final storage = new FlutterSecureStorage();
 
-class MyPage extends StatelessWidget {
+class MyPage extends StatefulWidget {
+  const MyPage({this.onLoggedOut});
+  final VoidCallback onLoggedOut;
+
+  @override
+  _MyPageState createState() => _MyPageState();
+}
+
+class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +29,7 @@ class MyPage extends StatelessWidget {
         child: Text("로그아웃"),
         onPressed: () async {
           await storage.delete(key: TOKEN);
+          widget.onLoggedOut();
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text('로그아웃!')));
         },
