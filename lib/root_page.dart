@@ -1,9 +1,10 @@
-import 'dart:convert';
-
 import "package:flutter/material.dart";
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hanjul_front/login_page.dart';
 import "package:hanjul_front/tab_page.dart";
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+const String LOGGED_IN_USER = "loggedInUser";
 
 class RootPage extends StatefulWidget {
   @override
@@ -24,40 +25,29 @@ class _RootPageState extends State<RootPage> {
     return _loggedIn ? TabPage() : LoginPage();
   }
 
-  void _checkLoggedInUser() {
-    const String LOGGED_IN_USER = "loggedInUser";
-    final storage = new FlutterSecureStorage();
-    Future<String> _getLoggedInUser = new Future(() async {
-      // await storage.write(key: LOGGED_IN_USER, value: '{ "id":1 }');
-      // await storage.deleteAll();
-      return storage.read(key: LOGGED_IN_USER);
-    });
-
-    _getLoggedInUser.then((data) {
-      // storage에 loggedInUser key가 없는 경우
-      if (data == null) {
-        print("There is no loggedInUser!!!");
-        setState(() {
-          _loggedIn = false;
-        });
-      }
-
-      // storage에 loggedInUser key가 있는 경우
-      Map loggedInUser = json.decode(data);
-      // id key가 없는 경우
-      if (loggedInUser['id'] == null) {
+  void _checkLoggedInUser() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String token = pref.getString("token");
+    if (token == null) {
+      print("There is no loggedInUser!!!");
+      setState(() {
+        _loggedIn = false;
+      });
+      return;
+    } else {
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+      // decodedToken에 id가 없는 경우
+      if (decodedToken['id'] == null) {
         print("There is no valid ID!!!");
         setState(() {
           _loggedIn = false;
         });
-      }
-      // id key가 있는 경우
-      else {
-        print("loggedInUser['id'] : ${loggedInUser['id']}");
+      } else {
+        print("decodedToken['id'] : ${decodedToken['id']}");
         setState(() {
           _loggedIn = true;
         });
       }
-    });
+    }
   }
 }

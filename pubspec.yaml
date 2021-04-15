@@ -12,9 +12,9 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  flutter_secure_storage: ^4.1.0
   graphql_flutter: ^4.0.0-beta
   shared_preferences: ^0.5.12+4
+  jwt_decoder: ^2.0.1
 
 dev_dependencies:
   flutter_test:

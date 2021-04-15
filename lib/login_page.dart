@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 String loginMutation = """
   mutation login(\$username: String!, \$password: String!) {
@@ -62,8 +63,16 @@ class _LoginPageState extends State<LoginPage> {
                   update: (GraphQLDataProxy cache, QueryResult result) {
                     return cache;
                   },
-                  onCompleted: (dynamic resultData) {
-                    print(resultData);
+                  onCompleted: (dynamic resultData) async {
+                    if (!resultData['login']['ok']) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("${resultData['login']['error']}")));
+                    } else {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setString(
+                          'token', resultData['login']['token']);
+                    }
                   },
                 ),
                 builder: (
@@ -87,6 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                   );
                 },
               ),
+              
             ],
           ),
         ),
