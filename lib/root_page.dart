@@ -1,10 +1,12 @@
 import "package:flutter/material.dart";
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hanjul_front/login_page.dart';
 import "package:hanjul_front/tab_page.dart";
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+const String TOKEN = "token";
 const String LOGGED_IN_USER = "loggedInUser";
+final storage = new FlutterSecureStorage();
 
 class RootPage extends StatefulWidget {
   @override
@@ -26,10 +28,9 @@ class _RootPageState extends State<RootPage> {
   }
 
   void _checkLoggedInUser() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    String token = pref.getString("token");
+    final String token = await storage.read(key: TOKEN);
     if (token == null) {
-      print("There is no loggedInUser!!!");
+      print("토큰이 없습니다!");
       setState(() {
         _loggedIn = false;
       });
@@ -38,12 +39,12 @@ class _RootPageState extends State<RootPage> {
       Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
       // decodedToken에 id가 없는 경우
       if (decodedToken['id'] == null) {
-        print("There is no valid ID!!!");
+        print("토큰의 id가 유효하지 않습니다!");
         setState(() {
           _loggedIn = false;
         });
       } else {
-        print("decodedToken['id'] : ${decodedToken['id']}");
+        print("로그인 사용자 id : ${decodedToken['id']}");
         setState(() {
           _loggedIn = true;
         });

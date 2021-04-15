@@ -1,4 +1,6 @@
 import "package:flutter/material.dart";
+import "package:hanjul_front/feed_page.dart";
+import 'package:hanjul_front/my_page.dart';
 
 class TabPage extends StatefulWidget {
   @override
@@ -40,10 +42,7 @@ class _TabPageState extends State<TabPage> {
   }
 
   List _widgetOptions = [
-    Text(
-      '피드',
-      style: TextStyle(fontSize: 30, fontFamily: 'Nanum Myeongjo'),
-    ),
+    FeedPage(),
     Text(
       '아카이브',
       style: TextStyle(fontSize: 30, fontFamily: 'Nanum Myeongjo'),
@@ -52,9 +51,6 @@ class _TabPageState extends State<TabPage> {
       '검색',
       style: TextStyle(fontSize: 30, fontFamily: 'Nanum Myeongjo'),
     ),
-    Text(
-      '설정',
-      style: TextStyle(fontSize: 30, fontFamily: 'Nanum Myeongjo'),
-    ),
+    MyPage(),
   ];
 }

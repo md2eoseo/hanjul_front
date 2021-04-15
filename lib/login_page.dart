@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+const String TOKEN = "token";
+final storage = new FlutterSecureStorage();
 
 String loginMutation = """
   mutation login(\$username: String!, \$password: String!) {
@@ -25,9 +28,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     bool validateAndSave() {
-      final form = formKey.currentState;
-      if (form.validate()) {
-        form.save();
+      final formState = formKey.currentState;
+      if (formState.validate()) {
+        formState.save();
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('$_username님으로 로그인하는 중...')));
         return true;
@@ -68,10 +71,9 @@ class _LoginPageState extends State<LoginPage> {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("${resultData['login']['error']}")));
                     } else {
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      await prefs.setString(
-                          'token', resultData['login']['token']);
+                      await storage.write(
+                          key: TOKEN, value: resultData['login'][TOKEN]);
+                      print(resultData['login'][TOKEN]);
                     }
                   },
                 ),
@@ -96,7 +98,6 @@ class _LoginPageState extends State<LoginPage> {
                   );
                 },
               ),
-              
             ],
           ),
         ),
