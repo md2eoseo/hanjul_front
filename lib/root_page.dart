@@ -1,10 +1,10 @@
 import "package:flutter/material.dart";
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hanjul_front/login_page.dart';
 import "package:hanjul_front/tab_page.dart";
 import 'package:jwt_decoder/jwt_decoder.dart';
 
-const String TOKEN = "token";
 final storage = new FlutterSecureStorage();
 
 class RootPage extends StatefulWidget {
@@ -41,7 +41,7 @@ class _RootPageState extends State<RootPage> {
   }
 
   void _checkLoggedInUser() async {
-    final String token = await storage.read(key: TOKEN);
+    final String token = await storage.read(key: env['TOKEN']);
     if (token == null) {
       print("토큰이 없습니다!");
     } else {

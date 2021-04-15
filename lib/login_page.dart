@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-const String TOKEN = "token";
 final storage = new FlutterSecureStorage();
 
 String loginMutation = """
@@ -75,7 +75,8 @@ class _LoginPageState extends State<LoginPage> {
                           content: Text("${resultData['login']['error']}")));
                     } else {
                       await storage.write(
-                          key: TOKEN, value: resultData['login'][TOKEN]);
+                          key: env['TOKEN'],
+                          value: resultData['login'][env['TOKEN']]);
                       widget.onLoggedIn();
                     }
                   },

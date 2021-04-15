@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-const String TOKEN = "token";
 final storage = new FlutterSecureStorage();
 
 class MyPage extends StatefulWidget {
@@ -28,7 +28,7 @@ class _MyPageState extends State<MyPage> {
       body: ElevatedButton(
         child: Text("로그아웃"),
         onPressed: () async {
-          await storage.delete(key: TOKEN);
+          await storage.delete(key: env['TOKEN']);
           widget.onLoggedOut();
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text('로그아웃!')));

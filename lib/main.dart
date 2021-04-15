@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hanjul_front/config.dart';
 import 'package:hanjul_front/root_page.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 
 void main() async {
   await initHiveForFlutter();
+  await DotEnv.load();
   runApp(MyApp());
 }
 
