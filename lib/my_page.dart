@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-final storage = new FlutterSecureStorage();
+import 'package:hanjul_front/config.dart';
 
 class MyPage extends StatefulWidget {
   const MyPage({this.onLoggedOut});

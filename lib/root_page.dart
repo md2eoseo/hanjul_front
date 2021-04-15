@@ -1,11 +1,9 @@
 import "package:flutter/material.dart";
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hanjul_front/config.dart';
 import 'package:hanjul_front/login_page.dart';
 import "package:hanjul_front/tab_page.dart";
 import 'package:jwt_decoder/jwt_decoder.dart';
-
-final storage = new FlutterSecureStorage();
 
 class RootPage extends StatefulWidget {
   @override
