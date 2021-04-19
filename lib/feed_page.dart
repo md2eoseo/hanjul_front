@@ -12,16 +12,10 @@ String seeDayFeedQuery = """
           username
         }
       }
+      lastId
     }
   }
 """;
-
-class Post {
-  String text;
-  String author;
-
-  Post(this.text, this.author);
-}
 
 class FeedPage extends StatefulWidget {
   @override
@@ -29,7 +23,7 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
-  List<Post> _dayFeedPosts = <Post>[];
+  ScrollController _scrollController = new ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -48,50 +42,81 @@ class _FeedPageState extends State<FeedPage> {
         child: Query(
           options: QueryOptions(
             document: gql(seeDayFeedQuery),
-            pollInterval: Duration(seconds: 10),
           ),
           builder: (QueryResult result,
               {VoidCallback refetch, FetchMore fetchMore}) {
+            FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
+              variables: result.data['seeDayFeed']['lastId'] != null
+                  ? {'lastId': result.data['seeDayFeed']['lastId']}
+                  : {},
+              updateQuery: (previousResultData, fetchMoreResultData) {
+                final List<dynamic> posts = [
+                  ...previousResultData['seeDayFeed']['posts'] as List<dynamic>,
+                  ...fetchMoreResultData['seeDayFeed']['posts'] as List<dynamic>
+                ];
+                fetchMoreResultData['seeDayFeed']['posts'] = posts;
+                return fetchMoreResultData;
+              },
+            );
+
             if (result.hasException) {
               return Text(result.exception.toString());
             }
 
             if (result.isLoading) {
-              return Text('Loading');
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  CircularProgressIndicator(),
+                ],
+              );
             }
 
+            List _posts = [];
             if (!result.data['seeDayFeed']['ok']) {
               print("seeDayFeed Query not ok!!!!!!");
             } else {
-              List posts = result.data['seeDayFeed']['posts'];
-              List<Post> _fetchedPosts = <Post>[];
-              for (var idx = 0; idx < posts.length; idx++) {
-                _fetchedPosts.add(
-                    Post(posts[idx]['text'], posts[idx]['author']['username']));
-              }
-              _dayFeedPosts = _fetchedPosts;
+              print("seeDayFeed Query fetched!!");
+              _posts = result.data['seeDayFeed']['posts'];
             }
-            return _buildDayFeedPosts(_dayFeedPosts);
+            return _buildDayFeedPosts(_posts, fetchMore, fetchMoreOpts);
           },
         ),
       ),
     );
   }
 
-  Widget _buildDayFeedPosts(List<Post> dayFeedPosts) {
-    return ListView.separated(
-      padding: EdgeInsets.symmetric(vertical: 14),
-      itemCount: dayFeedPosts.length,
-      itemBuilder: (context, i) {
-        return _buildPost(dayFeedPosts[i]);
-      },
-      separatorBuilder: (context, i) {
-        return Divider();
+  Widget _buildDayFeedPosts(
+      List dayFeedPosts, FetchMore fetchMore, FetchMoreOptions fetchMoreOpts) {
+    if (dayFeedPosts.length == 0) {
+      return Center(child: Text("글이 없습니다."));
+    }
+    return NotificationListener<ScrollEndNotification>(
+      child: ListView.separated(
+        controller: _scrollController,
+        padding: EdgeInsets.symmetric(vertical: 14),
+        itemCount: dayFeedPosts.length,
+        itemBuilder: (context, i) {
+          return _buildPost(dayFeedPosts[i]);
+        },
+        separatorBuilder: (context, i) {
+          return Divider();
+        },
+      ),
+      onNotification: (notification) {
+        if (fetchMoreOpts.variables['lastId'] != null) {
+          print("fetchMore");
+          fetchMore(fetchMoreOpts);
+          return false;
+        } else {
+          print("infinite scroll end");
+          return true;
+        }
       },
     );
   }
 
-  Widget _buildPost(Post post) {
+  Widget _buildPost(post) {
     return ListTile(
       title: Container(
           padding: EdgeInsets.fromLTRB(8, 12, 0, 12),
@@ -99,7 +124,7 @@ class _FeedPageState extends State<FeedPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                post.text,
+                post['text'],
                 style: TextStyle(
                   fontSize: 28,
                   fontFamily: "Nanum Myeongjo",
@@ -115,7 +140,7 @@ class _FeedPageState extends State<FeedPage> {
                         Icon(Icons.account_circle),
                         SizedBox(width: 8),
                         Text(
-                          post.author,
+                          post['author']['username'],
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: "Nanum Myeongjo",
