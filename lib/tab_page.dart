@@ -11,13 +11,13 @@ class TabPage extends StatefulWidget {
 }
 
 class _TabPageState extends State<TabPage> {
-  List _widgetOptions;
-  int _selectedIndex = 0;
+  List<Widget> _widgetOptions;
+  int _currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _widgetOptions = [
+    _widgetOptions = <Widget>[
       FeedPage(),
       Text(
         '아카이브',
@@ -36,6 +36,10 @@ class _TabPageState extends State<TabPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _widgetOptions,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.grey,
@@ -44,7 +48,7 @@ class _TabPageState extends State<TabPage> {
         selectedFontSize: 14,
         unselectedFontSize: 14,
         onTap: _onItemTapped,
-        currentIndex: _selectedIndex,
+        currentIndex: _currentIndex,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "피드"),
           BottomNavigationBarItem(icon: Icon(Icons.archive), label: "아카이브"),
@@ -52,15 +56,12 @@ class _TabPageState extends State<TabPage> {
           BottomNavigationBarItem(icon: Icon(Icons.circle), label: "MY")
         ],
       ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
     );
   }
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _currentIndex = index;
     });
   }
 }
