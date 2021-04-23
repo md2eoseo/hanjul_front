@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:like_button/like_button.dart';
 
 String seeDayFeedQuery = """
   query seeDayFeed(\$lastId: Int) {
@@ -7,12 +8,25 @@ String seeDayFeedQuery = """
       ok
       error
       posts {
+        id
         text
         author{
           username
         }
+        likesCount
+        isLiked
       }
       lastId
+    }
+  }
+""";
+
+String toggleLikeMutation = """
+  mutation toggleLike(\$postId: Int!) {
+    toggleLike(postId: \$postId) {
+      ok
+      error
+      like
     }
   }
 """;
@@ -150,9 +164,67 @@ class _FeedPageState extends State<FeedPage> {
                     ),
                     Row(
                       children: [
-                        Icon(
-                          Icons.whatshot,
-                          size: 36,
+                        Mutation(
+                          options: MutationOptions(
+                            document: gql(toggleLikeMutation),
+                            update:
+                                (GraphQLDataProxy cache, QueryResult result) {
+                              return cache;
+                            },
+                            onCompleted: (dynamic resultData) async {
+                              if (!resultData['toggleLike']['ok']) {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text(
+                                        "${resultData['toggleLike']['error']}")));
+                              } else {
+                                // TODO: if toggleLike completed, modify cache
+                              }
+                            },
+                          ),
+                          builder: (
+                            RunMutation toggleLike,
+                            QueryResult result,
+                          ) {
+                            Future<bool> onLikeButtonTapped(
+                                bool isLiked) async {
+                              toggleLike({'postId': post['id']});
+                              return !isLiked;
+                            }
+
+                            return LikeButton(
+                              onTap: onLikeButtonTapped,
+                              size: 36,
+                              circleColor: CircleColor(
+                                  start: Color(0xff00ddff),
+                                  end: Color(0xff0099cc)),
+                              bubblesColor: BubblesColor(
+                                dotPrimaryColor: Color(0xff33b5e5),
+                                dotSecondaryColor: Color(0xff0099cc),
+                              ),
+                              isLiked: post['isLiked'],
+                              likeBuilder: (bool isLiked) {
+                                return Icon(
+                                  Icons.favorite,
+                                  color:
+                                      isLiked ? Colors.red[800] : Colors.grey,
+                                  size: 32,
+                                );
+                              },
+                              countPostion: CountPostion.left,
+                              likeCountPadding: EdgeInsets.only(right: 6),
+                              likeCount: post['likesCount'],
+                              countBuilder:
+                                  (int count, bool isLiked, String text) {
+                                var color =
+                                    isLiked ? Colors.black87 : Colors.grey;
+                                Widget result = Text(
+                                  text,
+                                  style: TextStyle(color: color, fontSize: 24),
+                                );
+                                return result;
+                              },
+                            );
+                          },
                         ),
                       ],
                     )
