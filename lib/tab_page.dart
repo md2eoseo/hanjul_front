@@ -11,13 +11,12 @@ class TabPage extends StatefulWidget {
 }
 
 class _TabPageState extends State<TabPage> {
-  List<Widget> _widgetOptions;
-  int _currentIndex = 0;
+  List<Widget> _tabOptions;
+  int _currentIndex;
 
   @override
   void initState() {
-    super.initState();
-    _widgetOptions = <Widget>[
+    _tabOptions = <Widget>[
       FeedPage(),
       Text(
         '아카이브',
@@ -31,6 +30,8 @@ class _TabPageState extends State<TabPage> {
         onLoggedOut: widget.onLoggedOut,
       ),
     ];
+    _currentIndex = 0;
+    super.initState();
   }
 
   @override
@@ -38,7 +39,7 @@ class _TabPageState extends State<TabPage> {
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
-        children: _widgetOptions,
+        children: _tabOptions,
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

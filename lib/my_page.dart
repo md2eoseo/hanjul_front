@@ -26,7 +26,7 @@ class _MyPageState extends State<MyPage> {
       body: ElevatedButton(
         child: Text("로그아웃"),
         onPressed: () async {
-          await storage.delete(key: env['TOKEN']);
+          await Config.storage.delete(key: env['TOKEN']);
           widget.onLoggedOut();
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text('로그아웃!')));

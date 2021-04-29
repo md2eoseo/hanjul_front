@@ -11,35 +11,35 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
-  bool _loggedIn = false;
+  bool _isLoggedIn = false;
 
   @override
   void initState() {
-    super.initState();
     _checkLoggedInUser();
+    super.initState();
   }
 
   void _onLoggedIn() {
     setState(() {
-      _loggedIn = true;
+      _isLoggedIn = true;
     });
   }
 
   void _onLoggedOut() {
     setState(() {
-      _loggedIn = false;
+      _isLoggedIn = false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return _loggedIn
+    return _isLoggedIn
         ? TabPage(onLoggedOut: _onLoggedOut)
         : LoginPage(onLoggedIn: _onLoggedIn);
   }
 
   void _checkLoggedInUser() async {
-    final String token = await storage.read(key: env['TOKEN']);
+    final String token = await Config.storage.read(key: env['TOKEN']);
     if (token == null) {
       print("토큰이 없습니다!");
     } else {
