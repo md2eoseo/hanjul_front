@@ -8,19 +8,15 @@ class Config {
 
   static final HttpLink _httpLink = HttpLink(env['SERVER_URL']);
 
-  static final AuthLink _authLink = AuthLink(getToken: () {
-    return storage.read(key: env['TOKEN']);
-  });
+  static final AuthLink _authLink =
+      AuthLink(getToken: () async => storage.read(key: env['TOKEN']));
 
-  static final Link link = _authLink.concat(_httpLink);
+  static final Link _link = _authLink.concat(_httpLink);
 
-  static ValueNotifier<GraphQLClient> initializeClient() {
-    ValueNotifier<GraphQLClient> client = ValueNotifier(
-      GraphQLClient(
-        link: link,
-        cache: GraphQLCache(store: HiveStore()),
-      ),
-    );
-    return client;
-  }
+  static final ValueNotifier<GraphQLClient> client = ValueNotifier(
+    GraphQLClient(
+      link: _link,
+      cache: GraphQLCache(store: HiveStore()),
+    ),
+  );
 }

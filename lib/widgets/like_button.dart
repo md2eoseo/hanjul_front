@@ -12,16 +12,18 @@ String toggleLikeMutation = """
 """;
 
 class LikeButton extends StatefulWidget {
-  const LikeButton({
-    Key key,
-    this.postId,
-    this.isLiked = false,
-    this.likesCount,
-  }) : super(key: key);
+  const LikeButton(
+      {Key key,
+      this.postId,
+      this.isLiked,
+      this.likesCount,
+      this.updateIsLikedCache})
+      : super(key: key);
 
   final int postId;
   final bool isLiked;
   final int likesCount;
+  final Function updateIsLikedCache;
 
   @override
   _LikeButtonState createState() => _LikeButtonState();
@@ -52,7 +54,7 @@ class _LikeButtonState extends State<LikeButton> {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text("${resultData['toggleLike']['error']}")));
             } else {
-              // TODO: if toggleLike completed, modify cache
+              widget.updateIsLikedCache(widget.postId);
             }
           },
         ),

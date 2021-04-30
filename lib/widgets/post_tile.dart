@@ -5,9 +5,11 @@ class PostTile extends StatefulWidget {
   const PostTile({
     Key key,
     this.post,
+    this.updateIsLikedCache,
   }) : super(key: key);
 
   final Map post;
+  final Function updateIsLikedCache;
 
   @override
   _PostTileState createState() => _PostTileState();
@@ -53,6 +55,7 @@ class _PostTileState extends State<PostTile> {
                         postId: widget.post['id'],
                         isLiked: widget.post['isLiked'],
                         likesCount: widget.post['likesCount'],
+                        updateIsLikedCache: widget.updateIsLikedCache,
                       )
                     ],
                   )
