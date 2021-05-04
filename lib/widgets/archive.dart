@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hanjul_front/widgets/post_tile.dart';
 
-String seeDayFeedQuery = """
-  query seeDayFeed(\$lastId: Int) {
-    seeDayFeed(lastId: \$lastId) {
+String seeArchiveQuery = """
+  query seeArchive(\$lastId: Int) {
+    seeArchive(lastId: \$lastId) {
       ok
       error
       posts {
@@ -21,14 +21,14 @@ String seeDayFeedQuery = """
   }
 """;
 
-class DayFeed extends StatefulWidget {
-  DayFeed({Key key}) : super(key: key);
+class Archive extends StatefulWidget {
+  Archive({Key key}) : super(key: key);
 
   @override
-  _DayFeedState createState() => _DayFeedState();
+  _ArchiveState createState() => _ArchiveState();
 }
 
-class _DayFeedState extends State<DayFeed> {
+class _ArchiveState extends State<Archive> {
   ScrollController _scrollController = new ScrollController();
   List<Widget> _currentPostWidgets;
 
@@ -45,22 +45,22 @@ class _DayFeedState extends State<DayFeed> {
         return Container(
           child: Query(
             options: QueryOptions(
-              document: gql(seeDayFeedQuery),
+              document: gql(seeArchiveQuery),
             ),
             builder: (QueryResult result,
                 {VoidCallback refetch, FetchMore fetchMore}) {
               FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
                 variables: {
-                  'lastId': result.data['seeDayFeed']['lastId'] != null
-                      ? result.data['seeDayFeed']['lastId']
+                  'lastId': result.data['seeArchive']['lastId'] != null
+                      ? result.data['seeArchive']['lastId']
                       : null
                 },
                 updateQuery: (previousResultData, fetchMoreResultData) {
                   List posts = [
-                    ...previousResultData['seeDayFeed']['posts'],
-                    ...fetchMoreResultData['seeDayFeed']['posts']
+                    ...previousResultData['seeArchive']['posts'],
+                    ...fetchMoreResultData['seeArchive']['posts']
                   ];
-                  fetchMoreResultData['seeDayFeed']['posts'] = posts;
+                  fetchMoreResultData['seeArchive']['posts'] = posts;
                   return fetchMoreResultData;
                 },
               );
@@ -95,12 +95,12 @@ class _DayFeedState extends State<DayFeed> {
               }
 
               List posts = [];
-              if (!result.data['seeDayFeed']['ok']) {
-                print("seeDayFeed Query Failed");
+              if (!result.data['seeArchive']['ok']) {
+                print("seeArchive Query Failed");
                 return Center(child: Text("글 불러오기에 실패했습니다."));
               } else {
-                print("seeDayFeed Query Succeed");
-                posts = result.data['seeDayFeed']['posts'];
+                print("seeArchive Query Succeed");
+                posts = result.data['seeArchive']['posts'];
               }
 
               List<Widget> newPostWidgets = [
@@ -144,7 +144,7 @@ class _DayFeedState extends State<DayFeed> {
                       _currentPostWidgets = newPostWidgets;
                     });
                     if (fetchMoreOpts.variables['lastId'] != null) {
-                      print("seeDayFeed Query fetchMore");
+                      print("seeArchive Query fetchMore");
                       fetchMore(fetchMoreOpts);
                     } else {
                       print("infinite scroll end");

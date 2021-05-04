@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:hanjul_front/archive_page.dart';
 import "package:hanjul_front/feed_page.dart";
 import 'package:hanjul_front/my_page.dart';
 
@@ -18,10 +19,7 @@ class _TabPageState extends State<TabPage> {
   void initState() {
     _tabOptions = <Widget>[
       FeedPage(),
-      Text(
-        '아카이브',
-        style: TextStyle(fontSize: 30, fontFamily: 'Nanum Myeongjo'),
-      ),
+      ArchivePage(),
       Text(
         '검색',
         style: TextStyle(fontSize: 30, fontFamily: 'Nanum Myeongjo'),
