@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import 'package:hanjul_front/archive_page.dart';
 import "package:hanjul_front/feed_page.dart";
 import 'package:hanjul_front/my_page.dart';
+import 'package:hanjul_front/search_page.dart';
 
 class TabPage extends StatefulWidget {
   const TabPage({this.onLoggedOut});
@@ -20,10 +21,7 @@ class _TabPageState extends State<TabPage> {
     _tabOptions = <Widget>[
       FeedPage(),
       ArchivePage(),
-      Text(
-        '검색',
-        style: TextStyle(fontSize: 30, fontFamily: 'Nanum Myeongjo'),
-      ),
+      SearchPage(),
       MyPage(
         onLoggedOut: widget.onLoggedOut,
       ),
