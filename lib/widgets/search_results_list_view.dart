@@ -31,6 +31,11 @@ class SearchResultsListView extends StatefulWidget {
 
 class _SearchResultsListViewState extends State<SearchResultsListView> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       child: FutureBuilder(
@@ -65,9 +70,6 @@ class _SearchResultsListViewState extends State<SearchResultsListView> {
 
   Future _delayFetch() async {
     await Future.delayed(Duration(milliseconds: 400));
-    if (widget.keyword.trim() == "") {
-      return Text("검색어가 비어있습니다.");
-    }
     return Query(
       options: QueryOptions(
         document: gql(searchUsersQuery),

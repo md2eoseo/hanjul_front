@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hanjul_front/widgets/search_results_list_view.dart';
 
+String getCleanKeyword(String keyword) {
+  final regex = RegExp('\\s+');
+  return keyword.replaceAll(regex, ' ').trim();
+}
+
 class Search extends StatefulWidget {
   Search({Key key}) : super(key: key);
 
@@ -51,16 +56,18 @@ class _SearchState extends State<Search> {
                           ),
                         ),
                         onChanged: (value) =>
-                            setState(() => {_keyword = value}),
+                            setState(() => {_keyword = getCleanKeyword(value)}),
                       ),
                     ),
                   )
                 ],
               ),
               SizedBox(height: 4),
-              SearchResultsListView(
-                keyword: _keyword,
-              )
+              _keyword != ""
+                  ? SearchResultsListView(
+                      keyword: _keyword,
+                    )
+                  : Text("검색어가 비어있습니다.")
             ],
           ),
         );
