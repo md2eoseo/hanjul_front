@@ -1,4 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hanjul_front/widgets/search_user_tile.dart';
+
+String searchUsersQuery = """
+  query searchUsers(\$keyword: String!, \$lastId: Int) {
+    searchUsers(keyword: \$keyword, lastId: \$lastId) {
+      ok
+      error
+      users {
+        id
+        username
+        avatar
+      }
+      lastId
+    }
+  }
+""";
 
 class SearchResultsListView extends StatefulWidget {
   const SearchResultsListView({
@@ -22,15 +39,24 @@ class _SearchResultsListViewState extends State<SearchResultsListView> {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
             case ConnectionState.waiting:
-              return CircularProgressIndicator();
-            default:
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  snapshot.data.toString(),
-                  style: TextStyle(fontSize: 15),
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 36.0),
+                child: Row(
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(width: 36.0),
+                    SizedBox(
+                      width: 280,
+                      child: Text(
+                        '"${widget.keyword}" 검색중...',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ],
                 ),
               );
+            default:
+              return Expanded(child: snapshot.data);
           }
         },
       ),
@@ -38,7 +64,93 @@ class _SearchResultsListViewState extends State<SearchResultsListView> {
   }
 
   Future _delayFetch() async {
-    await Future.delayed(Duration(milliseconds: 200));
-    return widget.keyword;
+    await Future.delayed(Duration(milliseconds: 400));
+    if (widget.keyword.trim() == "") {
+      return Text("검색어가 비어있습니다.");
+    }
+    return Query(
+      options: QueryOptions(
+        document: gql(searchUsersQuery),
+        variables: {'keyword': widget.keyword},
+      ),
+      builder: (QueryResult result,
+          {VoidCallback refetch, FetchMore fetchMore}) {
+        FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
+          variables: {
+            'keyword': widget.keyword,
+            'lastId': result.data['searchUsers']['lastId'] != null
+                ? result.data['searchUsers']['lastId']
+                : null
+          },
+          updateQuery: (previousResultData, fetchMoreResultData) {
+            List users = [
+              ...previousResultData['searchUsers']['users'],
+              ...fetchMoreResultData['searchUsers']['users']
+            ];
+            fetchMoreResultData['searchUsers']['users'] = users;
+            return fetchMoreResultData;
+          },
+        );
+
+        if (result.hasException) {
+          return Text(result.exception.toString());
+        }
+
+        if (result.isLoading) {
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 36.0),
+            child: Row(
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(width: 36.0),
+                SizedBox(
+                  width: 280,
+                  child: Text(
+                    '"${widget.keyword}" 검색중...',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
+        List users = [];
+        if (!result.data['searchUsers']['ok']) {
+          print("searchUsers Query Failed");
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Text("검색에 실패했습니다."),
+          );
+        } else if (result.data['searchUsers']['users']?.length == 0) {
+          print("searchUsers Query No Users");
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              '"${widget.keyword}" 검색 결과 없음',
+              style: TextStyle(fontSize: 16),
+            ),
+          );
+        } else {
+          print("searchUsers Query Succeed");
+          users = result.data['searchUsers']['users'];
+        }
+
+        List<Widget> newUserWidgets = [
+          for (var user in users) SearchUserTile(user: user),
+        ];
+
+        return ListView.separated(
+          padding: EdgeInsets.symmetric(vertical: 14),
+          itemCount: newUserWidgets.length,
+          itemBuilder: (context, i) {
+            return newUserWidgets[i];
+          },
+          separatorBuilder: (context, i) {
+            return Divider();
+          },
+        );
+      },
+    );
   }
 }

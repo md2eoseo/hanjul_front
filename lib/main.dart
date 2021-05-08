@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: '한줄',
             theme: ThemeData(
-              primarySwatch: Colors.blue,
+              primarySwatch: Colors.grey,
               primaryColor: Colors.grey[300],
               accentColor: Colors.black,
               snackBarTheme: SnackBarThemeData(

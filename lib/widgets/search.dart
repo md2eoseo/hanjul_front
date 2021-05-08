@@ -57,7 +57,7 @@ class _SearchState extends State<Search> {
                   )
                 ],
               ),
-              SizedBox(height: 24),
+              SizedBox(height: 4),
               SearchResultsListView(
                 keyword: _keyword,
               )
