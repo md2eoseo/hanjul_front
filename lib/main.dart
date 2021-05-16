@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hanjul_front/config.dart';
-import 'package:hanjul_front/root_page.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
+import 'package:hanjul_front/splash.dart';
 
 void main() async {
   await DotEnv.load();
@@ -18,24 +18,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GraphQLProvider(
-        client: client,
-        child: CacheProvider(
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: '한줄',
-            theme: ThemeData(
-              primarySwatch: Colors.grey,
-              primaryColor: Colors.grey[300],
-              accentColor: Colors.black,
-              snackBarTheme: SnackBarThemeData(
-                backgroundColor: Colors.amber,
-                contentTextStyle: TextStyle(fontSize: 20),
-              ),
-            ),
-            home: Scaffold(
-              body: RootPage(),
+      client: client,
+      child: CacheProvider(
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: '한줄',
+          theme: ThemeData(
+            primarySwatch: Colors.grey,
+            primaryColor: Colors.grey[300],
+            accentColor: Colors.black,
+            snackBarTheme: SnackBarThemeData(
+              backgroundColor: Colors.amber,
+              contentTextStyle: TextStyle(fontSize: 20),
             ),
           ),
-        ));
+          home: Splash(),
+        ),
+      ),
+    );
   }
 }
