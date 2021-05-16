@@ -31,11 +31,6 @@ class SearchResultsListView extends StatefulWidget {
 
 class _SearchResultsListViewState extends State<SearchResultsListView> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       child: FutureBuilder(
@@ -47,6 +42,7 @@ class _SearchResultsListViewState extends State<SearchResultsListView> {
               return Container(
                 padding: EdgeInsets.symmetric(horizontal: 36.0),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CircularProgressIndicator(),
                     SizedBox(width: 36.0),
@@ -77,23 +73,6 @@ class _SearchResultsListViewState extends State<SearchResultsListView> {
       ),
       builder: (QueryResult result,
           {VoidCallback refetch, FetchMore fetchMore}) {
-        FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
-          variables: {
-            'keyword': widget.keyword,
-            'lastId': result.data['searchUsers']['lastId'] != null
-                ? result.data['searchUsers']['lastId']
-                : null
-          },
-          updateQuery: (previousResultData, fetchMoreResultData) {
-            List users = [
-              ...previousResultData['searchUsers']['users'],
-              ...fetchMoreResultData['searchUsers']['users']
-            ];
-            fetchMoreResultData['searchUsers']['users'] = users;
-            return fetchMoreResultData;
-          },
-        );
-
         if (result.hasException) {
           return Text(result.exception.toString());
         }
@@ -102,6 +81,7 @@ class _SearchResultsListViewState extends State<SearchResultsListView> {
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 36.0),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircularProgressIndicator(),
                 SizedBox(width: 36.0),
@@ -115,43 +95,57 @@ class _SearchResultsListViewState extends State<SearchResultsListView> {
               ],
             ),
           );
-        }
-
-        List users = [];
-        if (!result.data['searchUsers']['ok']) {
-          print("searchUsers Query Failed");
-          return Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Text("검색에 실패했습니다."),
-          );
-        } else if (result.data['searchUsers']['users']?.length == 0) {
-          print("searchUsers Query No Users");
-          return Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              '"${widget.keyword}" 검색 결과 없음',
-              style: TextStyle(fontSize: 16),
-            ),
-          );
         } else {
-          print("searchUsers Query Succeed");
-          users = result.data['searchUsers']['users'];
+          FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
+            variables: {
+              'keyword': widget.keyword,
+              'lastId': result.data['searchUsers']['lastId'],
+            },
+            updateQuery: (previousResultData, fetchMoreResultData) {
+              List users = [
+                ...previousResultData['searchUsers']['users'],
+                ...fetchMoreResultData['searchUsers']['users']
+              ];
+              fetchMoreResultData['searchUsers']['users'] = users;
+              return fetchMoreResultData;
+            },
+          );
+
+          List users = [];
+          if (!result.data['searchUsers']['ok']) {
+            print("searchUsers Query Failed");
+            return Container(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Text("검색에 실패했습니다."),
+            );
+          } else if (result.data['searchUsers']['users'].length == 0) {
+            print("searchUsers Query No Users");
+            return Container(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                '"${widget.keyword}" 검색 결과 없음',
+                style: TextStyle(fontSize: 16),
+              ),
+            );
+          } else {
+            print("searchUsers Query Succeed");
+            users = result.data['searchUsers']['users'];
+            List<Widget> newUserWidgets = [
+              for (var user in users) SearchUserTile(user: user),
+            ];
+
+            return ListView.separated(
+              padding: EdgeInsets.symmetric(vertical: 14),
+              itemCount: newUserWidgets.length,
+              itemBuilder: (context, i) {
+                return newUserWidgets[i];
+              },
+              separatorBuilder: (context, i) {
+                return Divider();
+              },
+            );
+          }
         }
-
-        List<Widget> newUserWidgets = [
-          for (var user in users) SearchUserTile(user: user),
-        ];
-
-        return ListView.separated(
-          padding: EdgeInsets.symmetric(vertical: 14),
-          itemCount: newUserWidgets.length,
-          itemBuilder: (context, i) {
-            return newUserWidgets[i];
-          },
-          separatorBuilder: (context, i) {
-            return Divider();
-          },
-        );
       },
     );
   }
