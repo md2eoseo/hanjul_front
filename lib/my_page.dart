@@ -1,3 +1,6 @@
+import 'dart:html' as html;
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hanjul_front/config.dart';
@@ -26,7 +29,11 @@ class _MyPageState extends State<MyPage> {
       body: ElevatedButton(
         child: Text("로그아웃"),
         onPressed: () async {
-          await Config.storage.delete(key: env['TOKEN']);
+          if (!kIsWeb) {
+            await Config.storage.delete(key: env['TOKEN']);
+          } else {
+            html.window.localStorage.remove('TOKEN');
+          }
           widget.onLoggedOut();
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text('로그아웃!')));

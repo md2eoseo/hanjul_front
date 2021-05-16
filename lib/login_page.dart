@@ -1,3 +1,6 @@
+import 'dart:html' as html;
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -60,9 +63,15 @@ class _LoginPageState extends State<LoginPage> {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text("${resultData['login']['error']}")));
                   } else {
-                    await Config.storage.write(
-                        key: env['TOKEN'],
-                        value: resultData['login'][env['TOKEN']]);
+                    if (!kIsWeb) {
+                      await Config.storage.write(
+                          key: env['TOKEN'],
+                          value: resultData['login'][env['TOKEN']]);
+                    } else {
+                      html.window.localStorage['TOKEN'] =
+                          resultData['login'][env['TOKEN']];
+                    }
+
                     widget.onLoggedIn();
                   }
                 },

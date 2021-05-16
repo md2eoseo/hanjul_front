@@ -1,3 +1,6 @@
+import 'dart:html';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -8,8 +11,14 @@ class Config {
 
   static final HttpLink _httpLink = HttpLink(env['SERVER_URL']);
 
-  static final AuthLink _authLink =
-      AuthLink(getToken: () async => storage.read(key: env['TOKEN']));
+  static final AuthLink _authLink = AuthLink(getToken: () {
+    if (!kIsWeb)
+      return storage.read(key: env['TOKEN']);
+    else
+      return window.localStorage.containsKey('TOKEN')
+          ? window.localStorage['TOKEN']
+          : null;
+  });
 
   static final Link _link = _authLink.concat(_httpLink);
 
