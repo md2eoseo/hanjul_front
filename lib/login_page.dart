@@ -1,10 +1,11 @@
-import 'dart:html' as html;
+// import 'dart:html' as html;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hanjul_front/config.dart';
+import 'package:hanjul_front/sign_up_page.dart';
 
 String loginMutation = """
   mutation login(\$username: String!, \$password: String!) {
@@ -67,10 +68,11 @@ class _LoginPageState extends State<LoginPage> {
                       await Config.storage.write(
                           key: env['TOKEN'],
                           value: resultData['login'][env['TOKEN']]);
-                    } else {
-                      html.window.localStorage['TOKEN'] =
-                          resultData['login'][env['TOKEN']];
                     }
+                    // else {
+                    //   html.window.localStorage['TOKEN'] =
+                    //       resultData['login'][env['TOKEN']];
+                    // }
 
                     widget.onLoggedIn();
                   }
@@ -80,20 +82,39 @@ class _LoginPageState extends State<LoginPage> {
                 RunMutation runMutation,
                 QueryResult result,
               ) {
-                return ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 16)),
-                  child: Text(
-                    '로그인',
-                    style: TextStyle(fontSize: 24),
-                  ),
-                  onPressed: () => {
-                    if (validateAndSave())
-                      {
-                        runMutation(
-                            {'username': _username, 'password': _password})
-                      }
-                  },
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(vertical: 16)),
+                      child: Text(
+                        '로그인',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      onPressed: () => {
+                        if (validateAndSave())
+                          {
+                            runMutation(
+                                {'username': _username, 'password': _password})
+                          }
+                      },
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(vertical: 16)),
+                      child: Text(
+                        '회원가입',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      onPressed: () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SignUpPage()),
+                        )
+                      },
+                    ),
+                  ],
                 );
               },
             ),
