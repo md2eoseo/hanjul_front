@@ -47,7 +47,7 @@ class _TabPageState extends State<TabPage> {
         onTap: _onItemTapped,
         currentIndex: _currentIndex,
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "피드"),
+          BottomNavigationBarItem(icon: Icon(Icons.notes), label: "피드"),
           BottomNavigationBarItem(icon: Icon(Icons.archive), label: "아카이브"),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: "검색"),
           BottomNavigationBarItem(icon: Icon(Icons.circle), label: "MY")
