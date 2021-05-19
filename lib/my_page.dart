@@ -1,4 +1,4 @@
-// import 'dart:html' as html;
+import "package:universal_html/html.dart" as html;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -31,10 +31,9 @@ class _MyPageState extends State<MyPage> {
         onPressed: () async {
           if (!kIsWeb) {
             await Config.storage.delete(key: env['TOKEN']);
+          } else {
+            html.window.localStorage.remove('TOKEN');
           }
-          // else {
-          //   html.window.localStorage.remove('TOKEN');
-          // }
           widget.onLoggedOut();
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text('로그아웃!')));

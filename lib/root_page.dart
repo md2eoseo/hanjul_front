@@ -1,6 +1,6 @@
-// import 'dart:html' as html;
+import "package:universal_html/html.dart";
 
-// import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hanjul_front/config.dart';
@@ -42,10 +42,10 @@ class _RootPageState extends State<RootPage> {
   }
 
   void _checkLoggedInUser() async {
-    // final String token = !kIsWeb
-    //     ? await Config.storage.read(key: env['TOKEN'])
-    //     : html.window.localStorage['TOKEN'];
-    final String token = await Config.storage.read(key: env['TOKEN']);
+    final String token = !kIsWeb
+        ? await Config.storage.read(key: env['TOKEN'])
+        : window.localStorage['TOKEN'];
+    // final String token = await Config.storage.read(key: env['TOKEN']);
     if (token == null) {
       print("토큰이 없습니다!");
     } else {

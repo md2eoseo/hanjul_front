@@ -1,4 +1,4 @@
-// import 'dart:html' as html;
+import "package:universal_html/html.dart" as html;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -68,11 +68,10 @@ class _LoginPageState extends State<LoginPage> {
                       await Config.storage.write(
                           key: env['TOKEN'],
                           value: resultData['login'][env['TOKEN']]);
+                    } else {
+                      html.window.localStorage['TOKEN'] =
+                          resultData['login'][env['TOKEN']];
                     }
-                    // else {
-                    //   html.window.localStorage['TOKEN'] =
-                    //       resultData['login'][env['TOKEN']];
-                    // }
 
                     widget.onLoggedIn();
                   }
