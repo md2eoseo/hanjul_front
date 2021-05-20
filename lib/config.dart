@@ -15,9 +15,7 @@ class Config {
     if (!kIsWeb)
       return storage.read(key: env['TOKEN']);
     else
-      return window.localStorage.containsKey('TOKEN')
-          ? window.localStorage['TOKEN']
-          : null;
+      return window.localStorage['TOKEN'];
   });
 
   static final Link _link = _authLink.concat(_httpLink);

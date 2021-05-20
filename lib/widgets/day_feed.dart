@@ -72,9 +72,7 @@ class _DayFeedState extends State<DayFeed> {
                 {VoidCallback refetch, FetchMore fetchMore}) {
               FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
                 variables: {
-                  'lastId': result.data['seeDayFeed']['lastId'] != null
-                      ? result.data['seeDayFeed']['lastId']
-                      : null,
+                  'lastId': result.data['seeDayFeed']['lastId'],
                   'date': getTodaysDate()
                 },
                 updateQuery: (previousResultData, fetchMoreResultData) {
@@ -146,7 +144,7 @@ class _DayFeedState extends State<DayFeed> {
                   padding: EdgeInsets.symmetric(vertical: 14),
                   itemCount: result.isLoading
                       ? _currentPostWidgets.length + 2
-                      : newPostWidgets.length,
+                      : newPostWidgets.length + 1,
                   itemBuilder: (context, i) {
                     if (i == 0) return TodaysWord(word);
                     return result.isLoading

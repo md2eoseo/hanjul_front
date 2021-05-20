@@ -50,11 +50,7 @@ class _ArchiveState extends State<Archive> {
             builder: (QueryResult result,
                 {VoidCallback refetch, FetchMore fetchMore}) {
               FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
-                variables: {
-                  'lastId': result.data['seeArchive']['lastId'] != null
-                      ? result.data['seeArchive']['lastId']
-                      : null
-                },
+                variables: {'lastId': result.data['seeArchive']['lastId']},
                 updateQuery: (previousResultData, fetchMoreResultData) {
                   List posts = [
                     ...previousResultData['seeArchive']['posts'],

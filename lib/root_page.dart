@@ -45,7 +45,6 @@ class _RootPageState extends State<RootPage> {
     final String token = !kIsWeb
         ? await Config.storage.read(key: env['TOKEN'])
         : window.localStorage['TOKEN'];
-    // final String token = await Config.storage.read(key: env['TOKEN']);
     if (token == null) {
       print("토큰이 없습니다!");
     } else {
