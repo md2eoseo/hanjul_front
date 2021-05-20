@@ -34,14 +34,15 @@ String seeDayFeedQuery = """
 """;
 
 class DayFeed extends StatefulWidget {
-  DayFeed({Key key}) : super(key: key);
+  DayFeed({Key key, this.scrollController}) : super(key: key);
+
+  final scrollController;
 
   @override
   _DayFeedState createState() => _DayFeedState();
 }
 
 class _DayFeedState extends State<DayFeed> {
-  ScrollController _scrollController = new ScrollController();
   List<Widget> _currentPostWidgets;
 
   String getTodaysDate() {
@@ -140,7 +141,7 @@ class _DayFeedState extends State<DayFeed> {
 
               return NotificationListener<ScrollEndNotification>(
                 child: ListView.separated(
-                  controller: _scrollController,
+                  controller: widget.scrollController,
                   padding: EdgeInsets.symmetric(vertical: 14),
                   itemCount: result.isLoading
                       ? _currentPostWidgets.length + 2

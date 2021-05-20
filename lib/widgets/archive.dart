@@ -22,14 +22,15 @@ String seeArchiveQuery = """
 """;
 
 class Archive extends StatefulWidget {
-  Archive({Key key}) : super(key: key);
+  Archive({Key key, this.scrollController}) : super(key: key);
+
+  final scrollController;
 
   @override
   _ArchiveState createState() => _ArchiveState();
 }
 
 class _ArchiveState extends State<Archive> {
-  ScrollController _scrollController = new ScrollController();
   List<Widget> _currentPostWidgets;
 
   @override
@@ -106,7 +107,7 @@ class _ArchiveState extends State<Archive> {
 
               return NotificationListener<ScrollEndNotification>(
                 child: ListView.separated(
-                  controller: _scrollController,
+                  controller: widget.scrollController,
                   padding: EdgeInsets.symmetric(vertical: 14),
                   itemCount: result.isLoading
                       ? _currentPostWidgets.length + 1

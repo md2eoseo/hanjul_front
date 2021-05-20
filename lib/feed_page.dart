@@ -8,6 +8,8 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
+  ScrollController _scrollController = new ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +19,13 @@ class _FeedPageState extends State<FeedPage> {
             Icons.notes,
             size: 48,
           ),
-          onPressed: () {},
+          onPressed: () {
+            _scrollController.animateTo(
+              0,
+              duration: Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+            );
+          },
           padding: EdgeInsets.only(left: 8),
         ),
         title: Text(
@@ -41,7 +49,7 @@ class _FeedPageState extends State<FeedPage> {
           )
         ],
       ),
-      body: DayFeed(),
+      body: DayFeed(scrollController: _scrollController),
     );
   }
 }
