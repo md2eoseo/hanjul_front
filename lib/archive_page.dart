@@ -33,7 +33,6 @@ class _ArchivePageState extends State<ArchivePage> {
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
-            fontFamily: "Nanum Myeongjo",
           ),
         ),
         actions: [

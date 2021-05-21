@@ -28,7 +28,6 @@ class _PostTileState extends State<PostTile> {
               widget.post['text'],
               style: TextStyle(
                 fontSize: 28,
-                fontFamily: "Nanum Myeongjo",
               ),
             ),
             SizedBox(height: 24),
@@ -44,7 +43,6 @@ class _PostTileState extends State<PostTile> {
                         widget.post['author']['username'],
                         style: TextStyle(
                           fontSize: 20,
-                          fontFamily: "Nanum Myeongjo",
                         ),
                       ),
                     ],

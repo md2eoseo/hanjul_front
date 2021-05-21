@@ -21,9 +21,9 @@ class _MyPageState extends State<MyPage> {
         title: Text(
           "MY",
           style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-              fontFamily: "Nanum Myeongjo"),
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: ElevatedButton(

@@ -45,7 +45,6 @@ class _SplashState extends State<Splash> {
               Text(
                 "한줄",
                 style: TextStyle(
-                  fontFamily: "Nanum Myeongjo",
                   fontWeight: FontWeight.bold,
                   fontSize: 36,
                   letterSpacing: 1,

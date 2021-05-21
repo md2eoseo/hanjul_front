@@ -12,7 +12,6 @@ class TodaysWord extends StatelessWidget {
           child: Text(
         "${i + 1}. ${word['meaning'][i]}",
         style: TextStyle(
-          fontFamily: 'Nanum Myeongjo',
           fontSize: 18,
         ),
       ));
@@ -32,7 +31,6 @@ class TodaysWord extends StatelessWidget {
             Text(
               "오늘의 단어",
               style: TextStyle(
-                fontFamily: 'Nanum Myeongjo',
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
               ),
@@ -44,7 +42,6 @@ class TodaysWord extends StatelessWidget {
                 Text(
                   word['word'],
                   style: TextStyle(
-                    fontFamily: 'Nanum Myeongjo',
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                   ),

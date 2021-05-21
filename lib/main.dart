@@ -24,11 +24,12 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: '한줄',
           theme: ThemeData(
-            primarySwatch: Colors.grey,
+            fontFamily: 'Nanum Myeongjo',
+            brightness: Brightness.light,
+            primarySwatch: Colors.blue,
             primaryColor: Colors.grey[300],
-            accentColor: Colors.black,
             snackBarTheme: SnackBarThemeData(
-              backgroundColor: Colors.amber,
+              backgroundColor: Colors.green[300],
               contentTextStyle: TextStyle(fontSize: 20),
             ),
           ),

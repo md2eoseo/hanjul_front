@@ -33,7 +33,6 @@ class _FeedPageState extends State<FeedPage> {
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
-            fontFamily: "Nanum Myeongjo",
           ),
         ),
         actions: [

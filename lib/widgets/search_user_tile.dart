@@ -38,7 +38,6 @@ class _SearchUserTileState extends State<SearchUserTile> {
               widget.user['username'],
               style: TextStyle(
                 fontSize: 24,
-                fontFamily: "Nanum Myeongjo",
               ),
             ),
           ],
