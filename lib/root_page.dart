@@ -1,8 +1,7 @@
-import "package:universal_html/html.dart";
+import "package:universal_html/html.dart" as html;
 
 import 'package:flutter/foundation.dart';
 import "package:flutter/material.dart";
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hanjul_front/config.dart';
 import 'package:hanjul_front/login_page.dart';
 import "package:hanjul_front/tab_page.dart";
@@ -31,8 +30,8 @@ class _RootPageState extends State<RootPage> {
 
   Future<String> _getToken() async {
     final String token = !kIsWeb
-        ? await Config.storage.read(key: env['TOKEN'])
-        : window.localStorage['TOKEN'];
+        ? await Config.storage.read(key: 'TOKEN')
+        : html.window.localStorage['TOKEN'];
     return token;
   }
 
@@ -46,20 +45,32 @@ class _RootPageState extends State<RootPage> {
         print("토큰의 id가 유효하지 않습니다!");
       } else {
         print("로그인 사용자 id : ${decodedToken['id']}");
-        _onLoggedIn();
+        _onLoggedIn(token);
       }
     }
   }
 
-  void _onLoggedIn() {
+  void _onLoggedIn(String token) async {
+    if (!kIsWeb) {
+      await Config.storage.write(key: 'TOKEN', value: token);
+    } else {
+      html.window.localStorage['TOKEN'] = token;
+    }
     setState(() {
       _isLoggedIn = true;
     });
   }
 
-  void _onLoggedOut() {
+  void _onLoggedOut() async {
+    if (!kIsWeb) {
+      await Config.storage.delete(key: 'TOKEN');
+    } else {
+      html.window.localStorage.remove('TOKEN');
+    }
     setState(() {
       _isLoggedIn = false;
     });
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('로그아웃!')));
   }
 }

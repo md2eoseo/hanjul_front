@@ -27,6 +27,25 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            size: 48,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          padding: EdgeInsets.only(left: 8),
+        ),
+        title: Text(
+          "회원가입",
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       body: Container(
         child: Center(
           child: Form(

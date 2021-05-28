@@ -12,14 +12,13 @@ String toggleLikeMutation = """
 """;
 
 class LikeButton extends StatefulWidget {
-  const LikeButton(
+  LikeButton(
       {Key key,
       this.postId,
       this.isLiked,
       this.likesCount,
       this.updateIsLikedCache})
       : super(key: key);
-
   final int postId;
   final bool isLiked;
   final int likesCount;

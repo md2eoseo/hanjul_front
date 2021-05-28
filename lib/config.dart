@@ -1,4 +1,4 @@
-import "package:universal_html/html.dart";
+import "package:universal_html/html.dart" as html;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +13,9 @@ class Config {
 
   static final AuthLink _authLink = AuthLink(getToken: () {
     if (!kIsWeb)
-      return storage.read(key: env['TOKEN']);
+      return storage.read(key: 'TOKEN');
     else
-      return window.localStorage['TOKEN'];
+      return html.window.localStorage['TOKEN'];
   });
 
   static final Link _link = _authLink.concat(_httpLink);

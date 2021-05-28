@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SearchUserTile extends StatefulWidget {
-  const SearchUserTile({
-    Key key,
-    this.user,
-  }) : super(key: key);
-
+  SearchUserTile({Key key, this.user}) : super(key: key);
   final Map user;
 
   @override

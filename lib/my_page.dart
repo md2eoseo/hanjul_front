@@ -1,13 +1,13 @@
-import "package:universal_html/html.dart" as html;
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hanjul_front/widgets/user_profile.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hanjul_front/config.dart';
 
 class MyPage extends StatefulWidget {
-  const MyPage({this.onLoggedOut});
-  final VoidCallback onLoggedOut;
+  MyPage({Key key, this.onLoggedOut, this.me});
+  final onLoggedOut;
+  final me;
 
   @override
   _MyPageState createState() => _MyPageState();
@@ -16,29 +16,30 @@ class MyPage extends StatefulWidget {
 class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "MY",
-          style: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
+    return GraphQLConsumer(
+      builder: (GraphQLClient client) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              widget.me['username'],
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            actions: [
+              IconButton(
+                icon: Icon(Icons.logout, size: 48),
+                onPressed: () async {
+                  widget.onLoggedOut();
+                },
+                padding: EdgeInsets.only(right: 28),
+              )
+            ],
           ),
-        ),
-      ),
-      body: ElevatedButton(
-        child: Text("로그아웃"),
-        onPressed: () async {
-          if (!kIsWeb) {
-            await Config.storage.delete(key: env['TOKEN']);
-          } else {
-            html.window.localStorage.remove('TOKEN');
-          }
-          widget.onLoggedOut();
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text('로그아웃!')));
-        },
-      ),
+          body: UserProfile(user: widget.me),
+        );
+      },
     );
   }
 }

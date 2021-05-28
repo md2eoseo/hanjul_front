@@ -6,6 +6,26 @@ import "package:hanjul_front/feed_page.dart";
 import 'package:hanjul_front/my_page.dart';
 import 'package:hanjul_front/search_page.dart';
 
+String seeMyProfileQuery = """
+query seeMyProfile{
+  seeMyProfile{
+    ok
+    error
+    user{
+      id
+      firstName
+      lastName
+      username
+      bio
+      avatar
+      totalPosts
+      totalFollowers
+      totalFollowing
+    }
+  }
+}
+""";
+
 String searchWordsQuery = """
 query searchWords(\$date: String){
   searchWords(date: \$date) {
@@ -22,7 +42,7 @@ query searchWords(\$date: String){
 """;
 
 class TabPage extends StatefulWidget {
-  const TabPage({this.onLoggedOut});
+  TabPage({Key key, this.onLoggedOut});
   final VoidCallback onLoggedOut;
 
   @override
@@ -30,7 +50,6 @@ class TabPage extends StatefulWidget {
 }
 
 class _TabPageState extends State<TabPage> {
-  List<Widget> _tabOptions;
   int _currentIndex = 0;
   Map<String, dynamic> _word;
 
@@ -53,14 +72,6 @@ class _TabPageState extends State<TabPage> {
       print("searchWords Query Succeed");
       setState(() {
         _word = result.data['searchWords']['words'][0];
-        _tabOptions = <Widget>[
-          FeedPage(word: _word),
-          ArchivePage(word: _word),
-          SearchPage(),
-          MyPage(
-            onLoggedOut: widget.onLoggedOut,
-          ),
-        ];
       });
     }
   }
@@ -68,23 +79,43 @@ class _TabPageState extends State<TabPage> {
   @override
   void initState() {
     getTodaysWord(getTodaysDate());
-    _tabOptions = <Widget>[
-      FeedPage(),
-      ArchivePage(),
-      SearchPage(),
-      MyPage(
-        onLoggedOut: widget.onLoggedOut,
-      ),
-    ];
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _tabOptions,
+      body: Query(
+        options: QueryOptions(
+          document: gql(seeMyProfileQuery),
+        ),
+        builder: (QueryResult result,
+            {VoidCallback refetch, FetchMore fetchMore}) {
+          if (result.hasException) {
+            return Text(result.exception.toString());
+          }
+
+          Map<String, dynamic> _me;
+          if (!result.data['seeMyProfile']['ok']) {
+            print("seeMyProfile Query Failed");
+            return Center(child: Text("유저 정보 불러오는 것에 실패했습니다."));
+          } else {
+            print("seeMyProfile Query Succeed");
+            _me = result.data['seeMyProfile']['user'];
+          }
+
+          return result.isLoading
+              ? Center(child: CircularProgressIndicator())
+              : IndexedStack(
+                  index: _currentIndex,
+                  children: <Widget>[
+                    FeedPage(word: _word),
+                    ArchivePage(word: _word),
+                    SearchPage(),
+                    MyPage(onLoggedOut: widget.onLoggedOut, me: _me),
+                  ],
+                );
+        },
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hanjul_front/widgets/like_button.dart';
 
 class PostTile extends StatefulWidget {
-  const PostTile({
+  PostTile({
     Key key,
     this.post,
     this.updateIsLikedCache,
   }) : super(key: key);
-
   final Map post;
   final Function updateIsLikedCache;
 

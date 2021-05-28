@@ -1,10 +1,6 @@
-import "package:universal_html/html.dart" as html;
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:hanjul_front/config.dart';
 import 'package:hanjul_front/sign_up_page.dart';
 
 String loginMutation = """
@@ -18,8 +14,8 @@ String loginMutation = """
 """;
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({this.onLoggedIn});
-  final VoidCallback onLoggedIn;
+  LoginPage({Key key, this.onLoggedIn});
+  final onLoggedIn;
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -65,16 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("${resultData['login']['error']}")));
                     } else {
-                      if (!kIsWeb) {
-                        await Config.storage.write(
-                            key: env['TOKEN'],
-                            value: resultData['login'][env['TOKEN']]);
-                      } else {
-                        html.window.localStorage['TOKEN'] =
-                            resultData['login'][env['TOKEN']];
-                      }
-
-                      widget.onLoggedIn();
+                      widget.onLoggedIn(resultData['login']['token']);
                     }
                   },
                 ),

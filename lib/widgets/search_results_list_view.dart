@@ -18,11 +18,7 @@ String searchUsersQuery = """
 """;
 
 class SearchResultsListView extends StatefulWidget {
-  const SearchResultsListView({
-    Key key,
-    this.keyword,
-  }) : super(key: key);
-
+  SearchResultsListView({Key key, this.keyword}) : super(key: key);
   final keyword;
 
   @override

@@ -119,7 +119,7 @@ class _DayFeedState extends State<DayFeed> {
                     if (i == 0)
                       return widget.word != null
                           ? TodaysWord(widget.word)
-                          : Text("오늘의 단어 불러오는 중...");
+                          : Center(child: CircularProgressIndicator());
                     return result.isLoading
                         ? ([
                             ..._currentPostWidgets,

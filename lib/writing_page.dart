@@ -13,11 +13,7 @@ String createPostMutation = """
 """;
 
 class WritingPage extends StatefulWidget {
-  const WritingPage({
-    Key key,
-    this.word,
-  }) : super(key: key);
-
+  WritingPage({Key key, this.word}) : super(key: key);
   final Map<String, dynamic> word;
 
   @override
