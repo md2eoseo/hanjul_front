@@ -3,6 +3,9 @@ import 'package:hanjul_front/widgets/archive.dart';
 import 'package:hanjul_front/writing_page.dart';
 
 class ArchivePage extends StatefulWidget {
+  ArchivePage({Key key, this.word}) : super(key: key);
+  final word;
+
   @override
   _ArchivePageState createState() => _ArchivePageState();
 }
@@ -41,7 +44,8 @@ class _ArchivePageState extends State<ArchivePage> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => WritingPage()),
+                MaterialPageRoute(
+                    builder: (context) => WritingPage(word: widget.word)),
               );
             },
             padding: EdgeInsets.only(right: 28),
