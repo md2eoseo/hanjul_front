@@ -32,92 +32,98 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(32, 96, 32, 0),
-      child: Form(
-        key: formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(labelText: '사용자명'),
-              validator: (value) => value.isEmpty ? '사용자명을 입력해주세요.' : null,
-              onSaved: (value) => _username = value,
-              style: TextStyle(fontSize: 24),
-            ),
-            TextFormField(
-              obscureText: true,
-              decoration: InputDecoration(labelText: '비밀번호'),
-              validator: (value) => value.isEmpty ? '비밀번호를 입력해주세요.' : null,
-              onSaved: (value) => _password = value,
-              style: TextStyle(fontSize: 24),
-            ),
-            Mutation(
-              options: MutationOptions(
-                document: gql(loginMutation),
-                update: (GraphQLDataProxy cache, QueryResult result) {
-                  return cache;
-                },
-                onCompleted: (dynamic resultData) async {
-                  if (!resultData['login']['ok']) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("${resultData['login']['error']}")));
-                  } else {
-                    if (!kIsWeb) {
-                      await Config.storage.write(
-                          key: env['TOKEN'],
-                          value: resultData['login'][env['TOKEN']]);
+    return Scaffold(
+      body: Container(
+        padding: EdgeInsets.fromLTRB(32, 96, 32, 0),
+        child: Form(
+          key: formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              TextFormField(
+                decoration: InputDecoration(labelText: '사용자명'),
+                validator: (value) => value.isEmpty ? '사용자명을 입력해주세요.' : null,
+                onSaved: (value) => _username = value,
+                style: TextStyle(fontSize: 24),
+              ),
+              TextFormField(
+                obscureText: true,
+                decoration: InputDecoration(labelText: '비밀번호'),
+                validator: (value) => value.isEmpty ? '비밀번호를 입력해주세요.' : null,
+                onSaved: (value) => _password = value,
+                style: TextStyle(fontSize: 24),
+              ),
+              Mutation(
+                options: MutationOptions(
+                  document: gql(loginMutation),
+                  update: (GraphQLDataProxy cache, QueryResult result) {
+                    return cache;
+                  },
+                  onCompleted: (dynamic resultData) async {
+                    if (!resultData['login']['ok']) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("${resultData['login']['error']}")));
                     } else {
-                      html.window.localStorage['TOKEN'] =
-                          resultData['login'][env['TOKEN']];
-                    }
+                      if (!kIsWeb) {
+                        await Config.storage.write(
+                            key: env['TOKEN'],
+                            value: resultData['login'][env['TOKEN']]);
+                      } else {
+                        html.window.localStorage['TOKEN'] =
+                            resultData['login'][env['TOKEN']];
+                      }
 
-                    widget.onLoggedIn();
-                  }
+                      widget.onLoggedIn();
+                    }
+                  },
+                ),
+                builder: (
+                  RunMutation runMutation,
+                  QueryResult result,
+                ) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 16)),
+                        child: Text(
+                          '로그인',
+                          style: TextStyle(fontSize: 24),
+                        ),
+                        onPressed: () => {
+                          if (validateAndSave())
+                            {
+                              runMutation({
+                                'username': _username,
+                                'password': _password
+                              })
+                            }
+                        },
+                      ),
+                      Divider(height: 28, thickness: 3),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 16)),
+                        child: Text(
+                          '회원가입',
+                          style: TextStyle(fontSize: 24),
+                        ),
+                        onPressed: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignUpPage()),
+                          )
+                        },
+                      ),
+                    ],
+                  );
                 },
               ),
-              builder: (
-                RunMutation runMutation,
-                QueryResult result,
-              ) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: 16)),
-                      child: Text(
-                        '로그인',
-                        style: TextStyle(fontSize: 24),
-                      ),
-                      onPressed: () => {
-                        if (validateAndSave())
-                          {
-                            runMutation(
-                                {'username': _username, 'password': _password})
-                          }
-                      },
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: 16)),
-                      child: Text(
-                        '회원가입',
-                        style: TextStyle(fontSize: 24),
-                      ),
-                      onPressed: () => {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => SignUpPage()),
-                        )
-                      },
-                    ),
-                  ],
-                );
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

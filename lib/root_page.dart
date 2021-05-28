@@ -22,18 +22,6 @@ class _RootPageState extends State<RootPage> {
     super.initState();
   }
 
-  void _onLoggedIn() {
-    setState(() {
-      _isLoggedIn = true;
-    });
-  }
-
-  void _onLoggedOut() {
-    setState(() {
-      _isLoggedIn = false;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return _isLoggedIn
@@ -41,10 +29,15 @@ class _RootPageState extends State<RootPage> {
         : LoginPage(onLoggedIn: _onLoggedIn);
   }
 
-  void _checkLoggedInUser() async {
+  Future<String> _getToken() async {
     final String token = !kIsWeb
         ? await Config.storage.read(key: env['TOKEN'])
         : window.localStorage['TOKEN'];
+    return token;
+  }
+
+  void _checkLoggedInUser() async {
+    final String token = await _getToken();
     if (token == null) {
       print("토큰이 없습니다!");
     } else {
@@ -56,5 +49,17 @@ class _RootPageState extends State<RootPage> {
         _onLoggedIn();
       }
     }
+  }
+
+  void _onLoggedIn() {
+    setState(() {
+      _isLoggedIn = true;
+    });
+  }
+
+  void _onLoggedOut() {
+    setState(() {
+      _isLoggedIn = false;
+    });
   }
 }

@@ -22,9 +22,7 @@ class _SplashState extends State<Splash> {
   onDoneLoading() async {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => Scaffold(
-          body: RootPage(),
-        ),
+        builder: (context) => RootPage(),
       ),
     );
   }
