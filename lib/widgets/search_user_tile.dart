@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hanjul_front/widgets/user_avatar.dart';
 
 class SearchUserTile extends StatefulWidget {
   SearchUserTile({Key key, this.user}) : super(key: key);
@@ -16,20 +17,11 @@ class _SearchUserTileState extends State<SearchUserTile> {
         padding: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
         child: Row(
           children: [
-            widget.user['avatar'] == null
-                ? CircleAvatar(
-                    child: LayoutBuilder(
-                      builder: (context, constraint) {
-                        return Icon(
-                          Icons.account_circle,
-                          size: constraint.biggest.height,
-                        );
-                      },
-                    ),
-                  )
-                : CircleAvatar(
-                    backgroundImage: NetworkImage(widget.user['avatar'])),
-            SizedBox(width: 32),
+            UserAvatar(
+              avatar: widget.user['avatar'],
+              size: 36.0,
+            ),
+            SizedBox(width: 24),
             Text(
               widget.user['username'],
               style: TextStyle(

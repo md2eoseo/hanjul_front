@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hanjul_front/root_page.dart';
 
@@ -37,10 +38,15 @@ class _SplashState extends State<Splash> {
               SizedBox(
                 width: 160,
                 height: 160,
-                child: Image(
-                  fit: BoxFit.fill,
-                  image: AssetImage('assets/logo.png'),
-                ),
+                child: kIsWeb
+                    ? Image.asset(
+                        'logo.png',
+                        fit: BoxFit.fill,
+                      )
+                    : Image(
+                        fit: BoxFit.fill,
+                        image: AssetImage('assets/logo.png'),
+                      ),
               ),
               Text(
                 "한줄",
