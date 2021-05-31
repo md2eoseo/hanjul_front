@@ -17,9 +17,8 @@ jobs:
       - run: flutter config --enable-web
       - run: flutter pub get
       - run: flutter build web --release
-        working-directory: ./hanjul_front
       - run: |
-          cd ./hanjul_front/build/web
+          cd build/web
           git init
           git config --global user.email md2eoseo@gmail.com
           git config --global user.name md2eoseo
