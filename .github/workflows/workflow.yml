@@ -19,7 +19,7 @@ jobs:
       - run: flutter build web --release
         # 1. change path which exist lib/main.dart
         working-directory: ../../lib
-      - run: 
+      - run: |
           # 2. change path to [existed lib/main.dart path]/build/web
           cd ../../lib/build/web
           git init
