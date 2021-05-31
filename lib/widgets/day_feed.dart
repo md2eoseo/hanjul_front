@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hanjul_front/config.dart';
 import 'package:hanjul_front/widgets/post_tile.dart';
 import 'package:hanjul_front/widgets/todays_word.dart';
 
 String seeDayFeedQuery = """
-  query seeDayFeed(\$lastId: Int) {
-    seeDayFeed(lastId: \$lastId) {
+  query seeDayFeed(\$date: String!, \$lastId: Int) {
+    seeDayFeed(date: \$date, lastId: \$lastId) {
       ok
       error
       posts {
@@ -48,12 +49,15 @@ class _DayFeedState extends State<DayFeed> {
         return Container(
           child: Query(
             options: QueryOptions(
-              document: gql(seeDayFeedQuery),
-            ),
+                document: gql(seeDayFeedQuery),
+                variables: {'date': getTodaysDate()}),
             builder: (QueryResult result,
                 {VoidCallback refetch, FetchMore fetchMore}) {
               FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
-                variables: {'lastId': result.data['seeDayFeed']['lastId']},
+                variables: {
+                  'date': getTodaysDate(),
+                  'lastId': result.data['seeDayFeed']['lastId']
+                },
                 updateQuery: (previousResultData, fetchMoreResultData) {
                   List posts = [
                     ...previousResultData['seeDayFeed']['posts'],

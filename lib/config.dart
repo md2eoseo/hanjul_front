@@ -6,6 +6,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
+String getTodaysDate() {
+  var now = DateTime.now();
+  var formattedDate = "";
+  formattedDate += now.year.toString().substring(2);
+  formattedDate += now.month.toString().padLeft(2, '0');
+  formattedDate += now.day.toString().padLeft(2, '0');
+  return formattedDate;
+}
+
 class Config {
   static final storage = new FlutterSecureStorage();
 
