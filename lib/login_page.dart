@@ -39,16 +39,24 @@ class _LoginPageState extends State<LoginPage> {
             children: <Widget>[
               TextFormField(
                 decoration: InputDecoration(labelText: '사용자명'),
-                validator: (value) => value.isEmpty ? '사용자명을 입력해주세요.' : null,
+                validator: (value) {
+                  final trimmedValue = value.trim();
+                  return trimmedValue.isEmpty ? '사용자명을 입력해주세요.' : null;
+                },
                 onSaved: (value) => _username = value,
                 style: TextStyle(fontSize: 24),
+                textInputAction: TextInputAction.next,
               ),
               TextFormField(
                 obscureText: true,
                 decoration: InputDecoration(labelText: '비밀번호'),
-                validator: (value) => value.isEmpty ? '비밀번호를 입력해주세요.' : null,
+                validator: (value) {
+                  final trimmedValue = value.trim();
+                  return trimmedValue.isEmpty ? '비밀번호를 입력해주세요.' : null;
+                },
                 onSaved: (value) => _password = value,
                 style: TextStyle(fontSize: 24),
+                textInputAction: TextInputAction.done,
               ),
               Mutation(
                 options: MutationOptions(
@@ -62,6 +70,8 @@ class _LoginPageState extends State<LoginPage> {
                           content: Text("${resultData['login']['error']}")));
                     } else {
                       widget.onLoggedIn(resultData['login']['token']);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('$_username님 환영합니다!')));
                     }
                   },
                 ),
@@ -76,18 +86,20 @@ class _LoginPageState extends State<LoginPage> {
                         style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.symmetric(vertical: 16)),
                         child: Text(
-                          '로그인',
+                          result.isLoading ? '로그인 중...' : '로그인',
                           style: TextStyle(fontSize: 24),
                         ),
-                        onPressed: () => {
-                          if (validateAndSave())
-                            {
-                              runMutation({
-                                'username': _username,
-                                'password': _password
-                              })
-                            }
-                        },
+                        onPressed: result.isLoading
+                            ? null
+                            : () => {
+                                  if (validateAndSave())
+                                    {
+                                      runMutation({
+                                        'username': _username,
+                                        'password': _password
+                                      })
+                                    }
+                                },
                       ),
                       Divider(height: 28, thickness: 3),
                       ElevatedButton(
@@ -120,8 +132,6 @@ class _LoginPageState extends State<LoginPage> {
     final formState = formKey.currentState;
     if (formState.validate()) {
       formState.save();
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('$_username님으로 로그인하는 중...')));
       return true;
     }
     return false;

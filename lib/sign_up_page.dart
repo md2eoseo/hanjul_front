@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 String createAccountMutation = """
@@ -47,6 +48,7 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
       body: Container(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         child: Center(
           child: Form(
             key: formKey,
@@ -56,34 +58,60 @@ class _SignUpPageState extends State<SignUpPage> {
               children: <Widget>[
                 TextFormField(
                   decoration: InputDecoration(labelText: '성'),
-                  validator: (value) => value.isEmpty ? '성을 입력해주세요.' : null,
-                  onSaved: (value) => _lastName = value,
+                  validator: (value) {
+                    final trimmedValue = value.trim();
+                    return trimmedValue.isEmpty ? '성을 입력해주세요.' : null;
+                  },
+                  onSaved: (value) => _lastName = value.trim(),
                   style: TextStyle(fontSize: 24),
+                  textInputAction: TextInputAction.next,
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: '이름'),
-                  validator: (value) => value.isEmpty ? '이름을 입력해주세요.' : null,
-                  onSaved: (value) => _firstName = value,
+                  validator: (value) {
+                    final trimmedValue = value.trim();
+                    return trimmedValue.isEmpty ? '이름을 입력해주세요.' : null;
+                  },
+                  onSaved: (value) => _firstName = value.trim(),
                   style: TextStyle(fontSize: 24),
+                  textInputAction: TextInputAction.next,
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: '이메일'),
-                  validator: (value) => value.isEmpty ? '이메일을 입력해주세요.' : null,
-                  onSaved: (value) => _email = value,
+                  validator: (value) {
+                    final trimmedValue = value.trim();
+                    if (trimmedValue.isEmpty) return '이메일을 입력해주세요.';
+                    Pattern pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+                    RegExp regex = new RegExp(pattern);
+                    return regex.hasMatch(trimmedValue)
+                        ? null
+                        : '이메일 형식으로 입력해주세요.';
+                  },
+                  onSaved: (value) => _email = value.trim(),
                   style: TextStyle(fontSize: 24),
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: '사용자명'),
-                  validator: (value) => value.isEmpty ? '사용자명을 입력해주세요.' : null,
-                  onSaved: (value) => _username = value,
+                  validator: (value) {
+                    final trimmedValue = value.trim();
+                    return trimmedValue.isEmpty ? '사용자명을 입력해주세요.' : null;
+                  },
+                  onSaved: (value) => _username = value.trim(),
                   style: TextStyle(fontSize: 24),
+                  textInputAction: TextInputAction.next,
                 ),
                 TextFormField(
                   obscureText: true,
                   decoration: InputDecoration(labelText: '비밀번호'),
-                  validator: (value) => value.isEmpty ? '비밀번호를 입력해주세요.' : null,
-                  onSaved: (value) => _password = value,
+                  validator: (value) {
+                    final trimmedValue = value.trim();
+                    return trimmedValue.isEmpty ? '비밀번호를 입력해주세요.' : null;
+                  },
+                  onSaved: (value) => _password = value.trim(),
                   style: TextStyle(fontSize: 24),
+                  textInputAction: TextInputAction.done,
                 ),
                 Mutation(
                   options: MutationOptions(
@@ -112,21 +140,23 @@ class _SignUpPageState extends State<SignUpPage> {
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(vertical: 16)),
                       child: Text(
-                        '회원가입',
+                        result.isLoading ? '회원가입 중...' : '회원가입',
                         style: TextStyle(fontSize: 24),
                       ),
-                      onPressed: () => {
-                        if (validateAndSave())
-                          {
-                            runMutation({
-                              'lastName': _lastName,
-                              'firstName': _firstName,
-                              'email': _email,
-                              'username': _username,
-                              'password': _password
-                            })
-                          }
-                      },
+                      onPressed: result.isLoading
+                          ? null
+                          : () => {
+                                if (validateAndSave())
+                                  {
+                                    runMutation({
+                                      'lastName': _lastName,
+                                      'firstName': _firstName,
+                                      'email': _email,
+                                      'username': _username,
+                                      'password': _password
+                                    })
+                                  }
+                              },
                     );
                   },
                 ),
@@ -142,8 +172,6 @@ class _SignUpPageState extends State<SignUpPage> {
     final formState = formKey.currentState;
     if (formState.validate()) {
       formState.save();
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('$_username님으로 회원가입하는 중...')));
       return true;
     }
     return false;

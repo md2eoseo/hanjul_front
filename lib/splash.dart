@@ -35,11 +35,13 @@ class _SplashState extends State<Splash> {
           child: Column(
             children: [
               SizedBox(
-                width: 100,
-                height: 100,
-                child: Icon(Icons.notes, size: 100),
+                width: 160,
+                height: 160,
+                child: Image(
+                  fit: BoxFit.fill,
+                  image: AssetImage('assets/logo.png'),
+                ),
               ),
-              SizedBox(height: 10),
               Text(
                 "한줄",
                 style: TextStyle(
