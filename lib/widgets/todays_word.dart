@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TodaysWord extends StatelessWidget {
-  TodaysWord(this.word);
-
-  final Map<String, dynamic> word;
+  TodaysWord({Key key, this.word}) : super(key: key);
+  final word;
 
   List<Widget> getMeaningWidgets() {
     var widgets = <Widget>[];
@@ -22,40 +21,36 @@ class TodaysWord extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              "오늘의 단어",
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10),
-            Row(
-              children: [
-                SizedBox(width: 20),
+    return word != null
+        ? Container(
+            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
                 Text(
-                  word['word'],
+                  '오늘의 단어는 "${word['word']}"',
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: getMeaningWidgets(),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    SizedBox(width: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: getMeaningWidgets(),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
-      ),
-    );
+          )
+        : SizedBox(
+            height: 120,
+            child: Center(child: Text("오늘의 단어를 불러오지 못했습니다.")),
+          );
   }
 }

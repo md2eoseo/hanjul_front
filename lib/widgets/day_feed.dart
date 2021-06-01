@@ -48,9 +48,7 @@ class _DayFeedState extends State<DayFeed> {
         return Container(
           child: Column(
             children: [
-              widget.word != null
-                  ? TodaysWord(widget.word)
-                  : Center(child: Text("오늘의 단어를 불러오지 못했습니다.")),
+              TodaysWord(word: widget.word),
               Query(
                 options: QueryOptions(
                     document: gql(seeDayFeedQuery),

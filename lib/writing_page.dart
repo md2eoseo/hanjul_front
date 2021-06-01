@@ -101,7 +101,7 @@ class _WritingPageState extends State<WritingPage> {
         child: Column(
           children: <Widget>[
             SizedBox(height: 24),
-            TodaysWord(widget.word),
+            TodaysWord(word: widget.word),
             SizedBox(height: 24),
             Card(
               child: Padding(
