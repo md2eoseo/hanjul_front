@@ -76,15 +76,12 @@ class _UserProfileState extends State<UserProfile> {
                   return Text(result.exception.toString());
                 }
 
-                Map<String, dynamic> user;
                 if (result.isLoading) {
                   return Center(child: CircularProgressIndicator());
                 } else if (!result.data['seeProfile']['ok']) {
-                  print("seeProfile Query Failed");
-                  return Center(child: Text("유저 정보 불러오는 것에 실패했습니다."));
+                  return Center(child: Text("유저 프로필 불러오기에 실패했습니다."));
                 } else {
-                  print("seeProfile Query Succeed");
-                  user = result.data['seeProfile']['user'];
+                  Map<String, dynamic> user = result.data['seeProfile']['user'];
                   return Column(
                     children: [
                       UserProfileTopInfo(

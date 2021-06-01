@@ -61,9 +61,8 @@ class _TabPageState extends State<TabPage> {
         document: gql(searchWordsQuery), variables: {'date': date}));
 
     if (!result.data['searchWords']['ok']) {
-      print("searchWords Query Failed");
+      print("오늘의 단어 불러오기 실패!");
     } else {
-      print("searchWords Query Succeed");
       setState(() {
         _word = result.data['searchWords']['words'][0];
       });
@@ -89,26 +88,22 @@ class _TabPageState extends State<TabPage> {
             return Text(result.exception.toString());
           }
 
-          Map<String, dynamic> _me;
-          if (!result.data['seeMyProfile']['ok']) {
-            print("seeMyProfile Query Failed");
-            return Center(child: Text("유저 정보 불러오는 것에 실패했습니다."));
+          if (result.isLoading) {
+            return Center(child: CircularProgressIndicator());
+          } else if (!result.data['seeMyProfile']['ok']) {
+            return Center(child: Text("유저 프로필 불러오기에 실패했습니다."));
           } else {
-            print("seeMyProfile Query Succeed");
-            _me = result.data['seeMyProfile']['user'];
+            Map<String, dynamic> me = result.data['seeMyProfile']['user'];
+            return IndexedStack(
+              index: _currentIndex,
+              children: <Widget>[
+                FeedPage(word: _word),
+                ArchivePage(word: _word),
+                SearchPage(),
+                MyPage(onLoggedOut: widget.onLoggedOut, me: me),
+              ],
+            );
           }
-
-          return result.isLoading
-              ? Center(child: CircularProgressIndicator())
-              : IndexedStack(
-                  index: _currentIndex,
-                  children: <Widget>[
-                    FeedPage(word: _word),
-                    ArchivePage(word: _word),
-                    SearchPage(),
-                    MyPage(onLoggedOut: widget.onLoggedOut, me: _me),
-                  ],
-                );
         },
       ),
       bottomNavigationBar: BottomNavigationBar(

@@ -30,9 +30,11 @@ class _RootPageState extends State<RootPage> {
 
   void _checkLoggedInUser() async {
     final String token = await _getToken();
-    final Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
-    if (token != null && decodedToken['id'] != null) {
-      _onLoggedIn(token);
+    if (token != null) {
+      final Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+      if (decodedToken['id'] != null) {
+        _onLoggedIn(token);
+      }
     }
   }
 

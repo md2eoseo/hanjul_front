@@ -23,7 +23,6 @@ String seeArchiveQuery = """
 
 class Archive extends StatefulWidget {
   Archive({Key key, this.scrollController}) : super(key: key);
-
   final scrollController;
 
   @override
@@ -50,18 +49,6 @@ class _ArchiveState extends State<Archive> {
             ),
             builder: (QueryResult result,
                 {VoidCallback refetch, FetchMore fetchMore}) {
-              FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
-                variables: {'lastId': result.data['seeArchive']['lastId']},
-                updateQuery: (previousResultData, fetchMoreResultData) {
-                  List posts = [
-                    ...previousResultData['seeArchive']['posts'],
-                    ...fetchMoreResultData['seeArchive']['posts']
-                  ];
-                  fetchMoreResultData['seeArchive']['posts'] = posts;
-                  return fetchMoreResultData;
-                },
-              );
-
               Function _updateIsLikedCache = (int postId) {
                 final fragmentDoc = gql(
                   '''
@@ -91,65 +78,75 @@ class _ArchiveState extends State<Archive> {
                 return Text(result.exception.toString());
               }
 
-              List posts = [];
-              if (!result.data['seeArchive']['ok']) {
-                print("seeArchive Query Failed");
+              if (result.isLoading) {
+                return Center(child: CircularProgressIndicator());
+              } else if (!result.data['seeArchive']['ok']) {
                 return Center(child: Text("글 불러오기에 실패했습니다."));
               } else {
-                print("seeArchive Query Succeed");
-                posts = result.data['seeArchive']['posts'];
-              }
-
-              List<Widget> newPostWidgets = [
-                for (var post in posts)
-                  PostTile(post: post, updateIsLikedCache: _updateIsLikedCache),
-              ];
-
-              return NotificationListener<ScrollEndNotification>(
-                child: ListView.separated(
-                  controller: widget.scrollController,
-                  padding: EdgeInsets.symmetric(vertical: 14),
-                  itemCount: result.isLoading
-                      ? _currentPostWidgets.length + 1
-                      : newPostWidgets.length,
-                  itemBuilder: (context, i) {
-                    return result.isLoading
-                        ? ([
-                            ..._currentPostWidgets,
-                            ListTile(
-                              title: Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    CircularProgressIndicator(),
-                                  ],
+                FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
+                  variables: {'lastId': result.data['seeArchive']['lastId']},
+                  updateQuery: (previousResultData, fetchMoreResultData) {
+                    List posts = [
+                      ...previousResultData['seeArchive']['posts'],
+                      ...fetchMoreResultData['seeArchive']['posts']
+                    ];
+                    fetchMoreResultData['seeArchive']['posts'] = posts;
+                    return fetchMoreResultData;
+                  },
+                );
+                List posts = result.data['seeArchive']['posts'];
+                List<Widget> newPostWidgets = [
+                  for (var post in posts)
+                    PostTile(
+                        post: post, updateIsLikedCache: _updateIsLikedCache),
+                ];
+                return NotificationListener<ScrollEndNotification>(
+                  child: ListView.separated(
+                    controller: widget.scrollController,
+                    padding: EdgeInsets.symmetric(vertical: 14),
+                    itemCount: result.isLoading
+                        ? _currentPostWidgets.length + 1
+                        : newPostWidgets.length,
+                    itemBuilder: (context, i) {
+                      return result.isLoading
+                          ? ([
+                              ..._currentPostWidgets,
+                              ListTile(
+                                title: Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      CircularProgressIndicator(),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ])[i]
-                        : newPostWidgets[i];
-                  },
-                  separatorBuilder: (context, i) {
-                    return Divider();
-                  },
-                ),
-                onNotification: (notification) {
-                  if (notification.metrics.maxScrollExtent - 10 <
-                      notification.metrics.pixels) {
-                    setState(() {
-                      _currentPostWidgets = newPostWidgets;
-                    });
-                    if (fetchMoreOpts.variables['lastId'] != null) {
-                      print("seeArchive Query fetchMore");
-                      fetchMore(fetchMoreOpts);
-                    } else {
-                      print("infinite scroll end");
+                            ])[i]
+                          : newPostWidgets[i];
+                    },
+                    separatorBuilder: (context, i) {
+                      return Divider();
+                    },
+                  ),
+                  onNotification: (notification) {
+                    if (notification.metrics.maxScrollExtent - 10 <
+                        notification.metrics.pixels) {
+                      setState(() {
+                        _currentPostWidgets = newPostWidgets;
+                      });
+                      if (fetchMoreOpts.variables['lastId'] != null) {
+                        print("seeArchive Query fetchMore");
+                        fetchMore(fetchMoreOpts);
+                      } else {
+                        print("infinite scroll end");
+                      }
                     }
-                  }
-                  return true;
-                },
-              );
+                    return true;
+                  },
+                );
+              }
             },
           ),
         );

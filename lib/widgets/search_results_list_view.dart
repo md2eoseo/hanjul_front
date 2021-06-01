@@ -38,7 +38,7 @@ class _SearchResultsListViewState extends State<SearchResultsListView> {
               return Container(
                 padding: EdgeInsets.symmetric(horizontal: 36.0),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CircularProgressIndicator(),
                     SizedBox(width: 36.0),
@@ -53,7 +53,7 @@ class _SearchResultsListViewState extends State<SearchResultsListView> {
                 ),
               );
             default:
-              return Expanded(child: snapshot.data);
+              return Flexible(child: snapshot.data);
           }
         },
       ),
@@ -77,7 +77,7 @@ class _SearchResultsListViewState extends State<SearchResultsListView> {
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 36.0),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CircularProgressIndicator(),
                 SizedBox(width: 36.0),
@@ -89,6 +89,19 @@ class _SearchResultsListViewState extends State<SearchResultsListView> {
                   ),
                 ),
               ],
+            ),
+          );
+        } else if (!result.data['searchUsers']['ok']) {
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Text("검색에 실패했습니다."),
+          );
+        } else if (result.data['searchUsers']['users'].length == 0) {
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              '"${widget.keyword}" 검색 결과 없음',
+              style: TextStyle(fontSize: 16),
             ),
           );
         } else {
@@ -107,40 +120,20 @@ class _SearchResultsListViewState extends State<SearchResultsListView> {
             },
           );
 
-          List users = [];
-          if (!result.data['searchUsers']['ok']) {
-            print("searchUsers Query Failed");
-            return Container(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text("검색에 실패했습니다."),
-            );
-          } else if (result.data['searchUsers']['users'].length == 0) {
-            print("searchUsers Query No Users");
-            return Container(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                '"${widget.keyword}" 검색 결과 없음',
-                style: TextStyle(fontSize: 16),
-              ),
-            );
-          } else {
-            print("searchUsers Query Succeed");
-            users = result.data['searchUsers']['users'];
-            List<Widget> newUserWidgets = [
-              for (var user in users) SearchUserTile(user: user),
-            ];
-
-            return ListView.separated(
-              padding: EdgeInsets.symmetric(vertical: 14),
-              itemCount: newUserWidgets.length,
-              itemBuilder: (context, i) {
-                return newUserWidgets[i];
-              },
-              separatorBuilder: (context, i) {
-                return Divider();
-              },
-            );
-          }
+          List users = result.data['searchUsers']['users'];
+          List<Widget> newUserWidgets = [
+            for (var user in users) SearchUserTile(user: user),
+          ];
+          return ListView.separated(
+            padding: EdgeInsets.only(top: 8),
+            itemCount: newUserWidgets.length,
+            itemBuilder: (context, i) {
+              return newUserWidgets[i];
+            },
+            separatorBuilder: (context, i) {
+              return Divider();
+            },
+          );
         }
       },
     );

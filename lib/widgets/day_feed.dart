@@ -53,21 +53,6 @@ class _DayFeedState extends State<DayFeed> {
                 variables: {'date': getTodaysDate()}),
             builder: (QueryResult result,
                 {VoidCallback refetch, FetchMore fetchMore}) {
-              FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
-                variables: {
-                  'date': getTodaysDate(),
-                  'lastId': result.data['seeDayFeed']['lastId']
-                },
-                updateQuery: (previousResultData, fetchMoreResultData) {
-                  List posts = [
-                    ...previousResultData['seeDayFeed']['posts'],
-                    ...fetchMoreResultData['seeDayFeed']['posts']
-                  ];
-                  fetchMoreResultData['seeDayFeed']['posts'] = posts;
-                  return fetchMoreResultData;
-                },
-              );
-
               Function _updateIsLikedCache = (int postId) {
                 final fragmentDoc = gql(
                   '''
@@ -97,70 +82,82 @@ class _DayFeedState extends State<DayFeed> {
                 return Text(result.exception.toString());
               }
 
-              List posts = [];
-
-              if (!result.data['seeDayFeed']['ok']) {
-                print("seeDayFeed Query Failed");
+              if (result.isLoading) {
+                return Center(child: CircularProgressIndicator());
+              } else if (!result.data['seeDayFeed']['ok']) {
                 return Center(child: Text("글 불러오기에 실패했습니다."));
               } else {
-                print("seeDayFeed Query Succeed");
-                posts = result.data['seeDayFeed']['posts'];
-              }
-
-              List<Widget> newPostWidgets = [
-                for (var post in posts)
-                  PostTile(post: post, updateIsLikedCache: _updateIsLikedCache),
-              ];
-
-              return NotificationListener<ScrollEndNotification>(
-                child: ListView.separated(
-                  controller: widget.scrollController,
-                  padding: EdgeInsets.symmetric(vertical: 14),
-                  itemCount: result.isLoading
-                      ? _currentPostWidgets.length + 2
-                      : newPostWidgets.length + 1,
-                  itemBuilder: (context, i) {
-                    if (i == 0)
-                      return widget.word != null
-                          ? TodaysWord(widget.word)
-                          : Center(child: CircularProgressIndicator());
-                    return result.isLoading
-                        ? ([
-                            ..._currentPostWidgets,
-                            ListTile(
-                              title: Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    CircularProgressIndicator(),
-                                  ],
+                FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
+                  variables: {
+                    'date': getTodaysDate(),
+                    'lastId': result.data['seeDayFeed']['lastId']
+                  },
+                  updateQuery: (previousResultData, fetchMoreResultData) {
+                    List posts = [
+                      ...previousResultData['seeDayFeed']['posts'],
+                      ...fetchMoreResultData['seeDayFeed']['posts']
+                    ];
+                    fetchMoreResultData['seeDayFeed']['posts'] = posts;
+                    return fetchMoreResultData;
+                  },
+                );
+                List posts = result.data['seeDayFeed']['posts'];
+                List<Widget> newPostWidgets = [
+                  for (var post in posts)
+                    PostTile(
+                        post: post, updateIsLikedCache: _updateIsLikedCache),
+                ];
+                return NotificationListener<ScrollEndNotification>(
+                  child: ListView.separated(
+                    controller: widget.scrollController,
+                    padding: EdgeInsets.symmetric(vertical: 14),
+                    itemCount: result.isLoading
+                        ? _currentPostWidgets.length + 2
+                        : newPostWidgets.length + 1,
+                    itemBuilder: (context, i) {
+                      if (i == 0)
+                        return widget.word != null
+                            ? TodaysWord(widget.word)
+                            : Center(child: Text("오늘의 단어를 불러오지 못했습니다."));
+                      return result.isLoading
+                          ? ([
+                              ..._currentPostWidgets,
+                              ListTile(
+                                title: Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      CircularProgressIndicator(),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ])[i - 1]
-                        : newPostWidgets[i - 1];
-                  },
-                  separatorBuilder: (context, i) {
-                    return Divider();
-                  },
-                ),
-                onNotification: (notification) {
-                  if (notification.metrics.maxScrollExtent - 10 <
-                      notification.metrics.pixels) {
-                    setState(() {
-                      _currentPostWidgets = newPostWidgets;
-                    });
-                    if (fetchMoreOpts.variables['lastId'] != null) {
-                      print("seeDayFeed Query fetchMore");
-                      fetchMore(fetchMoreOpts);
-                    } else {
-                      print("infinite scroll end");
+                            ])[i - 1]
+                          : newPostWidgets[i - 1];
+                    },
+                    separatorBuilder: (context, i) {
+                      return Divider();
+                    },
+                  ),
+                  onNotification: (notification) {
+                    if (notification.metrics.maxScrollExtent - 10 <
+                        notification.metrics.pixels) {
+                      setState(() {
+                        _currentPostWidgets = newPostWidgets;
+                      });
+                      if (fetchMoreOpts.variables['lastId'] != null) {
+                        print("seeDayFeed Query fetchMore");
+                        fetchMore(fetchMoreOpts);
+                      } else {
+                        print("infinite scroll end");
+                      }
                     }
-                  }
-                  return true;
-                },
-              );
+                    return true;
+                  },
+                );
+              }
             },
           ),
         );
