@@ -3,10 +3,33 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hanjul_front/widgets/user_profile_top_info.dart';
 
+String seeProfileQuery = """
+  query seeProfile(\$username: String!) {
+    seeProfile(username: \$username) {
+      ok
+      error
+      user {
+        id
+        firstName
+        lastName
+        username
+        bio
+        avatar
+        totalPosts
+        totalFollowers
+        totalFollowing
+        isMe
+        isFollowers
+        isFollowing
+      }
+    }
+  }
+""";
+
 class UserProfile extends StatefulWidget {
-  UserProfile({Key key, this.onLoggedOut, this.user}) : super(key: key);
+  UserProfile({Key key, this.username, this.onLoggedOut}) : super(key: key);
+  final String username;
   final onLoggedOut;
-  final Map<String, dynamic> user;
 
   @override
   _UserProfileState createState() => _UserProfileState();
@@ -22,42 +45,65 @@ class _UserProfileState extends State<UserProfile> {
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              widget.user['username'],
+              widget.username,
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
               ),
             ),
             actions: [
-              IconButton(
-                icon: Icon(Icons.logout, size: 48),
-                onPressed: () async {
-                  widget.onLoggedOut();
-                },
-                padding: EdgeInsets.only(right: 28),
-              )
+              if (widget.onLoggedOut != null)
+                IconButton(
+                  icon: Icon(Icons.logout, size: 48),
+                  onPressed: () async {
+                    widget.onLoggedOut();
+                  },
+                  padding: EdgeInsets.only(right: 28),
+                )
             ],
           ),
           body: Container(
             padding: EdgeInsets.only(top: 32),
             width: screenWidth,
             height: screenHeight,
-            child: Column(
-              children: [
-                UserProfileTopInfo(
-                  username: widget.user['username'],
-                  avatar: widget.user['avatar'],
-                  totalPosts: widget.user['totalPosts'],
-                  totalFollowers: widget.user['totalFollowers'],
-                  totalFollowing: widget.user['totalFollowing'],
-                  firstName: widget.user['firstName'],
-                  lastName: widget.user['lastName'],
-                  bio: widget.user['bio'],
-                  isMe: widget.user['isMe'],
-                  isFollowers: widget.user['isFollowers'],
-                  isFollowing: widget.user['isFollowing'],
-                ),
-              ],
+            child: Query(
+              options: QueryOptions(
+                  document: gql(seeProfileQuery),
+                  variables: {'username': widget.username}),
+              builder: (QueryResult result,
+                  {VoidCallback refetch, FetchMore fetchMore}) {
+                if (result.hasException) {
+                  return Text(result.exception.toString());
+                }
+
+                Map<String, dynamic> user;
+                if (result.isLoading) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (!result.data['seeProfile']['ok']) {
+                  print("seeProfile Query Failed");
+                  return Center(child: Text("유저 정보 불러오는 것에 실패했습니다."));
+                } else {
+                  print("seeProfile Query Succeed");
+                  user = result.data['seeProfile']['user'];
+                  return Column(
+                    children: [
+                      UserProfileTopInfo(
+                        username: user['username'],
+                        avatar: user['avatar'],
+                        totalPosts: user['totalPosts'],
+                        totalFollowers: user['totalFollowers'],
+                        totalFollowing: user['totalFollowing'],
+                        firstName: user['firstName'],
+                        lastName: user['lastName'],
+                        bio: user['bio'],
+                        isMe: user['isMe'],
+                        isFollowers: user['isFollowers'],
+                        isFollowing: user['isFollowing'],
+                      ),
+                    ],
+                  );
+                }
+              },
             ),
           ),
         );

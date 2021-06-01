@@ -9,6 +9,6 @@ class MyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return UserProfile(onLoggedOut: onLoggedOut, user: me);
+    return UserProfile(onLoggedOut: onLoggedOut, username: me['username']);
   }
 }

@@ -8,7 +8,7 @@ class UserAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return avatar == null
-        ? Icon(Icons.account_circle, size: size)
+        ? Icon(Icons.account_circle, size: size, color: Colors.black)
         : CircleAvatar(
             radius: size / 2,
             backgroundImage: NetworkImage(avatar),
