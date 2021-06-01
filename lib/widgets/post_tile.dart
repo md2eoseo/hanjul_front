@@ -34,18 +34,19 @@ class _PostTileState extends State<PostTile> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Icon(Icons.account_circle),
-                      SizedBox(width: 8),
-                      Text(
-                        widget.post['author']['username'],
-                        style: TextStyle(
-                          fontSize: 20,
+                  if (widget.post['author'] != null)
+                    Row(
+                      children: [
+                        Icon(Icons.account_circle),
+                        SizedBox(width: 8),
+                        Text(
+                          widget.post['author']['username'],
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
                   Row(
                     children: [
                       LikeButton(

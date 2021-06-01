@@ -21,8 +21,10 @@ class _SearchUserTileState extends State<SearchUserTile> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    UserProfile(username: widget.user['username']),
+                builder: (context) => UserProfile(
+                  username: widget.user['username'],
+                  authorId: widget.user['id'],
+                ),
               ),
             );
           },
