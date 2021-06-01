@@ -5,7 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'package:hanjul_front/splash.dart';
 
 void main() async {
-  await DotEnv.load();
+  await DotEnv.load(fileName: "dotenv");
   await initHiveForFlutter();
   runApp(MyApp(client: Config.client));
 }
