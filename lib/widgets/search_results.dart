@@ -17,15 +17,15 @@ String searchUsersQuery = """
   }
 """;
 
-class SearchResultsListView extends StatefulWidget {
-  SearchResultsListView({Key key, this.keyword}) : super(key: key);
+class SearchResults extends StatefulWidget {
+  SearchResults({Key key, this.keyword}) : super(key: key);
   final keyword;
 
   @override
-  _SearchResultsListViewState createState() => _SearchResultsListViewState();
+  _SearchResultsState createState() => _SearchResultsState();
 }
 
-class _SearchResultsListViewState extends State<SearchResultsListView> {
+class _SearchResultsState extends State<SearchResults> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -72,7 +72,6 @@ class _SearchResultsListViewState extends State<SearchResultsListView> {
         if (result.hasException) {
           return Text(result.exception.toString());
         }
-
         if (result.isLoading) {
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 36.0),

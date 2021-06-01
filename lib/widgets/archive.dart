@@ -77,28 +77,29 @@ class _ArchiveState extends State<Archive> {
               if (result.hasException) {
                 return Text(result.exception.toString());
               }
-
-              if (result.isLoading) {
-                return Center(child: CircularProgressIndicator());
-              } else if (!result.data['seeArchive']['ok']) {
+              List posts = [];
+              List<Widget> newPostWidgets = [];
+              if (!result.data['seeArchive']['ok']) {
                 return Center(child: Text("글 불러오기에 실패했습니다."));
               } else {
-                FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
-                  variables: {'lastId': result.data['seeArchive']['lastId']},
-                  updateQuery: (previousResultData, fetchMoreResultData) {
-                    List posts = [
-                      ...previousResultData['seeArchive']['posts'],
-                      ...fetchMoreResultData['seeArchive']['posts']
-                    ];
-                    fetchMoreResultData['seeArchive']['posts'] = posts;
-                    return fetchMoreResultData;
-                  },
-                );
-                List posts = result.data['seeArchive']['posts'];
-                List<Widget> newPostWidgets = [
+                posts = result.data['seeArchive']['posts'];
+                if (posts.length == 0) {
+                  return SizedBox(
+                    height: 80,
+                    child: Center(
+                      child: Text(
+                        "글이 없습니다.",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  );
+                }
+                newPostWidgets = [
                   for (var post in posts)
                     PostTile(
-                        post: post, updateIsLikedCache: _updateIsLikedCache),
+                      post: post,
+                      updateIsLikedCache: _updateIsLikedCache,
+                    ),
                 ];
                 return NotificationListener<ScrollEndNotification>(
                   child: ListView.separated(
@@ -136,11 +137,21 @@ class _ArchiveState extends State<Archive> {
                       setState(() {
                         _currentPostWidgets = newPostWidgets;
                       });
+                      FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
+                        variables: {
+                          'lastId': result.data['seeArchive']['lastId']
+                        },
+                        updateQuery: (previousResultData, fetchMoreResultData) {
+                          List posts = [
+                            ...previousResultData['seeArchive']['posts'],
+                            ...fetchMoreResultData['seeArchive']['posts']
+                          ];
+                          fetchMoreResultData['seeArchive']['posts'] = posts;
+                          return fetchMoreResultData;
+                        },
+                      );
                       if (fetchMoreOpts.variables['lastId'] != null) {
-                        print("seeArchive Query fetchMore");
                         fetchMore(fetchMoreOpts);
-                      } else {
-                        print("infinite scroll end");
                       }
                     }
                     return true;
