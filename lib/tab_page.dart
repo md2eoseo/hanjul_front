@@ -21,6 +21,9 @@ query seeMyProfile{
       totalPosts
       totalFollowers
       totalFollowing
+      isMe
+      isFollowers
+      isFollowing
     }
   }
 }
