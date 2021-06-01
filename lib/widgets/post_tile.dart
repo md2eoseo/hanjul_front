@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hanjul_front/widgets/like_button.dart';
+import 'package:hanjul_front/widgets/user_button.dart';
 
 class PostTile extends StatefulWidget {
   PostTile({
@@ -19,7 +20,7 @@ class _PostTileState extends State<PostTile> {
   Widget build(BuildContext context) {
     return ListTile(
       title: Container(
-        padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
+        padding: EdgeInsets.all(4),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -29,37 +30,28 @@ class _PostTileState extends State<PostTile> {
                 fontSize: 28,
               ),
             ),
-            SizedBox(height: 24),
             Container(
+              margin: EdgeInsets.only(top: 12),
+              height: 48,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  if (widget.post['author'] != null)
-                    Row(
-                      children: [
-                        Icon(Icons.account_circle),
-                        SizedBox(width: 8),
-                        Text(
-                          widget.post['author']['username'],
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                        ),
-                      ],
-                    ),
-                  Row(
-                    children: [
-                      LikeButton(
-                        postId: widget.post['id'],
-                        isLiked: widget.post['isLiked'],
-                        likesCount: widget.post['likesCount'],
-                        updateIsLikedCache: widget.updateIsLikedCache,
-                      )
-                    ],
-                  )
+                  widget.post['author'] != null
+                      ? UserButton(
+                          authorId: widget.post['author']['id'],
+                          authorName: widget.post['author']['username'],
+                          authorAvatar: widget.post['author']['avatar'],
+                        )
+                      : SizedBox(),
+                  LikeButton(
+                    postId: widget.post['id'],
+                    isLiked: widget.post['isLiked'],
+                    likesCount: widget.post['likesCount'],
+                    updateIsLikedCache: widget.updateIsLikedCache,
+                  ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

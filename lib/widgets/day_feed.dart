@@ -13,7 +13,9 @@ String seeDayFeedQuery = """
         id
         text
         author{
+          id
           username
+          avatar
         }
         likesCount
         isLiked
