@@ -105,6 +105,7 @@ class UserProfileTopInfo extends StatelessWidget {
                   username: username,
                   isFollowers: isFollowers,
                   isFollowing: isFollowing,
+                  width: MediaQuery.of(context).size.width - 40,
                 ),
               ],
             ),

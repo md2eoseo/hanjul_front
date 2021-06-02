@@ -17,17 +17,19 @@ class FollowButton extends StatefulWidget {
     this.username,
     this.isFollowers,
     this.isFollowing,
+    this.width,
   });
   final username;
   final isFollowers;
   final isFollowing;
+  final width;
 
   @override
   _FollowButtonState createState() => _FollowButtonState();
 }
 
 class _FollowButtonState extends State<FollowButton> {
-  bool _followingState;
+  bool _followingState = false;
 
   @override
   void initState() {
@@ -38,11 +40,10 @@ class _FollowButtonState extends State<FollowButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
           SizedBox(
-            width: MediaQuery.of(context).size.width - 40,
+            width: widget.width,
             child: Mutation(
               options: MutationOptions(
                 document: gql(toggleFollowMutation),

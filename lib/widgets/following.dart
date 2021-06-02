@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:hanjul_front/widgets/search_user_tile.dart';
+import 'package:hanjul_front/widgets/user_tile.dart';
 
 String seeFollowingQuery = """
   query seeFollowing(\$username: String!, \$lastId: Int) {
@@ -88,7 +88,7 @@ class _FollowingState extends State<Following> {
                   }
                   newUserWidgets = [
                     for (var user in users)
-                      SearchUserTile(
+                      UserTile(
                         key: Key(user['id'].toString()),
                         user: user,
                       ),

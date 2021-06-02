@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:hanjul_front/widgets/search_user_tile.dart';
+import 'package:hanjul_front/widgets/user_tile.dart';
 
 String searchUsersQuery = """
   query searchUsers(\$keyword: String!, \$lastId: Int) {
@@ -11,6 +11,9 @@ String searchUsersQuery = """
         id
         username
         avatar
+        isMe
+        isFollowing
+        isFollowers
       }
       lastId
     }
@@ -121,7 +124,7 @@ class _SearchResultsState extends State<SearchResults> {
 
           List users = result.data['searchUsers']['users'];
           List<Widget> newUserWidgets = [
-            for (var user in users) SearchUserTile(user: user),
+            for (var user in users) UserTile(user: user),
           ];
           return ListView.separated(
             padding: EdgeInsets.only(top: 8),
