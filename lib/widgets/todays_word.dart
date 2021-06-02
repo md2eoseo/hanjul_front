@@ -10,6 +10,7 @@ class TodaysWord extends StatelessWidget {
       var widget = Container(
           child: Text(
         "${i + 1}. ${word['meaning'][i]}",
+        textAlign: TextAlign.left,
         style: TextStyle(
           fontSize: 18,
         ),
@@ -21,9 +22,10 @@ class TodaysWord extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return word != null
         ? Container(
-            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            padding: EdgeInsets.symmetric(vertical: 20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,14 +38,12 @@ class TodaysWord extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 10),
-                Row(
-                  children: [
-                    SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: getMeaningWidgets(),
-                    ),
-                  ],
+                Container(
+                  width: screenWidth * 0.8,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: getMeaningWidgets(),
+                  ),
                 ),
               ],
             ),

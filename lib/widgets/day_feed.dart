@@ -57,6 +57,11 @@ class _DayFeedState extends State<DayFeed> {
                     variables: {'date': getTodaysDate()}),
                 builder: (QueryResult result,
                     {VoidCallback refetch, FetchMore fetchMore}) {
+                  Future _refreshData() async {
+                    refetch();
+                    return true;
+                  }
+
                   Function _updateIsLikedCache = (int postId) {
                     final fragmentDoc = gql(
                       '''
@@ -105,40 +110,44 @@ class _DayFeedState extends State<DayFeed> {
                     newPostWidgets = [
                       for (var post in posts)
                         PostTile(
+                            key: Key(post['id'].toString()),
                             post: post,
                             updateIsLikedCache: _updateIsLikedCache),
                     ];
                     return NotificationListener<ScrollEndNotification>(
                       child: Expanded(
-                        child: ListView.separated(
-                          controller: widget.scrollController,
-                          padding: EdgeInsets.symmetric(vertical: 14),
-                          itemCount: result.isLoading
-                              ? _currentPostWidgets.length + 1
-                              : newPostWidgets.length,
-                          itemBuilder: (context, i) {
-                            return result.isLoading
-                                ? ([
-                                    ..._currentPostWidgets,
-                                    ListTile(
-                                      title: Container(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            CircularProgressIndicator(),
-                                          ],
+                        child: RefreshIndicator(
+                          onRefresh: _refreshData,
+                          child: ListView.separated(
+                            controller: widget.scrollController,
+                            padding: EdgeInsets.symmetric(vertical: 14),
+                            itemCount: result.isLoading
+                                ? _currentPostWidgets.length + 1
+                                : newPostWidgets.length,
+                            itemBuilder: (context, i) {
+                              return result.isLoading
+                                  ? ([
+                                      ..._currentPostWidgets,
+                                      ListTile(
+                                        title: Container(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: <Widget>[
+                                              CircularProgressIndicator(),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ])[i]
-                                : newPostWidgets[i];
-                          },
-                          separatorBuilder: (context, i) {
-                            return Divider();
-                          },
+                                    ])[i]
+                                  : newPostWidgets[i];
+                            },
+                            separatorBuilder: (context, i) {
+                              return Divider();
+                            },
+                          ),
                         ),
                       ),
                       onNotification: (notification) {
