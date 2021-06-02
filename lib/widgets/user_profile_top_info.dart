@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hanjul_front/widgets/follow_button.dart';
+import 'package:hanjul_front/widgets/followers.dart';
+import 'package:hanjul_front/widgets/following.dart';
 import 'package:hanjul_front/widgets/user_avatar.dart';
 import 'package:hanjul_front/widgets/user_profile_top_info_box.dart';
 
@@ -48,8 +50,30 @@ class UserProfileTopInfo extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   UserProfileTopInfoBox(name: "글", cnt: totalPosts),
-                  UserProfileTopInfoBox(name: "팔로워", cnt: totalFollowers),
-                  UserProfileTopInfoBox(name: "팔로잉", cnt: totalFollowing),
+                  UserProfileTopInfoBox(
+                    name: "팔로워",
+                    cnt: totalFollowers,
+                    page: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Followers(username: username),
+                        ),
+                      );
+                    },
+                  ),
+                  UserProfileTopInfoBox(
+                    name: "팔로잉",
+                    cnt: totalFollowing,
+                    page: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Following(username: username),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ],

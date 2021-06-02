@@ -25,7 +25,6 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             fontFamily: 'Nanum Myeongjo',
             brightness: Brightness.light,
-            primarySwatch: Colors.blue,
             primaryColor: Colors.grey[300],
             snackBarTheme: SnackBarThemeData(
               backgroundColor: Colors.green[300],
