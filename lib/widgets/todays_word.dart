@@ -50,7 +50,7 @@ class TodaysWord extends StatelessWidget {
           )
         : SizedBox(
             height: 120,
-            child: Center(child: Text("오늘의 단어를 불러오지 못했습니다.")),
+            child: Center(child: CircularProgressIndicator()),
           );
   }
 }
