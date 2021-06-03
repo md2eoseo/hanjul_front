@@ -37,6 +37,7 @@ query searchWords(\$date: String){
       words {
         id
         word
+        variation
         meaning
         date
       }

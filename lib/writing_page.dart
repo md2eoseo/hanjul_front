@@ -33,6 +33,9 @@ class _WritingPageState extends State<WritingPage> {
   Widget build(BuildContext context) {
     Function _checkText = () {
       if (_text.contains(widget.word['word'])) return true;
+      for (final v in widget.word['variation']) {
+        if (_text.contains(v)) return true;
+      }
       return false;
     };
     return Scaffold(

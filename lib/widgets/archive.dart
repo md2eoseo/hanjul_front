@@ -113,6 +113,7 @@ class _ArchiveState extends State<Archive> {
                   child: RefreshIndicator(
                     onRefresh: _refreshData,
                     child: ListView.separated(
+                      physics: AlwaysScrollableScrollPhysics(),
                       controller: widget.scrollController,
                       padding: EdgeInsets.symmetric(vertical: 14),
                       itemCount: result.isLoading

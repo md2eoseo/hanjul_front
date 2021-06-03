@@ -195,6 +195,7 @@ class _UserProfileState extends State<UserProfile> {
                         child: RefreshIndicator(
                           onRefresh: _refreshData,
                           child: ListView.separated(
+                            physics: AlwaysScrollableScrollPhysics(),
                             controller: _scrollController,
                             padding: EdgeInsets.symmetric(vertical: 14),
                             itemCount: result.isLoading
