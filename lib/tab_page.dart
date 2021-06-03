@@ -57,8 +57,13 @@ class _TabPageState extends State<TabPage> {
   Map<String, dynamic> _word;
 
   Future getTodaysWord(String date) async {
-    var result = await Config.client.value.query(QueryOptions(
-        document: gql(searchWordsQuery), variables: {'date': date}));
+    var result = await Config.client.value.query(
+      QueryOptions(
+        document: gql(searchWordsQuery),
+        variables: {'date': date},
+        fetchPolicy: FetchPolicy.noCache,
+      ),
+    );
 
     if (!result.data['searchWords']['ok']) {
       print("오늘의 단어 불러오기 실패!");
