@@ -126,15 +126,14 @@ class _UserProfileState extends State<UserProfile> {
                 ),
                 Query(
                   options: QueryOptions(
-                      document: gql(seeUserPostsQuery),
-                      variables: {'authorId': int.parse(widget.authorId)}),
+                    document: gql(seeUserPostsQuery),
+                    variables: {'authorId': int.parse(widget.authorId)},
+                  ),
                   builder: (QueryResult result,
                       {VoidCallback refetch, FetchMore fetchMore}) {
                     Future _refreshData() async {
                       refetch();
-                      setState(() {
-                        _currentPostWidgets.clear();
-                      });
+                      return true;
                     }
 
                     Function _updateIsLikedCache = (int postId) {
@@ -167,9 +166,7 @@ class _UserProfileState extends State<UserProfile> {
                     }
                     List posts = [];
                     List<Widget> newPostWidgets = [];
-                    if (result.isLoading) {
-                      return Center(child: CircularProgressIndicator());
-                    } else if (!result.data['seeUserPosts']['ok']) {
+                    if (!result.data['seeUserPosts']['ok']) {
                       return Center(child: Text("유저 글 불러오기에 실패했습니다."));
                     } else {
                       posts = result.data['seeUserPosts']['posts'];
