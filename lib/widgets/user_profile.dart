@@ -7,10 +7,8 @@ import 'package:hanjul_front/widgets/post_tile.dart';
 import 'package:hanjul_front/widgets/user_profile_top_info.dart';
 
 class UserProfile extends StatefulWidget {
-  UserProfile({Key key, this.username, this.authorId, this.onLoggedOut})
-      : super(key: key);
+  UserProfile({Key key, this.username, this.onLoggedOut}) : super(key: key);
   final username;
-  final authorId;
   final onLoggedOut;
 
   @override

@@ -4,9 +4,7 @@ import 'package:hanjul_front/widgets/user_avatar.dart';
 import 'package:hanjul_front/widgets/user_profile.dart';
 
 class UserButton extends StatelessWidget {
-  UserButton({Key key, this.authorId, this.authorName, this.authorAvatar})
-      : super(key: key);
-  final authorId;
+  UserButton({Key key, this.authorName, this.authorAvatar}) : super(key: key);
   final authorName;
   final authorAvatar;
 
@@ -17,7 +15,6 @@ class UserButton extends StatelessWidget {
         Get.to(
           () => UserProfile(
             username: authorName,
-            authorId: authorId,
           ),
           transition: Transition.rightToLeft,
         );

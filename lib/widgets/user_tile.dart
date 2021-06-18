@@ -21,10 +21,7 @@ class _UserTileState extends State<UserTile> {
         child: TextButton(
           onPressed: () {
             Get.to(
-              () => UserProfile(
-                username: widget.user['username'],
-                authorId: widget.user['id'],
-              ),
+              () => UserProfile(username: widget.user['username']),
               transition: Transition.rightToLeft,
             );
           },

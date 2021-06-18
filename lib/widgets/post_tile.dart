@@ -36,7 +36,6 @@ class _PostTileState extends State<PostTile> {
                 children: [
                   widget.post['author'] != null
                       ? UserButton(
-                          authorId: widget.post['author']['id'],
                           authorName: widget.post['author']['username'],
                           authorAvatar: widget.post['author']['avatar'],
                         )
