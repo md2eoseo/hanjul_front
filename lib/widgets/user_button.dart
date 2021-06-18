@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hanjul_front/widgets/user_avatar.dart';
 import 'package:hanjul_front/widgets/user_profile.dart';
 
@@ -13,14 +14,12 @@ class UserButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => UserProfile(
-              username: authorName,
-              authorId: authorId,
-            ),
+        Get.to(
+          () => UserProfile(
+            username: authorName,
+            authorId: authorId,
           ),
+          transition: Transition.rightToLeft,
         );
       },
       child: Container(

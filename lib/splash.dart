@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hanjul_front/root_page.dart';
 
 class Splash extends StatefulWidget {
@@ -21,11 +22,7 @@ class _SplashState extends State<Splash> {
   }
 
   onDoneLoading() async {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => RootPage(),
-      ),
-    );
+    Get.off(() => RootPage());
   }
 
   @override

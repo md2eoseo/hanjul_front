@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hanjul_front/sign_up_page.dart';
 
@@ -110,10 +111,9 @@ class _LoginPageState extends State<LoginPage> {
                           style: TextStyle(fontSize: 24),
                         ),
                         onPressed: () => {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SignUpPage()),
+                          Get.to(
+                            () => SignUpPage(),
+                            transition: Transition.rightToLeft,
                           )
                         },
                       ),

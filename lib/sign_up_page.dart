@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 String createAccountMutation = """
@@ -35,7 +36,7 @@ class _SignUpPageState extends State<SignUpPage> {
             size: 48,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Get.back();
           },
           padding: EdgeInsets.only(left: 8),
         ),
@@ -128,7 +129,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(
                                 "${resultData['createAccount']['username']}님 가입이 완료되었습니다!")));
-                        Navigator.pop(context);
+                        Get.back();
                       }
                     },
                   ),

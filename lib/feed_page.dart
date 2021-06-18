@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hanjul_front/widgets/day_feed.dart';
 import 'package:hanjul_front/writing_page.dart';
 
@@ -42,10 +43,9 @@ class _FeedPageState extends State<FeedPage> {
           IconButton(
             icon: Icon(Icons.add, size: 48),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => WritingPage(word: widget.word)),
+              Get.to(
+                () => WritingPage(word: widget.word),
+                transition: Transition.rightToLeft,
               );
             },
             padding: EdgeInsets.only(right: 28),

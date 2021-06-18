@@ -3,6 +3,7 @@ import 'package:hanjul_front/config.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'package:hanjul_front/splash.dart';
+import 'package:get/get.dart';
 
 void main() async {
   await DotEnv.load(fileName: "dotenv");
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
     return GraphQLProvider(
       client: client,
       child: CacheProvider(
-        child: MaterialApp(
+        child: GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: '한줄',
           theme: ThemeData(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hanjul_front/widgets/todays_word.dart';
 
@@ -46,7 +47,7 @@ class _WritingPageState extends State<WritingPage> {
             size: 48,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Get.back();
           },
           padding: EdgeInsets.only(left: 8),
         ),
@@ -66,7 +67,7 @@ class _WritingPageState extends State<WritingPage> {
               },
               onCompleted: (dynamic resultData) {
                 if (resultData['createPost']['ok']) {
-                  Navigator.pop(context);
+                  Get.back();
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

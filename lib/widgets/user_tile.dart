@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hanjul_front/widgets/follow_button.dart';
 import 'package:hanjul_front/widgets/user_avatar.dart';
 import 'package:hanjul_front/widgets/user_profile.dart';
@@ -19,14 +20,12 @@ class _UserTileState extends State<UserTile> {
         padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: TextButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => UserProfile(
-                  username: widget.user['username'],
-                  authorId: widget.user['id'],
-                ),
+            Get.to(
+              () => UserProfile(
+                username: widget.user['username'],
+                authorId: widget.user['id'],
               ),
+              transition: Transition.rightToLeft,
             );
           },
           child: Row(

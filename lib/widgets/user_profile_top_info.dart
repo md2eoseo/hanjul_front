@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hanjul_front/widgets/follow_button.dart';
 import 'package:hanjul_front/widgets/followers.dart';
 import 'package:hanjul_front/widgets/following.dart';
@@ -54,11 +55,9 @@ class UserProfileTopInfo extends StatelessWidget {
                     name: "팔로워",
                     cnt: totalFollowers,
                     page: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Followers(username: username),
-                        ),
+                      Get.to(
+                        () => Followers(username: username),
+                        transition: Transition.rightToLeft,
                       );
                     },
                   ),
@@ -66,11 +65,9 @@ class UserProfileTopInfo extends StatelessWidget {
                     name: "팔로잉",
                     cnt: totalFollowing,
                     page: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Following(username: username),
-                        ),
+                      Get.to(
+                        () => Following(username: username),
+                        transition: Transition.rightToLeft,
                       );
                     },
                   ),
