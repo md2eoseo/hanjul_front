@@ -18,10 +18,15 @@ class _ArchivePageState extends State<ArchivePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.archive,
-            size: 48,
+        centerTitle: false,
+        title: TextButton(
+          child: Text(
+            "아카이브",
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
           onPressed: () {
             _scrollController.animateTo(
@@ -30,14 +35,6 @@ class _ArchivePageState extends State<ArchivePage> {
               curve: Curves.easeOut,
             );
           },
-          padding: EdgeInsets.only(left: 8),
-        ),
-        title: Text(
-          "아카이브",
-          style: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
         ),
         actions: [
           IconButton(

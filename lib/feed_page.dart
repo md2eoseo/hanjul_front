@@ -18,10 +18,15 @@ class _FeedPageState extends State<FeedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.notes,
-            size: 48,
+        centerTitle: false,
+        title: TextButton(
+          child: Text(
+            "피드",
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
           onPressed: () {
             _scrollController.animateTo(
@@ -30,14 +35,6 @@ class _FeedPageState extends State<FeedPage> {
               curve: Curves.easeOut,
             );
           },
-          padding: EdgeInsets.only(left: 8),
-        ),
-        title: Text(
-          "한줄",
-          style: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
         ),
         actions: [
           IconButton(

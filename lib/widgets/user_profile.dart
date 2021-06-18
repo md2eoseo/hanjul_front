@@ -31,12 +31,22 @@ class _UserProfileState extends State<UserProfile> {
       builder: (GraphQLClient client) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(
-              widget.username,
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
+            title: TextButton(
+              child: Text(
+                widget.username,
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
+              onPressed: () {
+                _scrollController.animateTo(
+                  0,
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.easeOut,
+                );
+              },
             ),
             actions: [
               if (widget.onLoggedOut != null)
