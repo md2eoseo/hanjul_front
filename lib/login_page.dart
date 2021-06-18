@@ -2,17 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hanjul_front/mutations/login.dart';
 import 'package:hanjul_front/sign_up_page.dart';
-
-String loginMutation = """
-  mutation login(\$username: String!, \$password: String!) {
-    login(username: \$username, password: \$password) {
-      ok
-      error
-      token
-    }
-  }
-""";
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.onLoggedIn});
@@ -61,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Mutation(
                 options: MutationOptions(
-                  document: gql(loginMutation),
+                  document: gql(login),
                   update: (GraphQLDataProxy cache, QueryResult result) {
                     return cache;
                   },

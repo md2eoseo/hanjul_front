@@ -1,47 +1,10 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hanjul_front/queries/see_profile.dart';
+import 'package:hanjul_front/queries/see_user_posts.dart';
 import 'package:hanjul_front/widgets/post_tile.dart';
 import 'package:hanjul_front/widgets/user_profile_top_info.dart';
-
-String seeProfileQuery = """
-  query seeProfile(\$username: String!) {
-    seeProfile(username: \$username) {
-      ok
-      error
-      user {
-        id
-        firstName
-        lastName
-        username
-        bio
-        avatar
-        totalPosts
-        totalFollowers
-        totalFollowing
-        isMe
-        isFollowers
-        isFollowing
-      }
-    }
-  }
-""";
-
-String seeUserPostsQuery = """
-  query seeUserPosts(\$authorId: Int!, \$lastId: Int) {
-    seeUserPosts(authorId: \$authorId, lastId: \$lastId) {
-      ok
-      error
-      posts {
-        id
-        text
-        likesCount
-        isLiked
-      }
-      lastId
-    }
-  }
-""";
 
 class UserProfile extends StatefulWidget {
   UserProfile({Key key, this.username, this.authorId, this.onLoggedOut})
@@ -94,7 +57,7 @@ class _UserProfileState extends State<UserProfile> {
               children: [
                 Query(
                   options: QueryOptions(
-                      document: gql(seeProfileQuery),
+                      document: gql(seeProfile),
                       variables: {'username': widget.username}),
                   builder: (QueryResult result,
                       {VoidCallback refetch, FetchMore fetchMore}) {
@@ -126,7 +89,7 @@ class _UserProfileState extends State<UserProfile> {
                 ),
                 Query(
                   options: QueryOptions(
-                    document: gql(seeUserPostsQuery),
+                    document: gql(seeUserPosts),
                     variables: {'authorId': int.parse(widget.authorId)},
                   ),
                   builder: (QueryResult result,

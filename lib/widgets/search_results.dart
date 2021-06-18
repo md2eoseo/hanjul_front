@@ -1,24 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hanjul_front/queries/search_users.dart';
 import 'package:hanjul_front/widgets/user_tile.dart';
-
-String searchUsersQuery = """
-  query searchUsers(\$keyword: String!, \$lastId: Int) {
-    searchUsers(keyword: \$keyword, lastId: \$lastId) {
-      ok
-      error
-      users {
-        id
-        username
-        avatar
-        isMe
-        isFollowing
-        isFollowers
-      }
-      lastId
-    }
-  }
-""";
 
 class SearchResults extends StatefulWidget {
   SearchResults({Key key, this.keyword}) : super(key: key);
@@ -67,7 +50,7 @@ class _SearchResultsState extends State<SearchResults> {
     await Future.delayed(Duration(milliseconds: 400));
     return Query(
       options: QueryOptions(
-        document: gql(searchUsersQuery),
+        document: gql(searchUsers),
         variables: {'keyword': widget.keyword},
       ),
       builder: (QueryResult result,

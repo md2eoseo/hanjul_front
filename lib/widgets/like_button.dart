@@ -1,16 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-
-String toggleLikeMutation = """
-  mutation toggleLike(\$postId: Int!) {
-    toggleLike(postId: \$postId) {
-      ok
-      error
-      like
-    }
-  }
-""";
+import 'package:hanjul_front/mutations/toggle_like.dart';
 
 class LikeButton extends StatefulWidget {
   LikeButton(
@@ -45,7 +36,7 @@ class _LikeButtonState extends State<LikeButton> {
     return Container(
       child: Mutation(
         options: MutationOptions(
-          document: gql(toggleLikeMutation),
+          document: gql(toggleLike),
           update: (GraphQLDataProxy cache, QueryResult result) {
             return cache;
           },

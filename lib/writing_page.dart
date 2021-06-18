@@ -2,16 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hanjul_front/mutations/create_post.dart';
 import 'package:hanjul_front/widgets/todays_word.dart';
-
-String createPostMutation = """
-  mutation createPost(\$wordId: Int!, \$text: String!) {
-    createPost(wordId: \$wordId, text: \$text) {
-      ok
-      error
-    }
-  }
-""";
 
 class WritingPage extends StatefulWidget {
   WritingPage({Key key, this.word}) : super(key: key);
@@ -61,7 +53,7 @@ class _WritingPageState extends State<WritingPage> {
         actions: [
           Mutation(
             options: MutationOptions(
-              document: gql(createPostMutation),
+              document: gql(createPost),
               update: (GraphQLDataProxy cache, QueryResult result) {
                 return cache;
               },

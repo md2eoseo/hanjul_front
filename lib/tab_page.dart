@@ -4,47 +4,10 @@ import 'package:hanjul_front/archive_page.dart';
 import 'package:hanjul_front/client.dart';
 import "package:hanjul_front/feed_page.dart";
 import 'package:hanjul_front/my_page.dart';
+import 'package:hanjul_front/queries/search_words.dart';
+import 'package:hanjul_front/queries/see_my_profile.dart';
 import 'package:hanjul_front/search_page.dart';
 import 'package:hanjul_front/utils.dart';
-
-String seeMyProfileQuery = """
-query seeMyProfile{
-  seeMyProfile{
-    ok
-    error
-    user{
-      id
-      firstName
-      lastName
-      username
-      bio
-      avatar
-      totalPosts
-      totalFollowers
-      totalFollowing
-      isMe
-      isFollowers
-      isFollowing
-    }
-  }
-}
-""";
-
-String searchWordsQuery = """
-query searchWords(\$date: String){
-  searchWords(date: \$date) {
-      ok
-      error
-      words {
-        id
-        word
-        variation
-        meaning
-        date
-      }
-    }
-}
-""";
 
 class TabPage extends StatefulWidget {
   TabPage({Key key, this.onLoggedOut});
@@ -61,7 +24,7 @@ class _TabPageState extends State<TabPage> {
   Future getTodaysWord(String date) async {
     var result = await client.value.query(
       QueryOptions(
-        document: gql(searchWordsQuery),
+        document: gql(searchWords),
         variables: {'date': date},
         fetchPolicy: FetchPolicy.noCache,
       ),
@@ -87,7 +50,7 @@ class _TabPageState extends State<TabPage> {
     return Scaffold(
       body: Query(
         options: QueryOptions(
-          document: gql(seeMyProfileQuery),
+          document: gql(seeMyProfile),
         ),
         builder: (QueryResult result,
             {VoidCallback refetch, FetchMore fetchMore}) {

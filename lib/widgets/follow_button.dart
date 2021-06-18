@@ -1,16 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-
-String toggleFollowMutation = """
-  mutation toggleFollow(\$username: String!) {
-    toggleFollow(username: \$username) {
-      ok
-      error
-      follow
-    }
-  }
-""";
+import 'package:hanjul_front/mutations/toggle_follow.dart';
 
 class FollowButton extends StatefulWidget {
   FollowButton({
@@ -47,7 +38,7 @@ class _FollowButtonState extends State<FollowButton> {
             width: widget.width,
             child: Mutation(
               options: MutationOptions(
-                document: gql(toggleFollowMutation),
+                document: gql(toggleFollow),
                 update: (GraphQLDataProxy cache, QueryResult result) {
                   return cache;
                 },

@@ -1,27 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hanjul_front/queries/see_archive.dart';
 import 'package:hanjul_front/widgets/post_tile.dart';
-
-String seeArchiveQuery = """
-  query seeArchive(\$lastId: Int) {
-    seeArchive(lastId: \$lastId) {
-      ok
-      error
-      posts {
-        id
-        text
-        author{
-          id
-          username
-          avatar
-        }
-        likesCount
-        isLiked
-      }
-      lastId
-    }
-  }
-""";
 
 class Archive extends StatefulWidget {
   Archive({Key key, this.scrollController}) : super(key: key);
@@ -47,7 +27,7 @@ class _ArchiveState extends State<Archive> {
         return Container(
           child: Query(
             options: QueryOptions(
-              document: gql(seeArchiveQuery),
+              document: gql(seeArchive),
             ),
             builder: (QueryResult result,
                 {VoidCallback refetch, FetchMore fetchMore}) {

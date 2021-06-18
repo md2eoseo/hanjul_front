@@ -2,16 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-
-String createAccountMutation = """
-  mutation createAccount(\$firstName: String!, \$lastName: String!, \$username: String!, \$email: String!, \$password: String!) {
-    createAccount(firstName: \$firstName, lastName: \$lastName, username: \$username, email: \$email, password: \$password) {
-      ok
-      error
-      username
-    }
-  }
-""";
+import 'package:hanjul_front/mutations/create_account.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -116,7 +107,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 Mutation(
                   options: MutationOptions(
-                    document: gql(createAccountMutation),
+                    document: gql(createAccount),
                     update: (GraphQLDataProxy cache, QueryResult result) {
                       return cache;
                     },

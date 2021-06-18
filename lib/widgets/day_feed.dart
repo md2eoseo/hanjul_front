@@ -1,29 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hanjul_front/queries/see_day_feed.dart';
 import 'package:hanjul_front/utils.dart';
 import 'package:hanjul_front/widgets/post_tile.dart';
 import 'package:hanjul_front/widgets/todays_word.dart';
-
-String seeDayFeedQuery = """
-  query seeDayFeed(\$date: String!, \$lastId: Int) {
-    seeDayFeed(date: \$date, lastId: \$lastId) {
-      ok
-      error
-      posts {
-        id
-        text
-        author{
-          id
-          username
-          avatar
-        }
-        likesCount
-        isLiked
-      }
-      lastId
-    }
-  }
-""";
 
 class DayFeed extends StatefulWidget {
   DayFeed({Key key, this.scrollController, this.word}) : super(key: key);
@@ -53,7 +33,7 @@ class _DayFeedState extends State<DayFeed> {
               TodaysWord(word: widget.word),
               Query(
                 options: QueryOptions(
-                    document: gql(seeDayFeedQuery),
+                    document: gql(seeDayFeed),
                     variables: {'date': getTodaysDate()}),
                 builder: (QueryResult result,
                     {VoidCallback refetch, FetchMore fetchMore}) {

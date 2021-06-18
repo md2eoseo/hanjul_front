@@ -38,13 +38,6 @@ class _RootPageState extends State<RootPage> {
     }
   }
 
-  Future<String> _getToken() async {
-    final String token = !kIsWeb
-        ? await storage.read(key: 'TOKEN')
-        : html.window.localStorage['TOKEN'];
-    return token;
-  }
-
   void _onLoggedIn(String token) async {
     if (!kIsWeb) {
       await storage.write(key: 'TOKEN', value: token);
@@ -67,3 +60,6 @@ class _RootPageState extends State<RootPage> {
     });
   }
 }
+
+Future<String> _getToken() async =>
+    !kIsWeb ? storage.read(key: 'TOKEN') : html.window.localStorage['TOKEN'];

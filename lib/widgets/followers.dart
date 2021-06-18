@@ -1,23 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:hanjul_front/queries/see_followers.dart';
 import 'package:hanjul_front/widgets/user_tile.dart';
-
-String seeFollowersQuery = """
-  query seeFollowers(\$username: String!, \$lastId: Int) {
-    seeFollowers(username: \$username, lastId: \$lastId) {
-      ok
-      error
-      followers {
-        id
-        username
-        avatar
-        isMe
-        isFollowers
-        isFollowing
-      }
-    }
-  }
-""";
 
 class Followers extends StatefulWidget {
   Followers({Key key, this.username}) : super(key: key);
@@ -54,7 +38,7 @@ class _FollowersState extends State<Followers> {
           return Container(
             child: Query(
               options: QueryOptions(
-                document: gql(seeFollowersQuery),
+                document: gql(seeFollowers),
                 variables: {'username': widget.username},
               ),
               builder: (QueryResult result,
