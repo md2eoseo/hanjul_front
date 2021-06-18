@@ -36,31 +36,6 @@ class _ArchiveState extends State<Archive> {
                 return true;
               }
 
-              Function _updateIsLikedCache = (int postId) {
-                final fragmentDoc = gql(
-                  '''
-                    fragment postSubset on Post {
-                      id
-                      likesCount
-                      isLiked
-                    }
-                  ''',
-                );
-                var fragmentRequest = FragmentRequest(
-                  fragment: Fragment(
-                    document: fragmentDoc,
-                  ),
-                  idFields: {'__typename': 'Post', 'id': postId},
-                );
-                final data = client.readFragment(fragmentRequest);
-                client.writeFragment(fragmentRequest, data: {
-                  'likesCount': data['isLiked']
-                      ? data['likesCount'] - 1
-                      : data['likesCount'] + 1,
-                  'isLiked': !data['isLiked']
-                });
-              };
-
               if (result.hasException) {
                 return Text(result.exception.toString());
               }
@@ -86,7 +61,6 @@ class _ArchiveState extends State<Archive> {
                     PostTile(
                       key: Key(post['id'].toString()),
                       post: post,
-                      updateIsLikedCache: _updateIsLikedCache,
                     ),
                 ];
                 return NotificationListener<ScrollEndNotification>(

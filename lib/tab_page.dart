@@ -20,6 +20,7 @@ class TabPage extends StatefulWidget {
 class _TabPageState extends State<TabPage> {
   int _currentIndex = 0;
   Map<String, dynamic> _word;
+  Map<String, dynamic> _me;
 
   Future getTodaysWord(String date) async {
     var result = await client.value.query(
@@ -39,43 +40,44 @@ class _TabPageState extends State<TabPage> {
     }
   }
 
+  Future getMyProfile() async {
+    var result = await client.value.query(
+      QueryOptions(
+        document: gql(seeMyProfile),
+        fetchPolicy: FetchPolicy.noCache,
+      ),
+    );
+
+    if (!result.data['seeMyProfile']['ok']) {
+      print("내 프로필 불러오기 실패!");
+    } else {
+      setState(() {
+        _me = result.data['seeMyProfile']['user'];
+      });
+    }
+  }
+
   @override
   void initState() {
     getTodaysWord(getTodaysDate());
+    getMyProfile();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Query(
-        options: QueryOptions(
-          document: gql(seeMyProfile),
-        ),
-        builder: (QueryResult result,
-            {VoidCallback refetch, FetchMore fetchMore}) {
-          if (result.hasException) {
-            return Text(result.exception.toString());
-          }
-
-          if (result.isLoading) {
-            return Center(child: CircularProgressIndicator());
-          } else if (!result.data['seeMyProfile']['ok']) {
-            return Center(child: Text("유저 프로필 불러오기에 실패했습니다."));
-          } else {
-            Map<String, dynamic> me = result.data['seeMyProfile']['user'];
-            return IndexedStack(
+      body: _word == null || _me == null
+          ? Center(child: CircularProgressIndicator())
+          : IndexedStack(
               index: _currentIndex,
               children: <Widget>[
                 FeedPage(word: _word),
                 ArchivePage(word: _word),
                 SearchPage(),
-                MyPage(onLoggedOut: widget.onLoggedOut, me: me),
+                MyPage(onLoggedOut: widget.onLoggedOut, me: _me),
               ],
-            );
-          }
-        },
-      ),
+            ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.grey,
@@ -89,7 +91,7 @@ class _TabPageState extends State<TabPage> {
           BottomNavigationBarItem(icon: Icon(Icons.notes), label: "피드"),
           BottomNavigationBarItem(icon: Icon(Icons.archive), label: "아카이브"),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: "검색"),
-          BottomNavigationBarItem(icon: Icon(Icons.circle), label: "MY")
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: "MY")
         ],
       ),
     );
