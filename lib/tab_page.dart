@@ -1,10 +1,11 @@
 import "package:flutter/material.dart";
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hanjul_front/archive_page.dart';
-import 'package:hanjul_front/config.dart';
+import 'package:hanjul_front/client.dart';
 import "package:hanjul_front/feed_page.dart";
 import 'package:hanjul_front/my_page.dart';
 import 'package:hanjul_front/search_page.dart';
+import 'package:hanjul_front/utils.dart';
 
 String seeMyProfileQuery = """
 query seeMyProfile{
@@ -58,7 +59,7 @@ class _TabPageState extends State<TabPage> {
   Map<String, dynamic> _word;
 
   Future getTodaysWord(String date) async {
-    var result = await Config.client.value.query(
+    var result = await client.value.query(
       QueryOptions(
         document: gql(searchWordsQuery),
         variables: {'date': date},

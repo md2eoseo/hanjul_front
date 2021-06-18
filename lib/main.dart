@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hanjul_front/config.dart';
+import 'package:hanjul_front/client.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'package:hanjul_front/splash.dart';
@@ -8,13 +8,10 @@ import 'package:get/get.dart';
 void main() async {
   await DotEnv.load(fileName: "dotenv");
   await initHiveForFlutter();
-  runApp(MyApp(client: Config.client));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key key, this.client}) : super(key: key);
-  final ValueNotifier<GraphQLClient> client;
-
   @override
   Widget build(BuildContext context) {
     return GraphQLProvider(
@@ -25,7 +22,6 @@ class MyApp extends StatelessWidget {
           title: '한줄',
           theme: ThemeData(
             fontFamily: 'Nanum Myeongjo',
-            brightness: Brightness.light,
             primaryColor: Colors.grey[300],
             snackBarTheme: SnackBarThemeData(
               backgroundColor: Colors.green[300],
