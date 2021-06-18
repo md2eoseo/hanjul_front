@@ -90,7 +90,7 @@ class _UserProfileState extends State<UserProfile> {
                 Query(
                   options: QueryOptions(
                     document: gql(seeUserPosts),
-                    variables: {'authorId': int.parse(widget.authorId)},
+                    variables: {'username': widget.username},
                   ),
                   builder: (QueryResult result,
                       {VoidCallback refetch, FetchMore fetchMore}) {
@@ -172,7 +172,7 @@ class _UserProfileState extends State<UserProfile> {
                           });
                           FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
                             variables: {
-                              'authorId': int.parse(widget.authorId),
+                              'username': widget.username,
                               'lastId': result.data['seeUserPosts']['lastId'],
                             },
                             updateQuery:

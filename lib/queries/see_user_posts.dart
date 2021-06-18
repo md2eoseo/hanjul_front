@@ -1,6 +1,6 @@
 String seeUserPosts = """
-  query seeUserPosts(\$authorId: Int!, \$lastId: Int) {
-    seeUserPosts(authorId: \$authorId, lastId: \$lastId) {
+  query seeUserPosts(\$username: String!, \$lastId: Int) {
+    seeUserPosts(username: \$username, lastId: \$lastId) {
       ok
       error
       posts {
