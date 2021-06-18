@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hanjul_front/client.dart';
+import 'package:hanjul_front/config/client.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'package:hanjul_front/splash.dart';

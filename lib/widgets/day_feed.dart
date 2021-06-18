@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hanjul_front/queries/see_day_feed.dart';
-import 'package:hanjul_front/utils.dart';
+import 'package:hanjul_front/config/utils.dart';
 import 'package:hanjul_front/widgets/post_tile.dart';
 import 'package:hanjul_front/widgets/todays_word.dart';
 

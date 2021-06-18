@@ -2,7 +2,7 @@ import "package:universal_html/html.dart" as html;
 
 import 'package:flutter/foundation.dart';
 import "package:flutter/material.dart";
-import 'package:hanjul_front/client.dart';
+import 'package:hanjul_front/config/client.dart';
 import 'package:hanjul_front/login_page.dart';
 import "package:hanjul_front/tab_page.dart";
 import 'package:jwt_decoder/jwt_decoder.dart';
