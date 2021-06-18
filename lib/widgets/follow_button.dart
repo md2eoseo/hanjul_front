@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 String toggleFollowMutation = """
@@ -52,9 +53,10 @@ class _FollowButtonState extends State<FollowButton> {
                 },
                 onCompleted: (dynamic resultData) async {
                   if (!resultData['toggleFollow']['ok']) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content:
-                            Text("${resultData['toggleFollow']['error']}")));
+                    Get.snackbar(
+                      "팔로우 오류",
+                      "${resultData['toggleFollow']['error']}",
+                    );
                   } else {
                     setState(() {
                       _followingState = resultData['toggleFollow']['follow'];

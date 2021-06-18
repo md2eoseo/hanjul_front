@@ -65,7 +65,5 @@ class _RootPageState extends State<RootPage> {
     setState(() {
       _isLoggedIn = false;
     });
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('로그아웃!')));
   }
 }

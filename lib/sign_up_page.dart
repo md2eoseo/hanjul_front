@@ -122,13 +122,15 @@ class _SignUpPageState extends State<SignUpPage> {
                     },
                     onCompleted: (dynamic resultData) async {
                       if (!resultData['createAccount']['ok']) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(
-                                "${resultData['createAccount']['error']}")));
+                        Get.snackbar(
+                          "다른 이메일 또는 사용자명을 입력해주세요.",
+                          "${resultData['createAccount']['error']}",
+                        );
                       } else {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(
-                                "${resultData['createAccount']['username']}님 가입이 완료되었습니다!")));
+                        Get.snackbar(
+                          "가입이 완료되었습니다!",
+                          "${resultData['createAccount']['username']}으로 로그인 해주세요.",
+                        );
                         Get.back();
                       }
                     },

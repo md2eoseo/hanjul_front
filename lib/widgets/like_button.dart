@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 String toggleLikeMutation = """
@@ -50,8 +51,10 @@ class _LikeButtonState extends State<LikeButton> {
           },
           onCompleted: (dynamic resultData) async {
             if (!resultData['toggleLike']['ok']) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text("${resultData['toggleLike']['error']}")));
+              Get.snackbar(
+                "좋아요 오류",
+                "${resultData['toggleFollow']['error']}",
+              );
             } else {
               widget.updateIsLikedCache(widget.postId);
             }

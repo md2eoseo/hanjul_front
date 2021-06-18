@@ -67,12 +67,13 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   onCompleted: (dynamic resultData) async {
                     if (!resultData['login']['ok']) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("${resultData['login']['error']}")));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content: Text("${resultData['login']['error']}"),
+                            backgroundColor: Colors.red[200]),
+                      );
                     } else {
                       widget.onLoggedIn(resultData['login']['token']);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('$_username님 환영합니다!')));
                     }
                   },
                 ),
