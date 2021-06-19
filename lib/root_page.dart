@@ -1,3 +1,4 @@
+import 'package:hanjul_front/config/utils.dart';
 import "package:universal_html/html.dart" as html;
 
 import 'package:flutter/foundation.dart';
@@ -29,7 +30,7 @@ class _RootPageState extends State<RootPage> {
   }
 
   void _checkLoggedInUser() async {
-    final String token = await _getToken();
+    final String token = await getToken();
     if (token != null) {
       final Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
       if (decodedToken['id'] != null) {
@@ -60,6 +61,3 @@ class _RootPageState extends State<RootPage> {
     });
   }
 }
-
-Future<String> _getToken() async =>
-    !kIsWeb ? storage.read(key: 'TOKEN') : html.window.localStorage['TOKEN'];

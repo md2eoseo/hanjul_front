@@ -11,6 +11,7 @@ String seeArchive = """
           username
           avatar
         }
+        authorId
         likesCount
         isLiked
       }

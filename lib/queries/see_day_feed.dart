@@ -11,6 +11,7 @@ String seeDayFeed = """
           username
           avatar
         }
+        authorId
         likesCount
         isLiked
       }

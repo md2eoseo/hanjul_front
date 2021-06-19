@@ -8,6 +8,7 @@ String seeUserPosts = """
         text
         likesCount
         isLiked
+        authorId
       }
       lastId
     }
