@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:hanjul_front/mutations/create_post.dart';
+import 'package:hanjul_front/widgets/posting_button.dart';
 import 'package:hanjul_front/widgets/todays_word.dart';
 
 class WritingPage extends StatefulWidget {
@@ -24,13 +23,6 @@ class _WritingPageState extends State<WritingPage> {
 
   @override
   Widget build(BuildContext context) {
-    Function _checkText = () {
-      if (_text.contains(widget.word['word'])) return true;
-      for (final v in widget.word['variation']) {
-        if (_text.contains(v)) return true;
-      }
-      return false;
-    };
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -51,54 +43,17 @@ class _WritingPageState extends State<WritingPage> {
           ),
         ),
         actions: [
-          Mutation(
-            options: MutationOptions(
-              document: gql(createPost),
-              update: (GraphQLDataProxy cache, QueryResult result) {
-                return cache;
-              },
-              onCompleted: (dynamic resultData) {
-                if (resultData['createPost']['ok']) {
-                  Get.back();
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content: Text('글 작성에 실패했습니다.'),
-                        backgroundColor: Colors.red[200]),
-                  );
-                }
-              },
-            ),
-            builder: (
-              RunMutation runMutation,
-              QueryResult result,
-            ) {
-              return IconButton(
-                icon: Icon(Icons.check, size: 48),
-                onPressed: () {
-                  if (!_checkText()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                          content: Text('글에 오늘의 단어를 포함시켜주세요.'),
-                          backgroundColor: Colors.red[200]),
-                    );
-                    return;
-                  }
-                  runMutation(
-                      {'wordId': widget.word['id'], 'text': _text.trim()});
-                },
-                padding: EdgeInsets.only(right: 28),
-              );
-            },
-          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [PostingButton(text: _text, word: widget.word)],
+          )
         ],
       ),
       body: Container(
         child: Column(
           children: <Widget>[
-            SizedBox(height: 24),
+            SizedBox(height: 18),
             TodaysWord(word: widget.word),
-            SizedBox(height: 24),
             Card(
               child: Padding(
                 padding: EdgeInsets.all(8.0),
@@ -107,7 +62,7 @@ class _WritingPageState extends State<WritingPage> {
                   maxLines: 8,
                   maxLength: 160,
                   maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                  style: TextStyle(fontSize: 36),
+                  style: TextStyle(fontSize: 32),
                   decoration: InputDecoration.collapsed(
                     hintText: "글을 작성해주세요.",
                   ),
