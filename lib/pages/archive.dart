@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hanjul_front/widgets/archive.dart';
-import 'package:hanjul_front/writing_page.dart';
+import 'package:hanjul_front/pages/writing.dart';
 
 class ArchivePage extends StatefulWidget {
   ArchivePage({Key key, this.word}) : super(key: key);

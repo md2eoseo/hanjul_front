@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:hanjul_front/config/utils.dart';
-import 'package:hanjul_front/splash.dart';
+import 'package:hanjul_front/pages/splash.dart';
 import "package:flutter/material.dart";
-import 'package:hanjul_front/login_page.dart';
-import "package:hanjul_front/tab_page.dart";
+import 'package:hanjul_front/pages/login.dart';
+import 'package:hanjul_front/pages/tab.dart';
 
 class RootPage extends StatefulWidget {
   @override
@@ -24,7 +24,7 @@ class _RootPageState extends State<RootPage> {
   @override
   Widget build(BuildContext context) {
     return _splashLoading
-        ? Splash()
+        ? SplashPage()
         : _isLoggedIn
             ? TabPage(onLoggedOut: _onLoggedOut)
             : LoginPage(onLoggedIn: _onLoggedIn);
@@ -41,7 +41,7 @@ class _RootPageState extends State<RootPage> {
   }
 
   void _checkLoggedInUser() async {
-    final String userId = await getLoggedInUserId();
+    final int userId = await getLoggedInUserId();
     if (userId != null) {
       _onLoggedIn();
     }

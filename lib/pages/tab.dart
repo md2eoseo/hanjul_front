@@ -1,12 +1,12 @@
 import "package:flutter/material.dart";
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:hanjul_front/archive_page.dart';
+import 'package:hanjul_front/pages/archive.dart';
 import 'package:hanjul_front/config/client.dart';
-import "package:hanjul_front/feed_page.dart";
-import 'package:hanjul_front/my_page.dart';
+import 'package:hanjul_front/pages/feed.dart';
+import 'package:hanjul_front/pages/my.dart';
 import 'package:hanjul_front/queries/search_words.dart';
 import 'package:hanjul_front/queries/see_my_profile.dart';
-import 'package:hanjul_front/search_page.dart';
+import 'package:hanjul_front/pages/search.dart';
 import 'package:hanjul_front/config/utils.dart';
 
 class TabPage extends StatefulWidget {

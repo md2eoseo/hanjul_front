@@ -16,7 +16,7 @@ String getTodaysDate() {
 Future<String> getToken() async =>
     !kIsWeb ? storage.read(key: 'TOKEN') : html.window.localStorage['TOKEN'];
 
-Future<String> getLoggedInUserId() async {
+Future<int> getLoggedInUserId() async {
   final String token = await getToken();
   if (token == null) {
     return null;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hanjul_front/widgets/day_feed.dart';
-import 'package:hanjul_front/writing_page.dart';
+import 'package:hanjul_front/pages/writing.dart';
 
 class FeedPage extends StatefulWidget {
   FeedPage({Key key, this.word}) : super(key: key);

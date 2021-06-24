@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hanjul_front/config/utils.dart';
 import 'package:hanjul_front/mutations/login.dart';
-import 'package:hanjul_front/sign_up_page.dart';
+import 'package:hanjul_front/pages/sign_up.dart';
 import 'package:hanjul_front/widgets/logo.dart';
 
 class LoginPage extends StatefulWidget {
