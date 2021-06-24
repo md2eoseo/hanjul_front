@@ -1,6 +1,7 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hanjul_front/config/utils.dart';
 import 'package:hanjul_front/queries/see_profile.dart';
 import 'package:hanjul_front/queries/see_user_posts.dart';
 import 'package:hanjul_front/widgets/post_tile.dart';
@@ -53,6 +54,7 @@ class _UserProfileState extends State<UserProfile> {
                 IconButton(
                   icon: Icon(Icons.logout, size: 48),
                   onPressed: () async {
+                    deleteToken();
                     widget.onLoggedOut();
                   },
                   padding: EdgeInsets.only(right: 28),

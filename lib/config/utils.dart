@@ -16,12 +16,30 @@ String getTodaysDate() {
 Future<String> getToken() async =>
     !kIsWeb ? storage.read(key: 'TOKEN') : html.window.localStorage['TOKEN'];
 
-getLoggedInUserId() async {
+Future<String> getLoggedInUserId() async {
   final String token = await getToken();
-  if (token != null) {
-    final Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
-    if (decodedToken['id'] != null) {
-      return decodedToken['id'];
-    }
+  if (token == null) {
+    return null;
+  }
+  final Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+  if (decodedToken['id'] == null) {
+    return null;
+  }
+  return decodedToken['id'];
+}
+
+void saveToken(String token) async {
+  if (!kIsWeb) {
+    await storage.write(key: 'TOKEN', value: token);
+  } else {
+    html.window.localStorage['TOKEN'] = token;
+  }
+}
+
+void deleteToken() async {
+  if (!kIsWeb) {
+    await storage.delete(key: 'TOKEN');
+  } else {
+    html.window.localStorage.remove('TOKEN');
   }
 }

@@ -1,12 +1,9 @@
+import 'dart:async';
 import 'package:hanjul_front/config/utils.dart';
-import "package:universal_html/html.dart" as html;
-
-import 'package:flutter/foundation.dart';
+import 'package:hanjul_front/splash.dart';
 import "package:flutter/material.dart";
-import 'package:hanjul_front/config/client.dart';
 import 'package:hanjul_front/login_page.dart';
 import "package:hanjul_front/tab_page.dart";
-import 'package:jwt_decoder/jwt_decoder.dart';
 
 class RootPage extends StatefulWidget {
   @override
@@ -14,48 +11,49 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
+  bool _splashLoading = true;
   bool _isLoggedIn = false;
 
   @override
   void initState() {
     _checkLoggedInUser();
+    _loadSplash();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return _isLoggedIn
-        ? TabPage(onLoggedOut: _onLoggedOut)
-        : LoginPage(onLoggedIn: _onLoggedIn);
+    return _splashLoading
+        ? Splash()
+        : _isLoggedIn
+            ? TabPage(onLoggedOut: _onLoggedOut)
+            : LoginPage(onLoggedIn: _onLoggedIn);
+  }
+
+  Future<Timer> _loadSplash() async {
+    return Timer(Duration(milliseconds: 1000), onDoneLoading);
+  }
+
+  void onDoneLoading() async {
+    setState(() {
+      _splashLoading = false;
+    });
   }
 
   void _checkLoggedInUser() async {
-    final String token = await getToken();
-    if (token != null) {
-      final Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
-      if (decodedToken['id'] != null) {
-        _onLoggedIn(token);
-      }
+    final String userId = await getLoggedInUserId();
+    if (userId != null) {
+      _onLoggedIn();
     }
   }
 
-  void _onLoggedIn(String token) async {
-    if (!kIsWeb) {
-      await storage.write(key: 'TOKEN', value: token);
-    } else {
-      html.window.localStorage['TOKEN'] = token;
-    }
+  void _onLoggedIn() async {
     setState(() {
       _isLoggedIn = true;
     });
   }
 
   void _onLoggedOut() async {
-    if (!kIsWeb) {
-      await storage.delete(key: 'TOKEN');
-    } else {
-      html.window.localStorage.remove('TOKEN');
-    }
     setState(() {
       _isLoggedIn = false;
     });
