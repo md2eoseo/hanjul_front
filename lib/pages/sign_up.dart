@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -26,13 +27,15 @@ class _SignUpPageState extends State<SignUpPage> {
         title: "회원가입",
         leading: true,
       ),
-      body: Container(
-        padding: EdgeInsets.fromLTRB(32, 64, 32, 96),
-        child: Center(
+      body: Center(
+        child: Container(
+          width: kIsWeb ? 420 : null,
+          padding: EdgeInsets.fromLTRB(32, 64, 32, 96),
           child: Form(
             key: formKey,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment:
+                  kIsWeb ? MainAxisAlignment.center : MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 SizedBox(
@@ -94,7 +97,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 SizedBox(
-                  height: 180,
+                  height: kIsWeb ? 98 : 180,
                   child: TextFormField(
                     obscureText: true,
                     decoration: InputDecoration(labelText: '비밀번호'),

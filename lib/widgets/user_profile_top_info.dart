@@ -38,8 +38,9 @@ class UserProfileTopInfo extends StatelessWidget {
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          SizedBox(height: 32),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -75,8 +76,9 @@ class UserProfileTopInfo extends StatelessWidget {
               ),
             ],
           ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 18, horizontal: 24),
+          SizedBox(height: 24),
+          SizedBox(
+            width: 380,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,23 +92,18 @@ class UserProfileTopInfo extends StatelessWidget {
                   Text(
                     bio,
                     style: TextStyle(fontSize: 18),
-                  )
+                  ),
+                if (!isMe) SizedBox(height: 18),
+                if (!isMe)
+                  FollowButton(
+                    username: username,
+                    isFollowers: isFollowers,
+                    isFollowing: isFollowing,
+                    width: 380.0,
+                  ),
               ],
             ),
           ),
-          if (!isMe)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                FollowButton(
-                  username: username,
-                  isFollowers: isFollowers,
-                  isFollowing: isFollowing,
-                  width: MediaQuery.of(context).size.width - 40,
-                ),
-              ],
-            ),
         ],
       ),
     );

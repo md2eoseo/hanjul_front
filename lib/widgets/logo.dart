@@ -14,7 +14,7 @@ class Logo extends StatelessWidget {
               height: 90,
               child: kIsWeb
                   ? Image.asset(
-                      'logo.png',
+                      'assets/logo.png',
                       fit: BoxFit.cover,
                     )
                   : Image(

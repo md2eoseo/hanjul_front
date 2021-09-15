@@ -23,10 +23,13 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: EdgeInsets.fromLTRB(32, 96, 32, 96),
-        child: Center(
+      body: Center(
+        child: Container(
+          width: kIsWeb ? 420 : null,
+          padding:
+              kIsWeb ? EdgeInsets.all(32) : EdgeInsets.fromLTRB(32, 96, 32, 96),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Logo(),
               SizedBox(height: 48),
@@ -57,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     SizedBox(
-                      height: 180,
+                      height: kIsWeb ? 120 : 180,
                       child: TextFormField(
                         obscureText: true,
                         decoration: InputDecoration(

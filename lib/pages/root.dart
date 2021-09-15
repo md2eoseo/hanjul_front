@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:hanjul_front/config/utils.dart';
 import 'package:hanjul_front/pages/splash.dart';
 import "package:flutter/material.dart";
@@ -23,11 +24,15 @@ class _RootPageState extends State<RootPage> {
 
   @override
   Widget build(BuildContext context) {
-    return _splashLoading
-        ? SplashPage()
-        : _isLoggedIn
+    return kIsWeb
+        ? _isLoggedIn
             ? TabPage(onLoggedOut: _onLoggedOut)
-            : LoginPage(onLoggedIn: _onLoggedIn);
+            : LoginPage(onLoggedIn: _onLoggedIn)
+        : _splashLoading
+            ? SplashPage()
+            : _isLoggedIn
+                ? TabPage(onLoggedOut: _onLoggedOut)
+                : LoginPage(onLoggedIn: _onLoggedIn);
   }
 
   Future<Timer> _loadSplash() async {

@@ -48,7 +48,6 @@ class _UserProfileState extends State<UserProfile> {
             ],
           ),
           body: Container(
-            padding: EdgeInsets.only(top: 32),
             child: Column(
               children: [
                 Query(
