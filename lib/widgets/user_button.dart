@@ -11,6 +11,7 @@ class UserButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
+      style: TextButton.styleFrom(splashFactory: NoSplash.splashFactory),
       onPressed: () {
         Get.to(
           () => UserProfile(

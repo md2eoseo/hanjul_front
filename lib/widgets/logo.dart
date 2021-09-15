@@ -11,15 +11,15 @@ class Logo extends StatelessWidget {
           children: [
             SizedBox(
               width: 160,
-              height: 160,
+              height: 90,
               child: kIsWeb
                   ? Image.asset(
                       'logo.png',
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                     )
                   : Image(
                       image: AssetImage('assets/logo.png'),
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                     ),
             ),
             Text(

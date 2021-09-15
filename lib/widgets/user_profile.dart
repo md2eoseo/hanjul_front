@@ -1,9 +1,9 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hanjul_front/config/utils.dart';
 import 'package:hanjul_front/queries/see_profile.dart';
 import 'package:hanjul_front/queries/see_user_posts.dart';
+import 'package:hanjul_front/widgets/main_app_bar.dart';
 import 'package:hanjul_front/widgets/post_tile.dart';
 import 'package:hanjul_front/widgets/user_profile_top_info.dart';
 
@@ -31,33 +31,19 @@ class _UserProfileState extends State<UserProfile> {
     return GraphQLConsumer(
       builder: (GraphQLClient client) {
         return Scaffold(
-          appBar: AppBar(
-            title: TextButton(
-              child: Text(
-                widget.username,
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              onPressed: () {
-                _scrollController.animateTo(
-                  0,
-                  duration: Duration(milliseconds: 300),
-                  curve: Curves.easeOut,
-                );
-              },
-            ),
-            actions: [
+          appBar: MainAppBar(
+            appBar: AppBar(),
+            title: widget.username,
+            scrollController: _scrollController,
+            leading: widget.onLoggedOut == null,
+            iconButtons: [
               if (widget.onLoggedOut != null)
                 IconButton(
-                  icon: Icon(Icons.logout, size: 48),
+                  icon: Icon(Icons.logout, size: 36, color: Colors.black),
                   onPressed: () async {
-                    deleteToken();
                     widget.onLoggedOut();
                   },
-                  padding: EdgeInsets.only(right: 28),
+                  padding: EdgeInsets.only(right: 32),
                 )
             ],
           ),

@@ -51,7 +51,7 @@ class PostingButton extends StatelessWidget {
                 ),
               )
             : IconButton(
-                icon: Icon(Icons.check, size: 48),
+                icon: Icon(Icons.check, size: 36, color: Colors.black),
                 onPressed: () {
                   if (!_checkText()) {
                     ScaffoldMessenger.of(context).showSnackBar(

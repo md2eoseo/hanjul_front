@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hanjul_front/mutations/create_account.dart';
+import 'package:hanjul_front/widgets/main_app_bar.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -20,27 +21,13 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            size: 48,
-          ),
-          onPressed: () {
-            Get.back();
-          },
-          padding: EdgeInsets.only(left: 8),
-        ),
-        title: Text(
-          "회원가입",
-          style: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+      appBar: MainAppBar(
+        appBar: AppBar(),
+        title: "회원가입",
+        leading: true,
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        padding: EdgeInsets.fromLTRB(32, 64, 32, 96),
         child: Center(
           child: Form(
             key: formKey,
@@ -48,62 +35,77 @@ class _SignUpPageState extends State<SignUpPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                TextFormField(
-                  decoration: InputDecoration(labelText: '성'),
-                  validator: (value) {
-                    final trimmedValue = value.trim();
-                    return trimmedValue.isEmpty ? '성을 입력해주세요.' : null;
-                  },
-                  onSaved: (value) => _lastName = value.trim(),
-                  style: TextStyle(fontSize: 24),
-                  textInputAction: TextInputAction.next,
+                SizedBox(
+                  height: 88,
+                  child: TextFormField(
+                    decoration: InputDecoration(labelText: '성'),
+                    validator: (value) {
+                      final trimmedValue = value.trim();
+                      return trimmedValue.isEmpty ? '성을 입력해주세요.' : null;
+                    },
+                    onSaved: (value) => _lastName = value.trim(),
+                    style: TextStyle(fontSize: 24),
+                    textInputAction: TextInputAction.next,
+                  ),
                 ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: '이름'),
-                  validator: (value) {
-                    final trimmedValue = value.trim();
-                    return trimmedValue.isEmpty ? '이름을 입력해주세요.' : null;
-                  },
-                  onSaved: (value) => _firstName = value.trim(),
-                  style: TextStyle(fontSize: 24),
-                  textInputAction: TextInputAction.next,
+                SizedBox(
+                  height: 88,
+                  child: TextFormField(
+                    decoration: InputDecoration(labelText: '이름'),
+                    validator: (value) {
+                      final trimmedValue = value.trim();
+                      return trimmedValue.isEmpty ? '이름을 입력해주세요.' : null;
+                    },
+                    onSaved: (value) => _firstName = value.trim(),
+                    style: TextStyle(fontSize: 24),
+                    textInputAction: TextInputAction.next,
+                  ),
                 ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: '이메일'),
-                  validator: (value) {
-                    final trimmedValue = value.trim();
-                    if (trimmedValue.isEmpty) return '이메일을 입력해주세요.';
-                    Pattern pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
-                    RegExp regex = new RegExp(pattern);
-                    return regex.hasMatch(trimmedValue)
-                        ? null
-                        : '이메일 형식으로 입력해주세요.';
-                  },
-                  onSaved: (value) => _email = value.trim(),
-                  style: TextStyle(fontSize: 24),
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
+                SizedBox(
+                  height: 88,
+                  child: TextFormField(
+                    decoration: InputDecoration(labelText: '이메일'),
+                    validator: (value) {
+                      final trimmedValue = value.trim();
+                      if (trimmedValue.isEmpty) return '이메일을 입력해주세요.';
+                      Pattern pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+                      RegExp regex = new RegExp(pattern);
+                      return regex.hasMatch(trimmedValue)
+                          ? null
+                          : '이메일 형식으로 입력해주세요.';
+                    },
+                    onSaved: (value) => _email = value.trim(),
+                    style: TextStyle(fontSize: 24),
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                  ),
                 ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: '사용자명'),
-                  validator: (value) {
-                    final trimmedValue = value.trim();
-                    return trimmedValue.isEmpty ? '사용자명을 입력해주세요.' : null;
-                  },
-                  onSaved: (value) => _username = value.trim(),
-                  style: TextStyle(fontSize: 24),
-                  textInputAction: TextInputAction.next,
+                SizedBox(
+                  height: 88,
+                  child: TextFormField(
+                    decoration: InputDecoration(labelText: '사용자명'),
+                    validator: (value) {
+                      final trimmedValue = value.trim();
+                      return trimmedValue.isEmpty ? '사용자명을 입력해주세요.' : null;
+                    },
+                    onSaved: (value) => _username = value.trim(),
+                    style: TextStyle(fontSize: 24),
+                    textInputAction: TextInputAction.next,
+                  ),
                 ),
-                TextFormField(
-                  obscureText: true,
-                  decoration: InputDecoration(labelText: '비밀번호'),
-                  validator: (value) {
-                    final trimmedValue = value.trim();
-                    return trimmedValue.isEmpty ? '비밀번호를 입력해주세요.' : null;
-                  },
-                  onSaved: (value) => _password = value.trim(),
-                  style: TextStyle(fontSize: 24),
-                  textInputAction: TextInputAction.done,
+                SizedBox(
+                  height: 180,
+                  child: TextFormField(
+                    obscureText: true,
+                    decoration: InputDecoration(labelText: '비밀번호'),
+                    validator: (value) {
+                      final trimmedValue = value.trim();
+                      return trimmedValue.isEmpty ? '비밀번호를 입력해주세요.' : null;
+                    },
+                    onSaved: (value) => _password = value.trim(),
+                    style: TextStyle(fontSize: 24),
+                    textInputAction: TextInputAction.done,
+                  ),
                 ),
                 Mutation(
                   options: MutationOptions(
@@ -118,9 +120,11 @@ class _SignUpPageState extends State<SignUpPage> {
                           "${resultData['createAccount']['error']}",
                         );
                       } else {
-                        Get.snackbar(
-                          "가입이 완료되었습니다!",
-                          "${resultData['createAccount']['username']}으로 로그인 해주세요.",
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                                "가입이 완료되었습니다!\n${resultData['createAccount']['username']}(으)로 로그인 해주세요."),
+                          ),
                         );
                         Get.back();
                       }

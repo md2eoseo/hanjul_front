@@ -19,6 +19,7 @@ class _UserTileState extends State<UserTile> {
       title: Container(
         padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         child: TextButton(
+          style: TextButton.styleFrom(splashFactory: NoSplash.splashFactory),
           onPressed: () {
             Get.to(
               () => UserProfile(username: widget.user['username']),

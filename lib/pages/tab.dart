@@ -80,24 +80,30 @@ class _TabPageState extends State<TabPage> {
             ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.grey,
+        backgroundColor: Colors.black,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white.withOpacity(.60),
-        selectedFontSize: 14,
-        unselectedFontSize: 14,
-        onTap: _onItemTapped,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        selectedFontSize: 20,
+        unselectedFontSize: 20,
+        onTap: _onTap,
         currentIndex: _currentIndex,
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.notes), label: "피드"),
-          BottomNavigationBarItem(icon: Icon(Icons.archive), label: "아카이브"),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: "검색"),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: "MY")
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notes, size: 32), label: "피드"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.archive, size: 32), label: "아카이브"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.search, size: 32), label: "검색"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle, size: 32), label: "MY")
         ],
       ),
     );
   }
 
-  void _onItemTapped(int index) {
+  void _onTap(int index) {
     setState(() {
       _currentIndex = index;
     });

@@ -99,46 +99,50 @@ class _PostTileState extends State<PostTile> {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onLongPress: () async {
-        if (widget.post['authorId'] == await getLoggedInUserId()) {
-          _showDeletePostDialog();
-        } else {
-          _showBlameDialog();
-        }
-      },
-      title: Container(
-        padding: EdgeInsets.all(4),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.post['text'],
-              style: TextStyle(
-                fontSize: 28,
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 12),
-              height: 48,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  widget.post['author'] != null
-                      ? UserButton(
-                          authorName: widget.post['author']['username'],
-                          authorAvatar: widget.post['author']['avatar'],
-                        )
-                      : SizedBox(),
-                  LikeButton(
-                    postId: widget.post['id'],
-                    isLiked: widget.post['isLiked'],
-                    likesCount: widget.post['likesCount'],
+    return Container(
+      child: ListTile(
+        onLongPress: () async {
+          if (widget.post['authorId'] == await getLoggedInUserId()) {
+            _showDeletePostDialog();
+          } else {
+            _showBlameDialog();
+          }
+        },
+        title: Container(
+          padding: EdgeInsets.all(4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: Text(
+                  widget.post['text'],
+                  style: TextStyle(
+                    fontSize: 28,
                   ),
-                ],
+                ),
               ),
-            ),
-          ],
+              Container(
+                margin: EdgeInsets.only(top: 12),
+                height: 48,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    widget.post['author'] != null
+                        ? UserButton(
+                            authorName: widget.post['author']['username'],
+                            authorAvatar: widget.post['author']['avatar'],
+                          )
+                        : SizedBox(),
+                    LikeButton(
+                      postId: widget.post['id'],
+                      isLiked: widget.post['isLiked'],
+                      likesCount: widget.post['likesCount'],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

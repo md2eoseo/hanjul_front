@@ -22,7 +22,6 @@ class MyApp extends StatelessWidget {
           title: '한줄',
           theme: ThemeData(
             fontFamily: 'Nanum Myeongjo',
-            primaryColor: Colors.grey[300],
             snackBarTheme: SnackBarThemeData(
               backgroundColor: Colors.green[300],
               contentTextStyle: TextStyle(fontSize: 20),

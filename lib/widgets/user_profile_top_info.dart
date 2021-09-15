@@ -76,19 +76,20 @@ class UserProfileTopInfo extends StatelessWidget {
             ],
           ),
           Container(
-            padding: EdgeInsets.symmetric(vertical: 18, horizontal: 32),
+            padding: EdgeInsets.symmetric(vertical: 18, horizontal: 24),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "$firstName $lastName",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
+                if (bio != null) SizedBox(height: 4),
                 if (bio != null)
                   Text(
                     bio,
-                    style: TextStyle(fontSize: 22),
+                    style: TextStyle(fontSize: 18),
                   )
               ],
             ),

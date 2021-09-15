@@ -1,4 +1,4 @@
-const String deletePost = """
+String deletePost = """
   mutation deletePost(\$id: Int!) {
     deletePost(id: \$id) {
       ok

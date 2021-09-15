@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hanjul_front/queries/see_followers.dart';
+import 'package:hanjul_front/widgets/main_app_bar.dart';
 import 'package:hanjul_front/widgets/user_tile.dart';
 
 class Followers extends StatefulWidget {
@@ -24,14 +25,10 @@ class _FollowersState extends State<Followers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "${widget.username}의 팔로워",
-          style: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+      appBar: MainAppBar(
+        appBar: AppBar(),
+        title: "${widget.username}의 팔로워",
+        leading: true,
       ),
       body: GraphQLConsumer(
         builder: (GraphQLClient client) {

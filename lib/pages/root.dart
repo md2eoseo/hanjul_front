@@ -54,6 +54,7 @@ class _RootPageState extends State<RootPage> {
   }
 
   void _onLoggedOut() async {
+    deleteToken();
     setState(() {
       _isLoggedIn = false;
     });
