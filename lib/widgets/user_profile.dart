@@ -1,7 +1,10 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hanjul_front/pages/setting.dart';
 import 'package:hanjul_front/queries/see_profile.dart';
 import 'package:hanjul_front/queries/see_user_posts.dart';
 import 'package:hanjul_front/widgets/main_app_bar.dart';
@@ -42,10 +45,13 @@ class _UserProfileState extends State<UserProfile> {
                 IconButton(
                   icon: FaIcon(FontAwesomeIcons.cog,
                       size: 28, color: Colors.black),
-                  onPressed: () async {
-                    widget.onLoggedOut();
-                  },
                   padding: EdgeInsets.only(right: 28),
+                  onPressed: () => {
+                    Get.to(
+                      () => SettingPage(onLoggedOut: widget.onLoggedOut),
+                      transition: Transition.rightToLeft,
+                    )
+                  },
                 )
             ],
           ),
