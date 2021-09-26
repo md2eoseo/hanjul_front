@@ -1,3 +1,4 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -39,11 +40,12 @@ class _UserProfileState extends State<UserProfile> {
             iconButtons: [
               if (widget.onLoggedOut != null)
                 IconButton(
-                  icon: Icon(Icons.logout, size: 36, color: Colors.black),
+                  icon: FaIcon(FontAwesomeIcons.cog,
+                      size: 28, color: Colors.black),
                   onPressed: () async {
                     widget.onLoggedOut();
                   },
-                  padding: EdgeInsets.only(right: 32),
+                  padding: EdgeInsets.only(right: 28),
                 )
             ],
           ),
