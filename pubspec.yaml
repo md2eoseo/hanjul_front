@@ -19,6 +19,7 @@ dependencies:
   graphql: ^5.0.0-nullsafety.4
   universal_html: ^2.0.8
   get:
+  font_awesome_flutter: ^9.1.0
 
 dev_dependencies:
   flutter_test:
