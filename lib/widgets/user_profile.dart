@@ -12,7 +12,9 @@ import 'package:hanjul_front/widgets/post_tile.dart';
 import 'package:hanjul_front/widgets/user_profile_top_info.dart';
 
 class UserProfile extends StatefulWidget {
-  UserProfile({Key key, this.username, this.onLoggedOut}) : super(key: key);
+  UserProfile({Key key, this.me, this.username, this.onLoggedOut})
+      : super(key: key);
+  final me;
   final username;
   final onLoggedOut;
 
@@ -48,7 +50,8 @@ class _UserProfileState extends State<UserProfile> {
                   padding: EdgeInsets.only(right: 28),
                   onPressed: () => {
                     Get.to(
-                      () => SettingPage(onLoggedOut: widget.onLoggedOut),
+                      () => SettingPage(
+                          me: widget.me, onLoggedOut: widget.onLoggedOut),
                       transition: Transition.rightToLeft,
                     )
                   },
