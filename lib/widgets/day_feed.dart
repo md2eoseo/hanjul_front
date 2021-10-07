@@ -47,6 +47,7 @@ class _DayFeedState extends State<DayFeed> {
                   }
                   List posts = [];
                   List<Widget> newPostWidgets = [];
+                  // TODO: handle error - call on null value
                   if (!result.data['seeDayFeed']['ok']) {
                     return Center(child: Text("글 불러오기에 실패했습니다."));
                   } else {

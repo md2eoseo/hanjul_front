@@ -48,7 +48,6 @@ class _PostTileState extends State<PostTile> {
                 final QueryResult result = await client.value.mutate(options);
 
                 if (result.hasException) {
-                  print(result.exception.toString());
                   Get.snackbar("글을 삭제 중에 오류가 발생했습니다.", "");
                   return;
                 }
