@@ -22,12 +22,6 @@ class _SettingAccountPageState extends State<SettingAccountPage> {
   String _bio = '';
 
   @override
-  void initState() {
-    print(widget.me);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MainAppBar(
