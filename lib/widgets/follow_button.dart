@@ -5,7 +5,7 @@ import 'package:hanjul_front/mutations/toggle_follow.dart';
 
 class FollowButton extends StatefulWidget {
   FollowButton({
-    Key key,
+    Key? key,
     this.username,
     this.isFollowers,
     this.isFollowing,
@@ -39,7 +39,7 @@ class _FollowButtonState extends State<FollowButton> {
             child: Mutation(
               options: MutationOptions(
                 document: gql(toggleFollow),
-                update: (GraphQLDataProxy cache, QueryResult result) {
+                update: (GraphQLDataProxy? cache, QueryResult? result) {
                   return cache;
                 },
                 onCompleted: (dynamic resultData) async {
@@ -56,13 +56,13 @@ class _FollowButtonState extends State<FollowButton> {
                 },
               ),
               builder: (
-                RunMutation runMutation,
-                QueryResult result,
+                RunMutation? runMutation,
+                QueryResult? result,
               ) {
                 return ElevatedButton(
                   onPressed: () {
-                    if (result.isLoading) return;
-                    runMutation({'username': widget.username});
+                    if (result!.isLoading) return;
+                    runMutation!({'username': widget.username});
                   },
                   style: _followingState
                       ? ButtonStyle(
@@ -73,8 +73,9 @@ class _FollowButtonState extends State<FollowButton> {
                               side: BorderSide(color: Colors.black, width: 2.0),
                             ),
                           ),
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              Colors.grey[100]),
+                          backgroundColor: MaterialStateProperty.all<Color?>(
+                            Colors.grey[100],
+                          ),
                         )
                       : ButtonStyle(),
                   child: Text(

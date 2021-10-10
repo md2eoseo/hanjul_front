@@ -9,10 +9,10 @@ import 'package:hanjul_front/widgets/user_button.dart';
 
 class PostTile extends StatefulWidget {
   PostTile({
-    Key key,
+    Key? key,
     this.post,
   }) : super(key: key);
-  final Map post;
+  final Map? post;
 
   @override
   _PostTileState createState() => _PostTileState();
@@ -41,7 +41,7 @@ class _PostTileState extends State<PostTile> {
                 final MutationOptions options = MutationOptions(
                   document: gql(deletePost),
                   variables: <String, dynamic>{
-                    'id': widget.post['id'],
+                    'id': widget.post?['id'],
                   },
                 );
 
@@ -52,7 +52,7 @@ class _PostTileState extends State<PostTile> {
                   return;
                 }
 
-                final bool success = result.data['deletePost']['ok'];
+                final bool success = result.data?['deletePost']['ok'];
 
                 if (success) {
                   Get.snackbar("글이 삭제되었습니다.", "");
@@ -101,7 +101,7 @@ class _PostTileState extends State<PostTile> {
     return Container(
       child: ListTile(
         onLongPress: () async {
-          if (widget.post['authorId'] == await getLoggedInUserId()) {
+          if (widget.post?['authorId'] == await getLoggedInUserId()) {
             _showDeletePostDialog();
           } else {
             _showBlameDialog();
@@ -114,7 +114,7 @@ class _PostTileState extends State<PostTile> {
             children: [
               Container(
                 child: Text(
-                  widget.post['text'],
+                  widget.post?['text'],
                   style: TextStyle(
                     fontSize: 28,
                   ),
@@ -126,16 +126,16 @@ class _PostTileState extends State<PostTile> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    widget.post['author'] != null
+                    widget.post?['author'] != null
                         ? UserButton(
-                            authorName: widget.post['author']['username'],
-                            authorAvatar: widget.post['author']['avatar'],
+                            authorName: widget.post?['author']['username'],
+                            authorAvatar: widget.post?['author']['avatar'],
                           )
                         : SizedBox(),
                     LikeButton(
-                      postId: widget.post['id'],
-                      isLiked: widget.post['isLiked'],
-                      likesCount: widget.post['likesCount'],
+                      postId: widget.post?['id'],
+                      isLiked: widget.post?['isLiked'],
+                      likesCount: widget.post?['likesCount'],
                     ),
                   ],
                 ),

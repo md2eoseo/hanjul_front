@@ -4,7 +4,7 @@ import 'package:hanjul_front/queries/search_users.dart';
 import 'package:hanjul_front/widgets/user_tile.dart';
 
 class SearchResults extends StatefulWidget {
-  SearchResults({Key key, this.keyword}) : super(key: key);
+  SearchResults({Key? key, this.keyword}) : super(key: key);
   final keyword;
 
   @override
@@ -54,7 +54,7 @@ class _SearchResultsState extends State<SearchResults> {
         variables: {'keyword': widget.keyword},
       ),
       builder: (QueryResult result,
-          {VoidCallback refetch, FetchMore fetchMore}) {
+          {VoidCallback? refetch, FetchMore? fetchMore}) {
         if (result.hasException) {
           return Text(result.exception.toString());
         }
@@ -76,12 +76,12 @@ class _SearchResultsState extends State<SearchResults> {
               ],
             ),
           );
-        } else if (!result.data['searchUsers']['ok']) {
+        } else if (!result.data?['searchUsers']['ok']) {
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text("검색에 실패했습니다."),
           );
-        } else if (result.data['searchUsers']['users'].length == 0) {
+        } else if (result.data?['searchUsers']['users'].length == 0) {
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Text(
@@ -93,19 +93,19 @@ class _SearchResultsState extends State<SearchResults> {
           FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
             variables: {
               'keyword': widget.keyword,
-              'lastId': result.data['searchUsers']['lastId'],
+              'lastId': result.data?['searchUsers']['lastId'],
             },
             updateQuery: (previousResultData, fetchMoreResultData) {
               List users = [
-                ...previousResultData['searchUsers']['users'],
-                ...fetchMoreResultData['searchUsers']['users']
+                ...previousResultData?['searchUsers']['users'],
+                ...fetchMoreResultData?['searchUsers']['users']
               ];
-              fetchMoreResultData['searchUsers']['users'] = users;
+              fetchMoreResultData?['searchUsers']['users'] = users;
               return fetchMoreResultData;
             },
           );
 
-          List users = result.data['searchUsers']['users'];
+          List users = result.data?['searchUsers']['users'];
           List<Widget> newUserWidgets = [
             for (var user in users) UserTile(user: user),
           ];

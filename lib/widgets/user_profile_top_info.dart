@@ -8,7 +8,7 @@ import 'package:hanjul_front/widgets/user_profile_top_info_box.dart';
 
 class UserProfileTopInfo extends StatelessWidget {
   UserProfileTopInfo({
-    Key key,
+    Key? key,
     this.username,
     this.avatar,
     this.totalPosts,

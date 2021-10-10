@@ -12,7 +12,7 @@ import 'package:hanjul_front/widgets/post_tile.dart';
 import 'package:hanjul_front/widgets/user_profile_top_info.dart';
 
 class UserProfile extends StatefulWidget {
-  UserProfile({Key key, this.me, this.username, this.onLoggedOut})
+  UserProfile({Key? key, this.me, this.username, this.onLoggedOut})
       : super(key: key);
   final me;
   final username;
@@ -24,7 +24,7 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   ScrollController _scrollController = new ScrollController();
-  List<Widget> _currentPostWidgets;
+  List<Widget> _currentPostWidgets = [];
 
   @override
   void initState() {
@@ -66,17 +66,17 @@ class _UserProfileState extends State<UserProfile> {
                       document: gql(seeProfile),
                       variables: {'username': widget.username}),
                   builder: (QueryResult result,
-                      {VoidCallback refetch, FetchMore fetchMore}) {
+                      {VoidCallback? refetch, FetchMore? fetchMore}) {
                     if (result.hasException) {
                       return Text(result.exception.toString());
                     }
                     if (result.isLoading) {
                       return Center(child: CircularProgressIndicator());
-                    } else if (!result.data['seeProfile']['ok']) {
+                    } else if (!result.data?['seeProfile']['ok']) {
                       return Center(child: Text("유저 프로필 불러오기에 실패했습니다."));
                     } else {
                       Map<String, dynamic> user =
-                          result.data['seeProfile']['user'];
+                          result.data?['seeProfile']['user'];
                       return UserProfileTopInfo(
                         username: user['username'],
                         avatar: user['avatar'],
@@ -99,9 +99,9 @@ class _UserProfileState extends State<UserProfile> {
                     variables: {'username': widget.username},
                   ),
                   builder: (QueryResult result,
-                      {VoidCallback refetch, FetchMore fetchMore}) {
+                      {VoidCallback? refetch, FetchMore? fetchMore}) {
                     Future _refreshData() async {
-                      refetch();
+                      refetch!();
                       return true;
                     }
 
@@ -110,10 +110,10 @@ class _UserProfileState extends State<UserProfile> {
                     }
                     List posts = [];
                     List<Widget> newPostWidgets = [];
-                    if (!result.data['seeUserPosts']['ok']) {
+                    if (!result.data?['seeUserPosts']['ok']) {
                       return Center(child: Text("유저 글 불러오기에 실패했습니다."));
                     } else {
-                      posts = result.data['seeUserPosts']['posts'];
+                      posts = result.data?['seeUserPosts']['posts'];
                       if (posts.length == 0) {
                         return SizedBox(
                           height: 80,
@@ -179,21 +179,21 @@ class _UserProfileState extends State<UserProfile> {
                           FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
                             variables: {
                               'username': widget.username,
-                              'lastId': result.data['seeUserPosts']['lastId'],
+                              'lastId': result.data?['seeUserPosts']['lastId'],
                             },
                             updateQuery:
                                 (previousResultData, fetchMoreResultData) {
                               List posts = [
-                                ...previousResultData['seeUserPosts']['posts'],
-                                ...fetchMoreResultData['seeUserPosts']['posts']
+                                ...previousResultData?['seeUserPosts']['posts'],
+                                ...fetchMoreResultData?['seeUserPosts']['posts']
                               ];
-                              fetchMoreResultData['seeUserPosts']['posts'] =
+                              fetchMoreResultData?['seeUserPosts']['posts'] =
                                   posts;
                               return fetchMoreResultData;
                             },
                           );
                           if (fetchMoreOpts.variables['lastId'] != null) {
-                            fetchMore(fetchMoreOpts);
+                            fetchMore!(fetchMoreOpts);
                           }
                         }
                         return true;

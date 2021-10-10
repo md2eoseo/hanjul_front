@@ -5,7 +5,7 @@ import 'package:hanjul_front/widgets/main_app_bar.dart';
 import 'package:hanjul_front/widgets/user_tile.dart';
 
 class Followers extends StatefulWidget {
-  Followers({Key key, this.username}) : super(key: key);
+  Followers({Key? key, this.username}) : super(key: key);
   final username;
 
   @override
@@ -14,7 +14,7 @@ class Followers extends StatefulWidget {
 
 class _FollowersState extends State<Followers> {
   ScrollController _scrollController = new ScrollController();
-  List<Widget> _currentUserWidgets;
+  List<Widget> _currentUserWidgets = [];
 
   @override
   void initState() {
@@ -39,9 +39,9 @@ class _FollowersState extends State<Followers> {
                 variables: {'username': widget.username},
               ),
               builder: (QueryResult result,
-                  {VoidCallback refetch, FetchMore fetchMore}) {
+                  {VoidCallback? refetch, FetchMore? fetchMore}) {
                 Future _refreshData() async {
-                  refetch();
+                  refetch!();
                   return true;
                 }
 
@@ -52,10 +52,10 @@ class _FollowersState extends State<Followers> {
                 List<Widget> newUserWidgets = [];
                 if (result.isLoading) {
                   return Center(child: CircularProgressIndicator());
-                } else if (!result.data['seeFollowers']['ok']) {
+                } else if (!result.data?['seeFollowers']['ok']) {
                   return Center(child: Text("팔로워 불러오기에 실패했습니다."));
                 } else {
-                  users = result.data['seeFollowers']['followers'];
+                  users = result.data?['seeFollowers']['followers'];
                   if (users.length == 0) {
                     return SizedBox(
                       height: 80,
@@ -118,23 +118,23 @@ class _FollowersState extends State<Followers> {
                         FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
                           variables: {
                             'username': widget.username,
-                            'lastId': result.data['seeFollowers']['lastId']
+                            'lastId': result.data?['seeFollowers']['lastId']
                           },
                           updateQuery:
                               (previousResultData, fetchMoreResultData) {
                             List users = [
-                              ...previousResultData['seeFollowers']
+                              ...previousResultData?['seeFollowers']
                                   ['followers'],
-                              ...fetchMoreResultData['seeFollowers']
+                              ...fetchMoreResultData?['seeFollowers']
                                   ['followers']
                             ];
-                            fetchMoreResultData['seeFollowers']['followers'] =
+                            fetchMoreResultData?['seeFollowers']['followers'] =
                                 users;
                             return fetchMoreResultData;
                           },
                         );
                         if (fetchMoreOpts.variables['lastId'] != null) {
-                          fetchMore(fetchMoreOpts);
+                          fetchMore!(fetchMoreOpts);
                         }
                       }
                       return true;

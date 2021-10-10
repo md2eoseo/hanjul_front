@@ -7,9 +7,9 @@ import 'package:hanjul_front/widgets/main_app_bar.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class SettingPage extends StatelessWidget {
-  SettingPage({Key key, this.me, this.onLoggedOut});
+  SettingPage({Key? key, this.me, this.onLoggedOut});
   final me;
-  final Function onLoggedOut;
+  final Function? onLoggedOut;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class SettingPage extends StatelessWidget {
                     title: '로그아웃',
                     leading: Icon(Icons.logout),
                     onPressed: (BuildContext context) {
-                      onLoggedOut();
+                      onLoggedOut!();
                       Get.back();
                     },
                   ),

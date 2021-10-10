@@ -7,7 +7,7 @@ import 'package:hanjul_front/mutations/update_profile.dart';
 import 'package:hanjul_front/widgets/main_app_bar.dart';
 
 class SettingAccountPage extends StatefulWidget {
-  const SettingAccountPage({Key key, this.me}) : super(key: key);
+  const SettingAccountPage({Key? key, this.me}) : super(key: key);
   final me;
 
   @override
@@ -46,10 +46,10 @@ class _SettingAccountPageState extends State<SettingAccountPage> {
                     initialValue: widget.me['lastName'],
                     decoration: InputDecoration(labelText: '성'),
                     validator: (value) {
-                      final trimmedValue = value.trim();
+                      final trimmedValue = value!.trim();
                       return trimmedValue.isEmpty ? '성을 입력해주세요.' : null;
                     },
-                    onSaved: (value) => _lastName = value.trim(),
+                    onSaved: (value) => _lastName = value!.trim(),
                     style: TextStyle(fontSize: 24),
                     textInputAction: TextInputAction.done,
                   ),
@@ -60,10 +60,10 @@ class _SettingAccountPageState extends State<SettingAccountPage> {
                     initialValue: widget.me['firstName'],
                     decoration: InputDecoration(labelText: '이름'),
                     validator: (value) {
-                      final trimmedValue = value.trim();
+                      final trimmedValue = value!.trim();
                       return trimmedValue.isEmpty ? '이름을 입력해주세요.' : null;
                     },
-                    onSaved: (value) => _firstName = value.trim(),
+                    onSaved: (value) => _firstName = value!.trim(),
                     style: TextStyle(fontSize: 24),
                     textInputAction: TextInputAction.done,
                   ),
@@ -74,10 +74,10 @@ class _SettingAccountPageState extends State<SettingAccountPage> {
                     initialValue: widget.me['username'],
                     decoration: InputDecoration(labelText: '사용자명'),
                     validator: (value) {
-                      final trimmedValue = value.trim();
+                      final trimmedValue = value!.trim();
                       return trimmedValue.isEmpty ? '사용자명을 입력해주세요.' : null;
                     },
-                    onSaved: (value) => _username = value.trim(),
+                    onSaved: (value) => _username = value!.trim(),
                     style: TextStyle(fontSize: 24),
                     textInputAction: TextInputAction.done,
                   ),
@@ -94,10 +94,10 @@ class _SettingAccountPageState extends State<SettingAccountPage> {
                     maxLength: 80,
                     maxLengthEnforcement: MaxLengthEnforcement.enforced,
                     validator: (value) {
-                      final trimmedValue = value.trim();
+                      final trimmedValue = value!.trim();
                       return trimmedValue.isEmpty ? '자기 소개를 입력해주세요.' : null;
                     },
-                    onSaved: (value) => _bio = value.trim(),
+                    onSaved: (value) => _bio = value!.trim(),
                     style: TextStyle(fontSize: 24),
                     textInputAction: TextInputAction.done,
                   ),
@@ -105,7 +105,7 @@ class _SettingAccountPageState extends State<SettingAccountPage> {
                 Mutation(
                   options: MutationOptions(
                     document: gql(updateProfile),
-                    update: (GraphQLDataProxy cache, QueryResult result) {
+                    update: (GraphQLDataProxy? cache, QueryResult? result) {
                       return cache;
                     },
                     onCompleted: (dynamic resultData) async {
@@ -123,14 +123,14 @@ class _SettingAccountPageState extends State<SettingAccountPage> {
                     },
                   ),
                   builder: (
-                    RunMutation runMutation,
-                    QueryResult result,
+                    RunMutation? runMutation,
+                    QueryResult? result,
                   ) {
                     return ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(vertical: 16)),
                       child: Text(
-                        result.isLoading ? '계정 정보 변경 중...' : '계정 정보 변경',
+                        result!.isLoading ? '계정 정보 변경 중...' : '계정 정보 변경',
                         style: TextStyle(fontSize: 24),
                       ),
                       onPressed: result.isLoading
@@ -138,7 +138,7 @@ class _SettingAccountPageState extends State<SettingAccountPage> {
                           : () => {
                                 if (validateAndSave())
                                   {
-                                    runMutation({
+                                    runMutation!({
                                       'firstName': _firstName,
                                       'lastName': _lastName,
                                       'username': _username,
@@ -159,7 +159,7 @@ class _SettingAccountPageState extends State<SettingAccountPage> {
 
   bool validateAndSave() {
     final formState = formKey.currentState;
-    formState.save();
+    formState!.save();
     if (formState.validate()) {
       return true;
     }

@@ -43,10 +43,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: TextFormField(
                     decoration: InputDecoration(labelText: '성'),
                     validator: (value) {
-                      final trimmedValue = value.trim();
+                      final trimmedValue = value!.trim();
                       return trimmedValue.isEmpty ? '성을 입력해주세요.' : null;
                     },
-                    onSaved: (value) => _lastName = value.trim(),
+                    onSaved: (value) => _lastName = value!.trim(),
                     style: TextStyle(fontSize: 24),
                     textInputAction: TextInputAction.next,
                   ),
@@ -56,10 +56,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: TextFormField(
                     decoration: InputDecoration(labelText: '이름'),
                     validator: (value) {
-                      final trimmedValue = value.trim();
+                      final trimmedValue = value!.trim();
                       return trimmedValue.isEmpty ? '이름을 입력해주세요.' : null;
                     },
-                    onSaved: (value) => _firstName = value.trim(),
+                    onSaved: (value) => _firstName = value!.trim(),
                     style: TextStyle(fontSize: 24),
                     textInputAction: TextInputAction.next,
                   ),
@@ -69,15 +69,15 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: TextFormField(
                     decoration: InputDecoration(labelText: '이메일'),
                     validator: (value) {
-                      final trimmedValue = value.trim();
+                      final trimmedValue = value!.trim();
                       if (trimmedValue.isEmpty) return '이메일을 입력해주세요.';
-                      Pattern pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+                      String pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
                       RegExp regex = new RegExp(pattern);
                       return regex.hasMatch(trimmedValue)
                           ? null
                           : '이메일 형식으로 입력해주세요.';
                     },
-                    onSaved: (value) => _email = value.trim(),
+                    onSaved: (value) => _email = value!.trim(),
                     style: TextStyle(fontSize: 24),
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
@@ -88,10 +88,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: TextFormField(
                     decoration: InputDecoration(labelText: '사용자명'),
                     validator: (value) {
-                      final trimmedValue = value.trim();
+                      final trimmedValue = value!.trim();
                       return trimmedValue.isEmpty ? '사용자명을 입력해주세요.' : null;
                     },
-                    onSaved: (value) => _username = value.trim(),
+                    onSaved: (value) => _username = value!.trim(),
                     style: TextStyle(fontSize: 24),
                     textInputAction: TextInputAction.next,
                   ),
@@ -102,10 +102,10 @@ class _SignUpPageState extends State<SignUpPage> {
                     obscureText: true,
                     decoration: InputDecoration(labelText: '비밀번호'),
                     validator: (value) {
-                      final trimmedValue = value.trim();
+                      final trimmedValue = value!.trim();
                       return trimmedValue.isEmpty ? '비밀번호를 입력해주세요.' : null;
                     },
-                    onSaved: (value) => _password = value.trim(),
+                    onSaved: (value) => _password = value!.trim(),
                     style: TextStyle(fontSize: 24),
                     textInputAction: TextInputAction.done,
                   ),
@@ -113,7 +113,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 Mutation(
                   options: MutationOptions(
                     document: gql(createAccount),
-                    update: (GraphQLDataProxy cache, QueryResult result) {
+                    update: (GraphQLDataProxy? cache, QueryResult? result) {
                       return cache;
                     },
                     onCompleted: (dynamic resultData) async {
@@ -134,14 +134,14 @@ class _SignUpPageState extends State<SignUpPage> {
                     },
                   ),
                   builder: (
-                    RunMutation runMutation,
-                    QueryResult result,
+                    RunMutation? runMutation,
+                    QueryResult? result,
                   ) {
                     return ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(vertical: 16)),
                       child: Text(
-                        result.isLoading ? '회원가입 중...' : '회원가입',
+                        result!.isLoading ? '회원가입 중...' : '회원가입',
                         style: TextStyle(fontSize: 24),
                       ),
                       onPressed: result.isLoading
@@ -149,7 +149,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           : () => {
                                 if (validateAndSave())
                                   {
-                                    runMutation({
+                                    runMutation!({
                                       'lastName': _lastName,
                                       'firstName': _firstName,
                                       'email': _email,
@@ -171,7 +171,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   bool validateAndSave() {
     final formState = formKey.currentState;
-    if (formState.validate()) {
+    if (formState!.validate()) {
       formState.save();
       return true;
     }

@@ -4,7 +4,7 @@ import 'package:hanjul_front/widgets/main_app_bar.dart';
 import 'package:hanjul_front/widgets/write_post_button.dart';
 
 class ArchivePage extends StatefulWidget {
-  ArchivePage({Key key, this.word}) : super(key: key);
+  ArchivePage({Key? key, this.word}) : super(key: key);
   final word;
 
   @override

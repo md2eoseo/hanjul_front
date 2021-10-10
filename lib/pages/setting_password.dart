@@ -6,7 +6,7 @@ import 'package:hanjul_front/mutations/update_password.dart';
 import 'package:hanjul_front/widgets/main_app_bar.dart';
 
 class SettingPasswordPage extends StatefulWidget {
-  const SettingPasswordPage({Key key}) : super(key: key);
+  const SettingPasswordPage({Key? key}) : super(key: key);
 
   @override
   _SettingPasswordPageState createState() => _SettingPasswordPageState();
@@ -43,9 +43,9 @@ class _SettingPasswordPageState extends State<SettingPasswordPage> {
                     obscureText: true,
                     decoration: InputDecoration(labelText: '현재 비밀번호'),
                     validator: (value) {
-                      return value.isEmpty ? '현재 비밀번호를 입력해주세요.' : null;
+                      return value!.isEmpty ? '현재 비밀번호를 입력해주세요.' : null;
                     },
-                    onSaved: (value) => _oldPassword = value,
+                    onSaved: (value) => _oldPassword = value!,
                     style: TextStyle(fontSize: 24),
                     textInputAction: TextInputAction.done,
                   ),
@@ -56,9 +56,9 @@ class _SettingPasswordPageState extends State<SettingPasswordPage> {
                     obscureText: true,
                     decoration: InputDecoration(labelText: '새 비밀번호'),
                     validator: (value) {
-                      return value.isEmpty ? '새 비밀번호를 입력해주세요.' : null;
+                      return value!.isEmpty ? '새 비밀번호를 입력해주세요.' : null;
                     },
-                    onSaved: (value) => _newPassword = value,
+                    onSaved: (value) => _newPassword = value!,
                     style: TextStyle(fontSize: 24),
                     textInputAction: TextInputAction.done,
                   ),
@@ -69,13 +69,13 @@ class _SettingPasswordPageState extends State<SettingPasswordPage> {
                     obscureText: true,
                     decoration: InputDecoration(labelText: '새 비밀번호 확인'),
                     validator: (value) {
-                      return value.isEmpty
+                      return value!.isEmpty
                           ? '새 비밀번호를 확인해주세요.'
                           : _newPassword != _newPasswordCheck
                               ? '새 비밀번호가 일치하지 않습니다.'
                               : null;
                     },
-                    onSaved: (value) => _newPasswordCheck = value,
+                    onSaved: (value) => _newPasswordCheck = value!,
                     style: TextStyle(fontSize: 24),
                     textInputAction: TextInputAction.done,
                   ),
@@ -83,7 +83,7 @@ class _SettingPasswordPageState extends State<SettingPasswordPage> {
                 Mutation(
                   options: MutationOptions(
                     document: gql(updatePassword),
-                    update: (GraphQLDataProxy cache, QueryResult result) {
+                    update: (GraphQLDataProxy? cache, QueryResult? result) {
                       return cache;
                     },
                     onCompleted: (dynamic resultData) async {
@@ -101,14 +101,14 @@ class _SettingPasswordPageState extends State<SettingPasswordPage> {
                     },
                   ),
                   builder: (
-                    RunMutation runMutation,
-                    QueryResult result,
+                    RunMutation? runMutation,
+                    QueryResult? result,
                   ) {
                     return ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(vertical: 16)),
                       child: Text(
-                        result.isLoading ? '비밀번호 변경 중...' : '비밀번호 변경',
+                        result!.isLoading ? '비밀번호 변경 중...' : '비밀번호 변경',
                         style: TextStyle(fontSize: 24),
                       ),
                       onPressed: result.isLoading
@@ -116,7 +116,7 @@ class _SettingPasswordPageState extends State<SettingPasswordPage> {
                           : () => {
                                 if (validateAndSave())
                                   {
-                                    runMutation({
+                                    runMutation!({
                                       'oldPassword': _oldPassword,
                                       'newPassword': _newPassword
                                     })
@@ -135,7 +135,7 @@ class _SettingPasswordPageState extends State<SettingPasswordPage> {
 
   bool validateAndSave() {
     final formState = formKey.currentState;
-    formState.save();
+    formState!.save();
     if (formState.validate()) {
       return true;
     }

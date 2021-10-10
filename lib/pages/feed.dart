@@ -4,7 +4,7 @@ import 'package:hanjul_front/widgets/main_app_bar.dart';
 import 'package:hanjul_front/widgets/write_post_button.dart';
 
 class FeedPage extends StatefulWidget {
-  FeedPage({Key key, this.word}) : super(key: key);
+  FeedPage({Key? key, this.word}) : super(key: key);
   final word;
 
   @override

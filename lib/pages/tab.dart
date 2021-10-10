@@ -10,8 +10,8 @@ import 'package:hanjul_front/pages/search.dart';
 import 'package:hanjul_front/config/utils.dart';
 
 class TabPage extends StatefulWidget {
-  TabPage({Key key, this.onLoggedOut});
-  final VoidCallback onLoggedOut;
+  TabPage({Key? key, this.onLoggedOut});
+  final VoidCallback? onLoggedOut;
 
   @override
   _TabPageState createState() => _TabPageState();
@@ -19,8 +19,8 @@ class TabPage extends StatefulWidget {
 
 class _TabPageState extends State<TabPage> {
   int _currentIndex = 0;
-  Map<String, dynamic> _word;
-  Map<String, dynamic> _me;
+  Map<String, dynamic>? _word;
+  Map<String, dynamic>? _me;
 
   Future getTodaysWord(String date) async {
     var result = await client.value.query(
@@ -31,11 +31,11 @@ class _TabPageState extends State<TabPage> {
       ),
     );
 
-    if (!result.data['searchWords']['ok']) {
+    if (!result.data?['searchWords']['ok']) {
       print("오늘의 단어 불러오기 실패!");
     } else {
       setState(() {
-        _word = result.data['searchWords']['words'][0];
+        _word = result.data?['searchWords']['words'][0];
       });
     }
   }
@@ -48,11 +48,11 @@ class _TabPageState extends State<TabPage> {
       ),
     );
 
-    if (!result.data['seeMyProfile']['ok']) {
+    if (!result.data?['seeMyProfile']['ok']) {
       print("내 프로필 불러오기 실패!");
     } else {
       setState(() {
-        _me = result.data['seeMyProfile']['user'];
+        _me = result.data?['seeMyProfile']['user'];
       });
     }
   }

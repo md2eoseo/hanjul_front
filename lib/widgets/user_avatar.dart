@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class UserAvatar extends StatelessWidget {
-  UserAvatar({Key key, this.avatar, this.size, this.onTap});
+  UserAvatar({Key? key, this.avatar, this.size, this.onTap});
   final avatar;
   final size;
   final onTap;

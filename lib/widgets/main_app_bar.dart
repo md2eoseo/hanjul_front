@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   MainAppBar({
-    Key key,
+    Key? key,
     @required this.appBar,
     @required this.title,
     this.scrollController,
@@ -10,15 +10,15 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.iconButtons,
     this.centerTitle,
   }) : super(key: key);
-  final AppBar appBar;
-  final String title;
-  final ScrollController scrollController;
-  final bool leading;
-  final List<Widget> iconButtons;
-  final bool centerTitle;
+  final AppBar? appBar;
+  final String? title;
+  final ScrollController? scrollController;
+  final bool? leading;
+  final List<Widget>? iconButtons;
+  final bool? centerTitle;
 
   @override
-  Size get preferredSize => Size.fromHeight(appBar.preferredSize.height);
+  Size get preferredSize => Size.fromHeight(appBar!.preferredSize.height);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: leading == true ? BackButton(color: Colors.black) : null,
       title: TextButton(
         child: Text(
-          title,
+          title!,
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
@@ -38,7 +38,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
         style: TextButton.styleFrom(splashFactory: NoSplash.splashFactory),
         onPressed: scrollController != null
             ? () {
-                scrollController.animateTo(
+                scrollController!.animateTo(
                   0,
                   duration: Duration(milliseconds: 300),
                   curve: Curves.easeOut,
