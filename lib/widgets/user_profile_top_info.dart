@@ -45,7 +45,19 @@ class UserProfileTopInfo extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              UserAvatar(avatar: avatar, size: 96.0),
+              if (!isMe)
+                UserAvatar(
+                  avatar: avatar,
+                  size: 96.0,
+                )
+              else
+                UserAvatar(
+                  avatar: avatar,
+                  size: 96.0,
+                  onTap: () async {
+                    print("onTapped");
+                  },
+                ),
               SizedBox(width: 28),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
