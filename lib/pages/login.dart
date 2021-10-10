@@ -8,7 +8,7 @@ import 'package:hanjul_front/pages/sign_up.dart';
 import 'package:hanjul_front/widgets/logo.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key, this.onLoggedIn});
+  LoginPage({Key? key, this.onLoggedIn});
   final onLoggedIn;
 
   @override
@@ -50,11 +50,11 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         validator: (value) {
-                          final trimmedValue = value.trim();
+                          final trimmedValue = value!.trim();
                           // todo: validation
                           return trimmedValue.isEmpty ? '사용자명을 입력해주세요.' : null;
                         },
-                        onSaved: (value) => _username = value,
+                        onSaved: (value) => _username = value!,
                         style: TextStyle(fontSize: 24),
                         textInputAction: TextInputAction.next,
                       ),
@@ -71,11 +71,11 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         validator: (value) {
-                          final trimmedValue = value.trim();
+                          final trimmedValue = value!.trim();
                           // todo: validation
                           return trimmedValue.isEmpty ? '비밀번호를 입력해주세요.' : null;
                         },
-                        onSaved: (value) => _password = value,
+                        onSaved: (value) => _password = value!,
                         style: TextStyle(fontSize: 24),
                         textInputAction: TextInputAction.done,
                       ),
@@ -86,8 +86,8 @@ class _LoginPageState extends State<LoginPage> {
                         Mutation(
                             options: MutationOptions(
                               document: gql(login),
-                              update:
-                                  (GraphQLDataProxy cache, QueryResult result) {
+                              update: (GraphQLDataProxy? cache,
+                                  QueryResult? result) {
                                 return cache;
                               },
                               onCompleted: (dynamic resultData) async {
@@ -106,15 +106,15 @@ class _LoginPageState extends State<LoginPage> {
                               },
                             ),
                             builder: (
-                              RunMutation runMutation,
-                              QueryResult result,
+                              RunMutation? runMutation,
+                              QueryResult? result,
                             ) {
                               return ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     padding:
                                         EdgeInsets.symmetric(vertical: 16)),
                                 child: Text(
-                                  result.isLoading ? '로그인 중...' : '로그인',
+                                  result!.isLoading ? '로그인 중...' : '로그인',
                                   style: TextStyle(fontSize: 24),
                                 ),
                                 onPressed: result.isLoading
@@ -122,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                                     : () => {
                                           if (validateAndSave())
                                             {
-                                              runMutation({
+                                              runMutation!({
                                                 'username': _username,
                                                 'password': _password
                                               })
@@ -160,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
 
   bool validateAndSave() {
     final formState = formKey.currentState;
-    if (formState.validate()) {
+    if (formState!.validate()) {
       formState.save();
       return true;
     }

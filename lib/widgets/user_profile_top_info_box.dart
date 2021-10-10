@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class UserProfileTopInfoBox extends StatelessWidget {
-  UserProfileTopInfoBox({Key key, this.name, this.cnt, this.page});
+  UserProfileTopInfoBox({Key? key, this.name, this.cnt, this.page});
   final name;
   final cnt;
   final page;

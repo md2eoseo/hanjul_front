@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class MyPage extends StatelessWidget {
-  MyPage({Key key, this.onLoggedOut, this.me});
+  MyPage({Key? key, this.onLoggedOut, this.me});
   final onLoggedOut;
   final me;
 

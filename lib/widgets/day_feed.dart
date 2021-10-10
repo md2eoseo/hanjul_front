@@ -6,7 +6,7 @@ import 'package:hanjul_front/widgets/post_tile.dart';
 import 'package:hanjul_front/widgets/todays_word.dart';
 
 class DayFeed extends StatefulWidget {
-  DayFeed({Key key, this.scrollController, this.word}) : super(key: key);
+  DayFeed({Key? key, this.scrollController, this.word}) : super(key: key);
   final scrollController;
   final word;
 
@@ -15,7 +15,7 @@ class DayFeed extends StatefulWidget {
 }
 
 class _DayFeedState extends State<DayFeed> {
-  List<Widget> _currentPostWidgets;
+  List<Widget> _currentPostWidgets = [];
 
   @override
   void initState() {
@@ -36,9 +36,9 @@ class _DayFeedState extends State<DayFeed> {
                     document: gql(seeDayFeed),
                     variables: {'date': getTodaysDate()}),
                 builder: (QueryResult result,
-                    {VoidCallback refetch, FetchMore fetchMore}) {
+                    {VoidCallback? refetch, FetchMore? fetchMore}) {
                   Future _refreshData() async {
-                    refetch();
+                    refetch!();
                     return true;
                   }
 
@@ -48,10 +48,10 @@ class _DayFeedState extends State<DayFeed> {
                   List posts = [];
                   List<Widget> newPostWidgets = [];
                   // TODO: handle error - call on null value
-                  if (!result.data['seeDayFeed']['ok']) {
+                  if (!result.data?['seeDayFeed']['ok']) {
                     return Center(child: Text("글 불러오기에 실패했습니다."));
                   } else {
-                    posts = result.data['seeDayFeed']['posts'];
+                    posts = result.data?['seeDayFeed']['posts'];
                     if (posts.length == 0) {
                       return SizedBox(
                         height: 80,
@@ -116,21 +116,21 @@ class _DayFeedState extends State<DayFeed> {
                           FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
                             variables: {
                               'date': getTodaysDate(),
-                              'lastId': result.data['seeDayFeed']['lastId']
+                              'lastId': result.data?['seeDayFeed']['lastId']
                             },
                             updateQuery:
                                 (previousResultData, fetchMoreResultData) {
                               List posts = [
-                                ...previousResultData['seeDayFeed']['posts'],
-                                ...fetchMoreResultData['seeDayFeed']['posts']
+                                ...previousResultData?['seeDayFeed']['posts'],
+                                ...fetchMoreResultData?['seeDayFeed']['posts']
                               ];
-                              fetchMoreResultData['seeDayFeed']['posts'] =
+                              fetchMoreResultData?['seeDayFeed']['posts'] =
                                   posts;
                               return fetchMoreResultData;
                             },
                           );
                           if (fetchMoreOpts.variables['lastId'] != null) {
-                            fetchMore(fetchMoreOpts);
+                            fetchMore!(fetchMoreOpts);
                           }
                         }
                         return true;

@@ -5,7 +5,7 @@ import 'package:get/route_manager.dart';
 import 'package:hanjul_front/pages/writing.dart';
 
 class WritePostButton extends StatelessWidget {
-  WritePostButton({Key key, this.word}) : super(key: key);
+  WritePostButton({Key? key, this.word}) : super(key: key);
   final word;
 
   @override

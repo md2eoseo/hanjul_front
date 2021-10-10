@@ -5,22 +5,22 @@ import 'package:hanjul_front/mutations/toggle_like.dart';
 
 class LikeButton extends StatefulWidget {
   LikeButton({
-    Key key,
+    Key? key,
     this.postId,
     this.isLiked,
     this.likesCount,
   }) : super(key: key);
-  final int postId;
-  final bool isLiked;
-  final int likesCount;
+  final int? postId;
+  final bool? isLiked;
+  final int? likesCount;
 
   @override
   _LikeButtonState createState() => _LikeButtonState();
 }
 
 class _LikeButtonState extends State<LikeButton> {
-  bool _isLiked;
-  int _likesCount;
+  bool? _isLiked;
+  int? _likesCount;
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ class _LikeButtonState extends State<LikeButton> {
         child: Mutation(
           options: MutationOptions(
             document: gql(toggleLike),
-            update: (GraphQLDataProxy cache, QueryResult result) {
+            update: (GraphQLDataProxy? cache, QueryResult? result) {
               return cache;
             },
             onCompleted: (dynamic resultData) async {
@@ -64,9 +64,9 @@ class _LikeButtonState extends State<LikeButton> {
                   );
                   final data = client.readFragment(fragmentRequest);
                   client.writeFragment(fragmentRequest, data: {
-                    'likesCount': data['isLiked']
-                        ? data['likesCount'] - 1
-                        : data['likesCount'] + 1,
+                    'likesCount': data?['isLiked']
+                        ? data!['likesCount'] - 1
+                        : data!['likesCount'] + 1,
                     'isLiked': !data['isLiked']
                   });
                 };
@@ -75,8 +75,8 @@ class _LikeButtonState extends State<LikeButton> {
             },
           ),
           builder: (
-            RunMutation toggleLike,
-            QueryResult result,
+            RunMutation? toggleLike,
+            QueryResult? result,
           ) {
             return Row(
               children: [
@@ -87,19 +87,19 @@ class _LikeButtonState extends State<LikeButton> {
                 SizedBox(width: 4),
                 IconButton(
                   onPressed: () {
-                    toggleLike({'postId': widget.postId});
+                    toggleLike!({'postId': widget.postId});
                     setState(() {
-                      if (_isLiked) {
-                        _likesCount -= 1;
+                      if (_isLiked!) {
+                        _likesCount = _likesCount! - 1;
                       } else {
-                        _likesCount += 1;
+                        _likesCount = _likesCount! + 1;
                       }
-                      _isLiked = !_isLiked;
+                      _isLiked = !_isLiked!;
                     });
                   },
                   icon: Icon(
                     Icons.favorite,
-                    color: _isLiked ? Colors.red[800] : Colors.grey,
+                    color: _isLiked! ? Colors.red[800] : Colors.grey,
                     size: 32,
                   ),
                 )

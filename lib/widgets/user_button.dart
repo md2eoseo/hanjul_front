@@ -4,7 +4,7 @@ import 'package:hanjul_front/widgets/user_avatar.dart';
 import 'package:hanjul_front/widgets/user_profile.dart';
 
 class UserButton extends StatelessWidget {
-  UserButton({Key key, this.authorName, this.authorAvatar}) : super(key: key);
+  UserButton({Key? key, this.authorName, this.authorAvatar}) : super(key: key);
   final authorName;
   final authorAvatar;
 

@@ -4,7 +4,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hanjul_front/mutations/create_post.dart';
 
 class PostingButton extends StatelessWidget {
-  PostingButton({Key key, this.text, this.word}) : super(key: key);
+  PostingButton({Key? key, this.text, this.word}) : super(key: key);
   final text;
   final word;
 
@@ -20,7 +20,7 @@ class PostingButton extends StatelessWidget {
     return Mutation(
       options: MutationOptions(
         document: gql(createPost),
-        update: (GraphQLDataProxy cache, QueryResult result) {
+        update: (GraphQLDataProxy? cache, QueryResult? result) {
           return cache;
         },
         onCompleted: (dynamic resultData) {
@@ -36,10 +36,10 @@ class PostingButton extends StatelessWidget {
         },
       ),
       builder: (
-        RunMutation runMutation,
-        QueryResult result,
+        RunMutation? runMutation,
+        QueryResult? result,
       ) {
-        return result.isLoading
+        return result!.isLoading
             ? Padding(
                 padding: EdgeInsets.only(right: 18),
                 child: SizedBox(
@@ -61,7 +61,7 @@ class PostingButton extends StatelessWidget {
                     );
                     return;
                   }
-                  runMutation({'wordId': word['id'], 'text': text.trim()});
+                  runMutation!({'wordId': word['id'], 'text': text.trim()});
                 },
                 padding: EdgeInsets.only(right: 28),
               );

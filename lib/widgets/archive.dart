@@ -4,7 +4,7 @@ import 'package:hanjul_front/queries/see_archive.dart';
 import 'package:hanjul_front/widgets/post_tile.dart';
 
 class Archive extends StatefulWidget {
-  Archive({Key key, this.scrollController}) : super(key: key);
+  Archive({Key? key, this.scrollController}) : super(key: key);
   final scrollController;
 
   @override
@@ -12,7 +12,7 @@ class Archive extends StatefulWidget {
 }
 
 class _ArchiveState extends State<Archive> {
-  List<Widget> _currentPostWidgets;
+  List<Widget> _currentPostWidgets = [];
 
   @override
   void initState() {
@@ -30,9 +30,9 @@ class _ArchiveState extends State<Archive> {
               document: gql(seeArchive),
             ),
             builder: (QueryResult result,
-                {VoidCallback refetch, FetchMore fetchMore}) {
+                {VoidCallback? refetch, FetchMore? fetchMore}) {
               Future _refreshData() async {
-                refetch();
+                refetch!();
                 return true;
               }
 
@@ -41,10 +41,10 @@ class _ArchiveState extends State<Archive> {
               }
               List posts = [];
               List<Widget> newPostWidgets = [];
-              if (!result.data['seeArchive']['ok']) {
+              if (!result.data?['seeArchive']['ok']) {
                 return Center(child: Text("글 불러오기에 실패했습니다."));
               } else {
-                posts = result.data['seeArchive']['posts'];
+                posts = result.data?['seeArchive']['posts'];
                 if (posts.length == 0) {
                   return SizedBox(
                     height: 80,
@@ -106,19 +106,19 @@ class _ArchiveState extends State<Archive> {
                       });
                       FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
                         variables: {
-                          'lastId': result.data['seeArchive']['lastId']
+                          'lastId': result.data?['seeArchive']['lastId']
                         },
                         updateQuery: (previousResultData, fetchMoreResultData) {
                           List posts = [
-                            ...previousResultData['seeArchive']['posts'],
-                            ...fetchMoreResultData['seeArchive']['posts']
+                            ...previousResultData?['seeArchive']['posts'],
+                            ...fetchMoreResultData?['seeArchive']['posts']
                           ];
-                          fetchMoreResultData['seeArchive']['posts'] = posts;
+                          fetchMoreResultData?['seeArchive']['posts'] = posts;
                           return fetchMoreResultData;
                         },
                       );
                       if (fetchMoreOpts.variables['lastId'] != null) {
-                        fetchMore(fetchMoreOpts);
+                        fetchMore!(fetchMoreOpts);
                       }
                     }
                     return true;
