@@ -8,6 +8,7 @@ import 'package:hanjul_front/queries/search_words.dart';
 import 'package:hanjul_front/queries/see_my_profile.dart';
 import 'package:hanjul_front/pages/search.dart';
 import 'package:hanjul_front/config/utils.dart';
+import 'package:hanjul_front/widgets/user_avatar.dart';
 
 class TabPage extends StatefulWidget {
   TabPage({Key? key, this.onLoggedOut});
@@ -97,7 +98,26 @@ class _TabPageState extends State<TabPage> {
           BottomNavigationBarItem(
               icon: Icon(Icons.search, size: 32), label: "검색"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle, size: 32), label: "MY")
+              icon: _me?['avatar'] == null
+                  ? Icon(Icons.account_circle, size: 32)
+                  : UserAvatar(
+                      avatar: _me?['avatar'],
+                      size: 32.0,
+                    ),
+              activeIcon: Container(
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 2, color: Colors.white),
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                ),
+                child: UserAvatar(
+                  avatar: _me?['avatar'],
+                  size: 32.0,
+                ),
+              ),
+              label: "MY")
         ],
       ),
     );
