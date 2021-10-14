@@ -30,7 +30,7 @@ class _SignUpPageState extends State<SignUpPage> {
       body: Center(
         child: Container(
           width: kIsWeb ? 420 : null,
-          padding: EdgeInsets.fromLTRB(32, 64, 32, 96),
+          padding: EdgeInsets.fromLTRB(32, 32, 32, 96),
           child: Form(
             key: formKey,
             child: Column(
