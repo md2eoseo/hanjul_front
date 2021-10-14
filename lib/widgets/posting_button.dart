@@ -42,11 +42,14 @@ class PostingButton extends StatelessWidget {
         return result!.isLoading
             ? Padding(
                 padding: EdgeInsets.only(right: 18),
-                child: SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: CircularProgressIndicator(
-                    valueColor: new AlwaysStoppedAnimation<Color>(Colors.black),
+                child: Center(
+                  child: SizedBox(
+                    width: 28,
+                    height: 28,
+                    child: CircularProgressIndicator(
+                      valueColor:
+                          new AlwaysStoppedAnimation<Color>(Colors.black),
+                    ),
                   ),
                 ),
               )
