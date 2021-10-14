@@ -16,7 +16,7 @@ class UserProfileTopInfoBox extends StatelessWidget {
         }
       },
       child: SizedBox(
-        width: 72,
+        width: 52,
         child: Column(
           children: [
             Text(

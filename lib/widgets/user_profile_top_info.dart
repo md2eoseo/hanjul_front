@@ -163,7 +163,7 @@ class _UserProfileTopInfoState extends State<UserProfileTopInfo> {
           ),
           SizedBox(height: 24),
           SizedBox(
-            width: 380,
+            width: 360,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,11 +180,14 @@ class _UserProfileTopInfoState extends State<UserProfileTopInfo> {
                   ),
                 if (!widget.isMe) SizedBox(height: 18),
                 if (!widget.isMe)
-                  FollowButton(
-                    username: widget.username,
-                    isFollowers: widget.isFollowers,
-                    isFollowing: widget.isFollowing,
-                    width: 380.0,
+                  Align(
+                    alignment: Alignment.center,
+                    child: FollowButton(
+                      username: widget.username,
+                      isFollowers: widget.isFollowers,
+                      isFollowing: widget.isFollowing,
+                      width: 340.0,
+                    ),
                   ),
               ],
             ),
