@@ -29,7 +29,7 @@ class _SearchResultsState extends State<SearchResults> {
                     CircularProgressIndicator(),
                     SizedBox(width: 36.0),
                     SizedBox(
-                      width: 280,
+                      width: 240,
                       child: Text(
                         '"${widget.keyword}" 검색중...',
                         style: TextStyle(fontSize: 16),
@@ -67,7 +67,7 @@ class _SearchResultsState extends State<SearchResults> {
                 CircularProgressIndicator(),
                 SizedBox(width: 36.0),
                 SizedBox(
-                  width: 280,
+                  width: 240,
                   child: Text(
                     '"${widget.keyword}" 검색중...',
                     style: TextStyle(fontSize: 16),
