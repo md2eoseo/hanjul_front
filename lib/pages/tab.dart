@@ -104,19 +104,21 @@ class _TabPageState extends State<TabPage> {
                       avatar: _me?['avatar'],
                       size: 32.0,
                     ),
-              activeIcon: Container(
-                width: 32,
-                height: 32,
-                decoration: BoxDecoration(
-                  border: Border.all(width: 2, color: Colors.white),
-                  shape: BoxShape.circle,
-                  color: Colors.white,
-                ),
-                child: UserAvatar(
-                  avatar: _me?['avatar'],
-                  size: 32.0,
-                ),
-              ),
+              activeIcon: _me?['avatar'] == null
+                  ? Icon(Icons.account_circle, size: 32)
+                  : Container(
+                      width: 32,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 2, color: Colors.white),
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                      child: UserAvatar(
+                        avatar: _me?['avatar'],
+                        size: 32.0,
+                      ),
+                    ),
               label: "MY")
         ],
       ),
