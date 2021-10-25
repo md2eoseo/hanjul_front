@@ -30,7 +30,7 @@ class _SearchState extends State<Search> {
                       keyword: widget.keyword,
                     )
                   : Padding(
-                      padding: EdgeInsets.only(top: 30),
+                      padding: EdgeInsets.only(top: 24),
                       child: Text("검색어가 비어있습니다."),
                     )
             ],

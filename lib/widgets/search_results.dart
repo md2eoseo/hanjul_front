@@ -70,7 +70,7 @@ class _SearchResultsState extends State<SearchResults> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
-              padding: EdgeInsets.symmetric(horizontal: 36.0),
+              padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: 24.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -112,7 +112,8 @@ class _SearchResultsState extends State<SearchResults> {
             return Flexible(
               child: results.length == 0
                   ? Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 24),
                       child: Text(
                         '"${widget.keyword}" 검색 결과 없음',
                         style: TextStyle(fontSize: 16),
