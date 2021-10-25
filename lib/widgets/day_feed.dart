@@ -53,12 +53,25 @@ class _DayFeedState extends State<DayFeed> {
                   } else {
                     posts = result.data?['seeDayFeed']['posts'];
                     if (posts.length == 0) {
-                      return SizedBox(
-                        height: 80,
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 24),
                         child: Center(
-                          child: Text(
-                            "글이 없습니다.",
-                            style: TextStyle(fontSize: 18),
+                          child: GestureDetector(
+                            onTap: _refreshData,
+                            child: Column(
+                              children: [
+                                Text(
+                                  "글이 없습니다.",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                SizedBox(height: 10),
+                                Icon(
+                                  Icons.refresh,
+                                  color: Colors.grey[600],
+                                  size: 24.0,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );
