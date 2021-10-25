@@ -17,7 +17,7 @@ class SearchResults extends StatefulWidget {
 
 class _SearchResultsState extends State<SearchResults> {
   Future _getUsers() async {
-    print("user search!!");
+    print("user search: " + widget.keyword);
     var result = await client.value.query(
       QueryOptions(
         document: gql(searchUsers),
@@ -34,7 +34,7 @@ class _SearchResultsState extends State<SearchResults> {
   }
 
   Future _getPosts() async {
-    print("post search!!");
+    print("post search: " + widget.keyword);
     var result = await client.value.query(
       QueryOptions(
         document: gql(searchPosts),
@@ -51,15 +51,19 @@ class _SearchResultsState extends State<SearchResults> {
   }
 
   Future _delayFetch() async {
-    await Future.delayed(Duration(milliseconds: 400));
-    switch (widget.type) {
-      case 'user':
-        return await _getUsers();
-      case 'post':
-        return await _getPosts();
-      default:
-        return [];
-    }
+    final prevKeyword = widget.keyword;
+    return Future.delayed(Duration(milliseconds: 400), () async {
+      if (prevKeyword == widget.keyword) {
+        switch (widget.type) {
+          case 'user':
+            return await _getUsers();
+          case 'post':
+            return await _getPosts();
+          default:
+            return [];
+        }
+      }
+    });
   }
 
   @override
