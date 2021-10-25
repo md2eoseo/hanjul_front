@@ -8,10 +8,11 @@ import 'package:hanjul_front/queries/search_words.dart';
 import 'package:hanjul_front/queries/see_my_profile.dart';
 import 'package:hanjul_front/pages/search.dart';
 import 'package:hanjul_front/config/utils.dart';
+import 'package:hanjul_front/widgets/user_avatar.dart';
 
 class TabPage extends StatefulWidget {
-  TabPage({Key key, this.onLoggedOut});
-  final VoidCallback onLoggedOut;
+  TabPage({Key? key, this.onLoggedOut});
+  final VoidCallback? onLoggedOut;
 
   @override
   _TabPageState createState() => _TabPageState();
@@ -19,8 +20,8 @@ class TabPage extends StatefulWidget {
 
 class _TabPageState extends State<TabPage> {
   int _currentIndex = 0;
-  Map<String, dynamic> _word;
-  Map<String, dynamic> _me;
+  Map<String, dynamic>? _word;
+  Map<String, dynamic>? _me;
 
   Future getTodaysWord(String date) async {
     var result = await client.value.query(
@@ -31,11 +32,11 @@ class _TabPageState extends State<TabPage> {
       ),
     );
 
-    if (!result.data['searchWords']['ok']) {
+    if (!result.data?['searchWords']['ok']) {
       print("오늘의 단어 불러오기 실패!");
     } else {
       setState(() {
-        _word = result.data['searchWords']['words'][0];
+        _word = result.data?['searchWords']['words'][0];
       });
     }
   }
@@ -48,11 +49,11 @@ class _TabPageState extends State<TabPage> {
       ),
     );
 
-    if (!result.data['seeMyProfile']['ok']) {
+    if (!result.data?['seeMyProfile']['ok']) {
       print("내 프로필 불러오기 실패!");
     } else {
       setState(() {
-        _me = result.data['seeMyProfile']['user'];
+        _me = result.data?['seeMyProfile']['user'];
       });
     }
   }
@@ -97,7 +98,28 @@ class _TabPageState extends State<TabPage> {
           BottomNavigationBarItem(
               icon: Icon(Icons.search, size: 32), label: "검색"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle, size: 32), label: "MY")
+              icon: _me?['avatar'] == null
+                  ? Icon(Icons.account_circle, size: 32)
+                  : UserAvatar(
+                      avatar: _me?['avatar'],
+                      size: 32.0,
+                    ),
+              activeIcon: _me?['avatar'] == null
+                  ? Icon(Icons.account_circle, size: 32)
+                  : Container(
+                      width: 32,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 2, color: Colors.white),
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                      child: UserAvatar(
+                        avatar: _me?['avatar'],
+                        size: 32.0,
+                      ),
+                    ),
+              label: "MY")
         ],
       ),
     );

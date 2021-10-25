@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TodaysWord extends StatelessWidget {
-  TodaysWord({Key key, this.word}) : super(key: key);
+  TodaysWord({Key? key, this.word}) : super(key: key);
   final word;
 
   List<Widget> getMeaningWidgets() {

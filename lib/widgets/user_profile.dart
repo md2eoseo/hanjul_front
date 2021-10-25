@@ -1,6 +1,10 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hanjul_front/pages/setting.dart';
 import 'package:hanjul_front/queries/see_profile.dart';
 import 'package:hanjul_front/queries/see_user_posts.dart';
 import 'package:hanjul_front/widgets/main_app_bar.dart';
@@ -8,7 +12,9 @@ import 'package:hanjul_front/widgets/post_tile.dart';
 import 'package:hanjul_front/widgets/user_profile_top_info.dart';
 
 class UserProfile extends StatefulWidget {
-  UserProfile({Key key, this.username, this.onLoggedOut}) : super(key: key);
+  UserProfile({Key? key, this.me, this.username, this.onLoggedOut})
+      : super(key: key);
+  final me;
   final username;
   final onLoggedOut;
 
@@ -18,7 +24,7 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   ScrollController _scrollController = new ScrollController();
-  List<Widget> _currentPostWidgets;
+  List<Widget> _currentPostWidgets = [];
 
   @override
   void initState() {
@@ -39,11 +45,16 @@ class _UserProfileState extends State<UserProfile> {
             iconButtons: [
               if (widget.onLoggedOut != null)
                 IconButton(
-                  icon: Icon(Icons.logout, size: 36, color: Colors.black),
-                  onPressed: () async {
-                    widget.onLoggedOut();
+                  icon: FaIcon(FontAwesomeIcons.cog,
+                      size: 28, color: Colors.black),
+                  padding: EdgeInsets.only(right: 28),
+                  onPressed: () => {
+                    Get.to(
+                      () => SettingPage(
+                          me: widget.me, onLoggedOut: widget.onLoggedOut),
+                      transition: Transition.rightToLeft,
+                    )
                   },
-                  padding: EdgeInsets.only(right: 32),
                 )
             ],
           ),
@@ -55,17 +66,17 @@ class _UserProfileState extends State<UserProfile> {
                       document: gql(seeProfile),
                       variables: {'username': widget.username}),
                   builder: (QueryResult result,
-                      {VoidCallback refetch, FetchMore fetchMore}) {
+                      {VoidCallback? refetch, FetchMore? fetchMore}) {
                     if (result.hasException) {
                       return Text(result.exception.toString());
                     }
                     if (result.isLoading) {
                       return Center(child: CircularProgressIndicator());
-                    } else if (!result.data['seeProfile']['ok']) {
+                    } else if (!result.data?['seeProfile']['ok']) {
                       return Center(child: Text("유저 프로필 불러오기에 실패했습니다."));
                     } else {
                       Map<String, dynamic> user =
-                          result.data['seeProfile']['user'];
+                          result.data?['seeProfile']['user'];
                       return UserProfileTopInfo(
                         username: user['username'],
                         avatar: user['avatar'],
@@ -88,9 +99,9 @@ class _UserProfileState extends State<UserProfile> {
                     variables: {'username': widget.username},
                   ),
                   builder: (QueryResult result,
-                      {VoidCallback refetch, FetchMore fetchMore}) {
+                      {VoidCallback? refetch, FetchMore? fetchMore}) {
                     Future _refreshData() async {
-                      refetch();
+                      refetch!();
                       return true;
                     }
 
@@ -99,17 +110,30 @@ class _UserProfileState extends State<UserProfile> {
                     }
                     List posts = [];
                     List<Widget> newPostWidgets = [];
-                    if (!result.data['seeUserPosts']['ok']) {
+                    if (!result.data?['seeUserPosts']['ok']) {
                       return Center(child: Text("유저 글 불러오기에 실패했습니다."));
                     } else {
-                      posts = result.data['seeUserPosts']['posts'];
+                      posts = result.data?['seeUserPosts']['posts'];
                       if (posts.length == 0) {
-                        return SizedBox(
-                          height: 80,
+                        return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 24),
                           child: Center(
-                            child: Text(
-                              "작성한 글이 없습니다.",
-                              style: TextStyle(fontSize: 18),
+                            child: GestureDetector(
+                              onTap: _refreshData,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "작성한 글이 없습니다.",
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Icon(
+                                    Icons.refresh,
+                                    color: Colors.grey[600],
+                                    size: 24.0,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         );
@@ -168,21 +192,21 @@ class _UserProfileState extends State<UserProfile> {
                           FetchMoreOptions fetchMoreOpts = FetchMoreOptions(
                             variables: {
                               'username': widget.username,
-                              'lastId': result.data['seeUserPosts']['lastId'],
+                              'lastId': result.data?['seeUserPosts']['lastId'],
                             },
                             updateQuery:
                                 (previousResultData, fetchMoreResultData) {
                               List posts = [
-                                ...previousResultData['seeUserPosts']['posts'],
-                                ...fetchMoreResultData['seeUserPosts']['posts']
+                                ...previousResultData?['seeUserPosts']['posts'],
+                                ...fetchMoreResultData?['seeUserPosts']['posts']
                               ];
-                              fetchMoreResultData['seeUserPosts']['posts'] =
+                              fetchMoreResultData?['seeUserPosts']['posts'] =
                                   posts;
                               return fetchMoreResultData;
                             },
                           );
                           if (fetchMoreOpts.variables['lastId'] != null) {
-                            fetchMore(fetchMoreOpts);
+                            fetchMore!(fetchMoreOpts);
                           }
                         }
                         return true;

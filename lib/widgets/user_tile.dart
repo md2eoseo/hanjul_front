@@ -5,8 +5,8 @@ import 'package:hanjul_front/widgets/user_avatar.dart';
 import 'package:hanjul_front/widgets/user_profile.dart';
 
 class UserTile extends StatefulWidget {
-  UserTile({Key key, this.user}) : super(key: key);
-  final Map<String, dynamic> user;
+  UserTile({Key? key, this.user}) : super(key: key);
+  final Map<String, dynamic>? user;
 
   @override
   _UserTileState createState() => _UserTileState();
@@ -22,7 +22,7 @@ class _UserTileState extends State<UserTile> {
           style: TextButton.styleFrom(splashFactory: NoSplash.splashFactory),
           onPressed: () {
             Get.to(
-              () => UserProfile(username: widget.user['username']),
+              () => UserProfile(username: widget.user?['username']),
               transition: Transition.rightToLeft,
             );
           },
@@ -32,12 +32,12 @@ class _UserTileState extends State<UserTile> {
               Row(
                 children: [
                   UserAvatar(
-                    avatar: widget.user['avatar'],
+                    avatar: widget.user?['avatar'],
                     size: 36.0,
                   ),
                   SizedBox(width: 24),
                   Text(
-                    widget.user['username'],
+                    widget.user?['username'],
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 24,
@@ -45,11 +45,11 @@ class _UserTileState extends State<UserTile> {
                   ),
                 ],
               ),
-              if (!widget.user['isMe'])
+              if (!widget.user?['isMe'])
                 FollowButton(
-                  username: widget.user['username'],
-                  isFollowing: widget.user['isFollowing'],
-                  isFollowers: widget.user['isFollowers'],
+                  username: widget.user?['username'],
+                  isFollowing: widget.user?['isFollowing'],
+                  isFollowers: widget.user?['isFollowers'],
                   width: 108.0,
                 ),
             ],

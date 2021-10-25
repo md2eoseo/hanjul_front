@@ -46,7 +46,7 @@ class _RootPageState extends State<RootPage> {
   }
 
   void _checkLoggedInUser() async {
-    final int userId = await getLoggedInUserId();
+    final int? userId = await getLoggedInUserId();
     if (userId != null) {
       _onLoggedIn();
     }
@@ -58,7 +58,7 @@ class _RootPageState extends State<RootPage> {
     });
   }
 
-  void _onLoggedOut() async {
+  void _onLoggedOut() {
     deleteToken();
     setState(() {
       _isLoggedIn = false;

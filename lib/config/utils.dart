@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import "package:universal_html/html.dart" as html;
 
 import 'package:flutter/foundation.dart';
@@ -13,11 +15,15 @@ String getTodaysDate() {
   return formattedDate;
 }
 
-Future<String> getToken() async =>
-    !kIsWeb ? storage.read(key: 'TOKEN') : html.window.localStorage['TOKEN'];
+FutureOr<String?> getToken() async {
+  if (!kIsWeb) {
+    return storage.read(key: 'TOKEN');
+  }
+  return html.window.localStorage['TOKEN'];
+}
 
-Future<int> getLoggedInUserId() async {
-  final String token = await getToken();
+Future<int?> getLoggedInUserId() async {
+  final String? token = await getToken();
   if (token == null) {
     return null;
   }

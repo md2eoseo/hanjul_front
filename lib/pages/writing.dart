@@ -5,15 +5,15 @@ import 'package:hanjul_front/widgets/posting_button.dart';
 import 'package:hanjul_front/widgets/todays_word.dart';
 
 class WritingPage extends StatefulWidget {
-  WritingPage({Key key, this.word}) : super(key: key);
-  final Map<String, dynamic> word;
+  WritingPage({Key? key, this.word}) : super(key: key);
+  final Map<String, dynamic>? word;
 
   @override
   _WritingPageState createState() => _WritingPageState();
 }
 
 class _WritingPageState extends State<WritingPage> {
-  String _text;
+  String? _text;
 
   @override
   void initState() {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class UserProfileTopInfoBox extends StatelessWidget {
-  UserProfileTopInfoBox({Key key, this.name, this.cnt, this.page});
+  UserProfileTopInfoBox({Key? key, this.name, this.cnt, this.page});
   final name;
   final cnt;
   final page;
@@ -16,7 +16,7 @@ class UserProfileTopInfoBox extends StatelessWidget {
         }
       },
       child: SizedBox(
-        width: 72,
+        width: 52,
         child: Column(
           children: [
             Text(

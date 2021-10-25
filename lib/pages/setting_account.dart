@@ -3,34 +3,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:hanjul_front/mutations/create_account.dart';
+import 'package:hanjul_front/mutations/update_profile.dart';
 import 'package:hanjul_front/widgets/main_app_bar.dart';
 
-class SignUpPage extends StatefulWidget {
+class SettingAccountPage extends StatefulWidget {
+  const SettingAccountPage({Key? key, this.me}) : super(key: key);
+  final me;
+
   @override
-  _SignUpPageState createState() => _SignUpPageState();
+  _SettingAccountPageState createState() => _SettingAccountPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SettingAccountPageState extends State<SettingAccountPage> {
   final formKey = GlobalKey<FormState>();
   String _firstName = '';
   String _lastName = '';
   String _username = '';
-  String _email = '';
-  String _password = '';
+  String _bio = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MainAppBar(
         appBar: AppBar(),
-        title: "회원가입",
+        title: "계정 정보 변경",
         leading: true,
       ),
       body: Center(
         child: Container(
           width: kIsWeb ? 420 : null,
-          padding: EdgeInsets.fromLTRB(32, 32, 32, 96),
+          padding: EdgeInsets.fromLTRB(32, 64, 32, 96),
           child: Form(
             key: formKey,
             child: Column(
@@ -39,8 +41,9 @@ class _SignUpPageState extends State<SignUpPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 SizedBox(
-                  height: 88,
+                  height: 80,
                   child: TextFormField(
+                    initialValue: widget.me['lastName'],
                     decoration: InputDecoration(labelText: '성'),
                     validator: (value) {
                       final trimmedValue = value!.trim();
@@ -48,12 +51,13 @@ class _SignUpPageState extends State<SignUpPage> {
                     },
                     onSaved: (value) => _lastName = value!.trim(),
                     style: TextStyle(fontSize: 24),
-                    textInputAction: TextInputAction.next,
+                    textInputAction: TextInputAction.done,
                   ),
                 ),
                 SizedBox(
-                  height: 88,
+                  height: 80,
                   child: TextFormField(
+                    initialValue: widget.me['firstName'],
                     decoration: InputDecoration(labelText: '이름'),
                     validator: (value) {
                       final trimmedValue = value!.trim();
@@ -61,31 +65,13 @@ class _SignUpPageState extends State<SignUpPage> {
                     },
                     onSaved: (value) => _firstName = value!.trim(),
                     style: TextStyle(fontSize: 24),
-                    textInputAction: TextInputAction.next,
+                    textInputAction: TextInputAction.done,
                   ),
                 ),
                 SizedBox(
-                  height: 88,
+                  height: 80,
                   child: TextFormField(
-                    decoration: InputDecoration(labelText: '이메일'),
-                    validator: (value) {
-                      final trimmedValue = value!.trim();
-                      if (trimmedValue.isEmpty) return '이메일을 입력해주세요.';
-                      String pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
-                      RegExp regex = new RegExp(pattern);
-                      return regex.hasMatch(trimmedValue)
-                          ? null
-                          : '이메일 형식으로 입력해주세요.';
-                    },
-                    onSaved: (value) => _email = value!.trim(),
-                    style: TextStyle(fontSize: 24),
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.next,
-                  ),
-                ),
-                SizedBox(
-                  height: 88,
-                  child: TextFormField(
+                    initialValue: widget.me['username'],
                     decoration: InputDecoration(labelText: '사용자명'),
                     validator: (value) {
                       final trimmedValue = value!.trim();
@@ -93,41 +79,44 @@ class _SignUpPageState extends State<SignUpPage> {
                     },
                     onSaved: (value) => _username = value!.trim(),
                     style: TextStyle(fontSize: 24),
-                    textInputAction: TextInputAction.next,
+                    textInputAction: TextInputAction.done,
                   ),
                 ),
                 SizedBox(
-                  height: kIsWeb ? 98 : 180,
+                  height: kIsWeb ? 98 : 280,
                   child: TextFormField(
-                    obscureText: true,
-                    decoration: InputDecoration(labelText: '비밀번호'),
+                    initialValue: widget.me['bio'],
+                    decoration: InputDecoration(
+                      labelText: "자기 소개",
+                    ),
+                    autocorrect: false,
+                    maxLines: 6,
+                    maxLength: 80,
+                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
                     validator: (value) {
                       final trimmedValue = value!.trim();
-                      return trimmedValue.isEmpty ? '비밀번호를 입력해주세요.' : null;
+                      return trimmedValue.isEmpty ? '자기 소개를 입력해주세요.' : null;
                     },
-                    onSaved: (value) => _password = value!.trim(),
+                    onSaved: (value) => _bio = value!.trim(),
                     style: TextStyle(fontSize: 24),
                     textInputAction: TextInputAction.done,
                   ),
                 ),
                 Mutation(
                   options: MutationOptions(
-                    document: gql(createAccount),
+                    document: gql(updateProfile),
                     update: (GraphQLDataProxy? cache, QueryResult? result) {
                       return cache;
                     },
                     onCompleted: (dynamic resultData) async {
-                      if (!resultData['createAccount']['ok']) {
+                      if (!resultData['updateProfile']['ok']) {
                         Get.snackbar(
-                          "다른 이메일 또는 사용자명을 입력해주세요.",
-                          "${resultData['createAccount']['error']}",
+                          "계정 정보 변경에 실패했습니다.",
+                          "${resultData['updateProfile']['error']}",
                         );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                                "가입이 완료되었습니다!\n${resultData['createAccount']['username']}(으)로 로그인 해주세요."),
-                          ),
+                          SnackBar(content: Text("계정 정보가 변경되었습니다!")),
                         );
                         Get.back();
                       }
@@ -141,7 +130,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(vertical: 16)),
                       child: Text(
-                        result!.isLoading ? '회원가입 중...' : '회원가입',
+                        result!.isLoading ? '계정 정보 변경 중...' : '계정 정보 변경',
                         style: TextStyle(fontSize: 24),
                       ),
                       onPressed: result.isLoading
@@ -150,11 +139,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                 if (validateAndSave())
                                   {
                                     runMutation!({
-                                      'lastName': _lastName,
                                       'firstName': _firstName,
-                                      'email': _email,
+                                      'lastName': _lastName,
                                       'username': _username,
-                                      'password': _password
+                                      'bio': _bio
                                     })
                                   }
                               },
@@ -171,8 +159,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
   bool validateAndSave() {
     final formState = formKey.currentState;
-    if (formState!.validate()) {
-      formState.save();
+    formState!.save();
+    if (formState.validate()) {
       return true;
     }
     return false;
